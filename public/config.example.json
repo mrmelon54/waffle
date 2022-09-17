@@ -1,0 +1,4 @@
+{
+  "primary": "Pets",
+  "specs": [{ "url": "demo/openapi-3-1.yml", "name": "Pets" }]
+}

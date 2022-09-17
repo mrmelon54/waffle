@@ -1,0 +1,16 @@
+body {
+  color: #c7c2bb;
+  background-color: #2d303b;
+  padding: 0;
+  margin: 0;
+  font-family: "Roboto Mono", "Lucida Console", "Monaco", monospace;
+}
+
+a {
+  color: #60A8E5;
+}
+
+.json-formatter .hljs {
+  background: #1a1e24;
+  border-radius: 8px;
+}
