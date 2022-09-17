@@ -37,6 +37,7 @@
     top: 50%;
     right: 0;
     transform: translateY(-50%);
+    transition: ease-in-out transform 500ms;
   }
 
   .dropdown.dropdown-open>.dropdown-title::after {

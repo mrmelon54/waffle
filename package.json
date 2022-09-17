@@ -19,18 +19,14 @@
     "svelte": "^3.50.1"
   },
   "dependencies": {
-    "@zerodevx/svelte-json-view": "^0.2.2",
     "compare-versions": "^5.0.1",
-    "env-cmd": "^10.1.0",
     "js-yaml": "^4.1.0",
     "semver": "^7.3.7",
     "sirv-cli": "^1.0.0",
     "svelte-environment-variables": "^1.0.4",
     "svelte-highlight": "^6.2.1",
-    "svelte-json-tree": "^1.0.0",
     "svelte-markdown": "^0.2.3",
     "svelte-preprocess": "^4.10.7",
-    "svelte-routing": "^1.6.0",
-    "yaml": "^2.1.1"
+    "svelte-routing": "^1.6.0"
   }
 }

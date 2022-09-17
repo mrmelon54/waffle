@@ -1,6 +1,6 @@
 <script>
   import Dropdown from "../components/Dropdown.svelte";
-  import JsonFormatter from "../components/JsonFormatter.svelte";
+  import SchemaFormatter from "../components/SchemaFormatter.svelte";
 
   export let schemas;
 </script>
@@ -9,9 +9,7 @@
   <Dropdown open={true} title="Schemas">
     {#each Object.entries(schemas) as [key, schema]}
       <div>
-        <Dropdown title={key}>
-          <JsonFormatter content={schema} />
-        </Dropdown>
+        <SchemaFormatter name={key} {schema} {schemas} />
       </div>
     {/each}
   </Dropdown>
