@@ -1,5 +1,4 @@
 <script>
-  import { dataset_dev } from "svelte/internal";
   import Dropdown from "./Dropdown.svelte";
 
   export let name;
@@ -7,9 +6,11 @@
   export let schemas;
   let open;
 
-  let schemaType, schemaKeys, schemaValues;
+  let schemaType, schemaData;
   $: schemaType = findType(schema);
   $: schemaData = allData(schema);
+
+  let schemaRefCache = {};
 
   const brackets = {
     before: { array: "[", object: "{" },
@@ -44,9 +45,8 @@
   function schemaPropertyMapper(props) {
     let v = [];
     for (let i in props) {
+      if (i == "$ref") continue;
       let j = props[i];
-      console.log(j);
-      if (zzz++ > 30) return [{ length: 0, error: "brrr" }];
       if (typeof j === "object" && j.$ref) v.push(...schemaRefLookup(j.$ref));
       v.push([i, j]);
     }
@@ -54,16 +54,22 @@
   }
 
   function schemaRefLookup(ref) {
+    let b = schemaRefCache[ref];
+    if (Array.isArray(b)) return b;
     let z = schemaRef.exec(ref);
     if (z != null) {
-      if (schemas[z[1]]) return allData(schemas[z[1]]);
-      else return [{ length: 0, error: `Missing $ref: ${ref}` }];
+      if (schemas[z[1]]) {
+        schemaRefCache[ref] = [{ length: 0, error: `Recursion to $ref: ${ref}` }];
+        let a = allData(schemas[z[1]]);
+        schemaRefCache[ref] = a;
+        return a;
+      } else return [{ length: 0, error: `Missing $ref: ${ref}` }];
     }
     return [{ length: 0, error: `Invalid $ref: ${ref}` }];
   }
 
   function formatSchemaInnerValue(value) {
-    if (!value) return `Error: Value missing`;
+    if (!value) return `Error: Value missing ${JSON.stringify(value)}`;
     if (value.error) return `Error: ${value.error}`;
     return value.type + (value.format ? `(${value.format})` : "");
   }
@@ -82,7 +88,7 @@
         {:else}
           {#each schemaData as data}
             <div class="schema-inner-key">{data[0]}</div>
-            <div class="schema-inner-value">{formatSchemaInnerValue(data[1])}</div>
+            <div class="schema-inner-value">{formatSchemaInnerValue(data)}</div>
           {/each}
         {/if}
       </div>
