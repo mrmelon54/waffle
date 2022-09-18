@@ -3,8 +3,8 @@
   export let schema;
   let open;
 
-  let renderProps;
-  $: renderProps = generateRender(schema);
+  let renderData;
+  $: renderData = generateRender(schema);
 
   const brackets = {
     before: { array: "[", object: "{" },
@@ -47,24 +47,24 @@
         <div class="schema-description">{schema.description}</div>
       {/if}
       <div class="schema-inner">
-        {console.log(renderProps)}
-        {#if renderProps}
-          {#if renderProps.length == 2}
-            {#if renderProps[0] == "all"}
-              {#each renderProps[1] as innerProps}
-                {#each sortedKeys(innerProps) as key}
+        {console.log(renderData)}
+        {#if renderData}
+          {#if renderData.length == 2}
+            {#if renderData[0] == "all"}
+              {#each renderData[1] as innerSchema}
+                {#each sortedKeys(innerSchema) as key}
                   <div class="schema-inner-key">{key}{isRequired(key) ? "*required" : ""}</div>
-                  <div class="schema-inner-value">{innerProps[key]}</div>
+                  <div class="schema-inner-value">{innerSchema[key]}</div>
                 {/each}
               {/each}
-            {:else if renderProps[0] == "any"}
+            {:else if renderData[0] == "any"}
               <div>Any of:</div>
               <ul>
-                {#each renderProps[1] as innerProps}
+                {#each renderData[1] as innerSchema}
                   <li>
-                    {#each sortedKeys(innerProps) as key}
+                    {#each sortedKeys(innerSchema) as key}
                       <div class="schema-inner-key">{key}{isRequired(key) ? "*required" : ""}</div>
-                      <div class="schema-inner-value">{innerProps[key]}</div>
+                      <div class="schema-inner-value">{innerSchema[key]}</div>
                     {/each}
                   </li>
                 {/each}
