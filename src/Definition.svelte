@@ -1,15 +1,14 @@
 <script>
-  import yaml from "js-yaml";
   import { satisfies } from "compare-versions";
   import Document from "./document/Document.svelte";
+  import RefParser from "./utils/ref-parser";
 
   export let specUrl;
 
   async function fetchSpec(url) {
     if (!url) return undefined;
-    const resp = await fetch(url);
-    const text = await resp.text();
-    return yaml.load(text);
+    let manager = new RefParser();
+    return await manager.dereferenceFromUrl(url);
   }
 </script>
 

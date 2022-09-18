@@ -1,23 +1,12 @@
 <script>
-  import Dropdown from "./Dropdown.svelte";
-
   export let name;
   export let schema;
-  export let schemas;
   let open;
-
-  let schemaType, schemaData;
-  $: schemaType = findType(schema);
-  $: schemaData = allData(schema);
-
-  let schemaRefCache = {};
 
   const brackets = {
     before: { array: "[", object: "{" },
     after: { array: "]", object: "}" },
   };
-  const schemaRef = /^#\/components\/schemas\/(.+?)$/m;
-  var zzz = 0;
 
   function handleClick() {
     open = !open;
@@ -28,46 +17,6 @@
     return typeof schema;
   }
 
-  function allData(schema) {
-    let a = [];
-    if (schema.properties) a.push(...schemaProperties(schema.properties));
-    if (schema.allOf) for (let i in schema.allOf) a.push(...schemaProperties(schema.allOf[i]));
-    return a;
-  }
-
-  function schemaProperties(props) {
-    let v = [];
-    if (props.$ref) v.push(...schemaRefLookup(props.$ref));
-    v.push(...schemaPropertyMapper(props));
-    return v;
-  }
-
-  function schemaPropertyMapper(props) {
-    let v = [];
-    for (let i in props) {
-      if (i == "$ref") continue;
-      let j = props[i];
-      if (typeof j === "object" && j.$ref) v.push(...schemaRefLookup(j.$ref));
-      v.push([i, j]);
-    }
-    return v;
-  }
-
-  function schemaRefLookup(ref) {
-    let b = schemaRefCache[ref];
-    if (Array.isArray(b)) return b;
-    let z = schemaRef.exec(ref);
-    if (z != null) {
-      if (schemas[z[1]]) {
-        schemaRefCache[ref] = [{ length: 0, error: `Recursion to $ref: ${ref}` }];
-        let a = allData(schemas[z[1]]);
-        schemaRefCache[ref] = a;
-        return a;
-      } else return [{ length: 0, error: `Missing $ref: ${ref}` }];
-    }
-    return [{ length: 0, error: `Invalid $ref: ${ref}` }];
-  }
-
   function formatSchemaInnerValue(value) {
     if (!value) return `Error: Value missing ${JSON.stringify(value)}`;
     if (value.error) return `Error: ${value.error}`;
@@ -75,18 +24,18 @@
   }
 </script>
 
-<div class="schema-view {open ? 'schema-open' : 'schema-closed'}" on:click={handleClick} bracket-after={brackets.after[schemaType]}>
-  <h5 bracket-before={brackets.before[schemaType]}>{name}</h5>
+<div class="schema-view {open ? 'schema-open' : 'schema-closed'}" on:click={handleClick} bracket-after={brackets.after[schema.type]}>
+  <h5 bracket-before={brackets.before[schema.type]}>{name}</h5>
   {#if open}
     <div class="schema-content">
       {#if schema.description}
         <div class="schema-description">{schema.description}</div>
       {/if}
       <div class="schema-inner">
-        {#if schemaData.error}
-          <div class="schema-inner-error">Error: {schemaData.error}</div>
+        {#if schema.data.error}
+          <div class="schema-inner-error">Error: {schema.data.error}</div>
         {:else}
-          {#each schemaData as data}
+          {#each schema.data as data}
             <div class="schema-inner-key">{data[0]}</div>
             <div class="schema-inner-value">{formatSchemaInnerValue(data)}</div>
           {/each}

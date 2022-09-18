@@ -9,7 +9,7 @@
   <Dropdown open={true} title="Schemas">
     {#each Object.entries(schemas) as [key, schema]}
       <div>
-        <SchemaFormatter name={key} {schema} {schemas} />
+        <SchemaFormatter name={key} {schema} />
       </div>
     {/each}
   </Dropdown>
