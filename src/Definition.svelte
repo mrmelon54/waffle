@@ -17,7 +17,7 @@
     <div>Loading...</div>
   {:then x}
     {#if x}
-      {#if satisfies(x.openapi, "3.1.x")}
+      {#if satisfies(x.openapi, "3.x.x")}
         <Document spec={x} />
       {:else}
         <span>Unsupported OpenAPI version: {x.openapi}</span>

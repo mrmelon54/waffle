@@ -3,6 +3,9 @@
   export let schema;
   let open;
 
+  let renderProps;
+  $: renderProps = generateRender(schema);
+
   const brackets = {
     before: { array: "[", object: "{" },
     after: { array: "]", object: "}" },
@@ -12,15 +15,27 @@
     open = !open;
   }
 
-  function findType(schema) {
-    if (Array.isArray(schema)) return "array";
-    return typeof schema;
+  function sortedKeys(props) {
+    if (!props) return [];
+    let k = Object.keys(props);
+    k.sort();
+    return k;
   }
 
-  function formatSchemaInnerValue(value) {
-    if (!value) return `Error: Value missing ${JSON.stringify(value)}`;
-    if (value.error) return `Error: ${value.error}`;
-    return value.type + (value.format ? `(${value.format})` : "");
+  function generateRender(schema) {
+    if (schema.properties) {
+      return ["all", [schema]];
+    } else if (schema.allOf) {
+      return ["all", schema.allOf];
+    } else if (schema.anyOf) {
+      return ["any", schema.anyOf];
+    }
+    return [];
+  }
+
+  function isRequired(key) {
+    if (!schema.required) return false;
+    return schema.required.indexOf(key) != -1;
   }
 </script>
 
@@ -32,13 +47,30 @@
         <div class="schema-description">{schema.description}</div>
       {/if}
       <div class="schema-inner">
-        {#if schema.data.error}
-          <div class="schema-inner-error">Error: {schema.data.error}</div>
-        {:else}
-          {#each schema.data as data}
-            <div class="schema-inner-key">{data[0]}</div>
-            <div class="schema-inner-value">{formatSchemaInnerValue(data)}</div>
-          {/each}
+        {console.log(renderProps)}
+        {#if renderProps}
+          {#if renderProps.length == 2}
+            {#if renderProps[0] == "all"}
+              {#each renderProps[1] as innerProps}
+                {#each sortedKeys(innerProps) as key}
+                  <div class="schema-inner-key">{key}{isRequired(key) ? "*required" : ""}</div>
+                  <div class="schema-inner-value">{innerProps[key]}</div>
+                {/each}
+              {/each}
+            {:else if renderProps[0] == "any"}
+              <div>Any of:</div>
+              <ul>
+                {#each renderProps[1] as innerProps}
+                  <li>
+                    {#each sortedKeys(innerProps) as key}
+                      <div class="schema-inner-key">{key}{isRequired(key) ? "*required" : ""}</div>
+                      <div class="schema-inner-value">{innerProps[key]}</div>
+                    {/each}
+                  </li>
+                {/each}
+              </ul>
+            {/if}
+          {/if}
         {/if}
       </div>
     </div>
@@ -59,8 +91,14 @@
   .schema-view > h5 {
     display: inline-block;
     position: relative;
-    padding: 0;
+    padding: 0 30px 0 0;
     margin: 0;
+    cursor: pointer;
+    height: 20px;
+  }
+
+  .schema-view.schema-open > h5 {
+    padding: 0 60px 0 0;
   }
 
   .schema-view > h5::before {
@@ -68,22 +106,24 @@
     position: absolute;
     background: transparent url('data:image/svg+xml;charset=utf-8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20"><path fill="%23c7c2bb" d="M13.418 7.859a.695.695 0 0 1 .978 0 .68.68 0 0 1 0 .969l-3.908 3.83a.697.697 0 0 1-.979 0l-3.908-3.83a.68.68 0 0 1 0-.969.695.695 0 0 1 .978 0L10 11l3.418-3.141z"/></svg>') right 10px center no-repeat;
     background-size: 40px;
-    width: 60px;
-    height: 60px;
+    background-position: center;
+    width: 20px;
+    height: 20px;
     top: 50%;
-    right: -50px;
+    right: 0;
     transform: translateY(-50%) rotate(-90deg);
     transition: ease-in-out transform 250ms;
   }
 
   .schema-view.schema-open > h5::before {
+    right: 30px;
     transform: translateY(-50%);
   }
 
   .schema-view.schema-open > h5::after {
     content: attr(bracket-before);
     position: absolute;
-    right: -48px;
+    right: 12px;
   }
 
   .schema-view.schema-open::after {

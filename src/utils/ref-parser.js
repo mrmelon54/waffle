@@ -49,6 +49,7 @@ export default class RefParser {
     while (todo.length > 0) {
       let t = todo.shift();
       let [x, y] = this.parseSingleRefLayer(t.path, t.value);
+      console.log(y);
       z.push(...x);
       todo.push(...y);
     }
