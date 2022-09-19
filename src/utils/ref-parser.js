@@ -99,13 +99,15 @@ export default class RefParser {
   mergeRefs(v, local, remote) {
     let that = this;
     for (let i of local) {
-      let a = nestedLookup(v, i.key.slice(0, -1));
-      a[i.key[i.key.length - 1]] = that.fetchLocalRef(v, i.value);
+      let a = safeNestedLookup(v, i.key.slice(0, -1));
+      a.$ref = that.fetchLocalRef(v, i.value);
     }
     for (let i of remote) {
-      let a = nestedLookup(v, i.key.slice(0, -1));
-      a[i.key[i.key.length - 1]] = that.fetchCacheRef(v, i.value);
+      let a = safeNestedLookup(v, i.key.slice(0, -1));
+      a.$ref = that.fetchCacheRef(v, i.value);
     }
+
+    console.log(v);
     return v;
   }
 }
@@ -114,4 +116,45 @@ function nestedLookup(data, ref) {
   let v = data;
   for (let a of ref) v = v[a];
   return v;
+}
+
+function safeNestedLookup(data, ref) {
+  let v = data;
+  for (let a of ref) {
+    v = v[a];
+    if (!v) return undefined;
+  }
+  return v;
+}
+
+export function magicGetFunc(b, k) {
+  if (b[k]) return b[k];
+  if (b.$ref && b.$ref[k]) return b.$ref[k];
+  return undefined;
+}
+
+export function magicGetInFunc(b, k) {
+  let z = safeNestedLookup(b, k);
+  if (z) return z;
+  if (!b.$ref) return undefined;
+  let y = safeNestedLookup(b.$ref, k);
+  if (y) return y;
+  return undefined;
+}
+
+export function magicGetAllProperties(b) {
+  let a1 = magicGetFunc(b, "properties");
+  let a2 = magicGetFunc(b, "allOf");
+  let a3 = magicGetFunc(b, "anyOf");
+  let a4 = magicGetFunc(b, "oneOf");
+  let k = [];
+  if (a1) k = [Object.keys(a1)];
+  else if (a2) {
+    for (let x of a2) k.push(...magicGetAllProperties(x));
+  } else if (a3) {
+    k = a3.map((x) => magicGetAllProperties(x));
+  } else if (a4) {
+    k = a4.map((x) => magicGetAllProperties(x));
+  }
+  return k;
 }

@@ -1,26 +1,23 @@
 <script>
-  import InnerSchema from "./InnerSchema.svelte";
-
-  export let name;
-  export let schema;
+  export let title;
+  export let beforeText;
+  export let afterText;
+  export let collapseText;
   let open;
-
-  const brackets = {
-    before: { array: "[", object: "{", undefined: "{" },
-    after: { array: "]", object: "}", undefined: "}" },
-  };
 
   function handleClick() {
     open = !open;
   }
 </script>
 
-<div class="schema-view {open ? 'schema-open' : 'schema-closed'}" bracket-after={brackets.after[schema.type]}>
-  <h5 bracket-before={brackets.before[schema.type]} on:click={handleClick}>{name}</h5>
+<div class="schema-view {open ? 'schema-open' : 'schema-closed'}" bracket-after={afterText}>
+  <h5 bracket-before={beforeText} on:click={handleClick}>{title}</h5>
   {#if open}
     <div class="schema-content">
-      <InnerSchema {schema} />
+      <slot />
     </div>
+  {:else}
+    <span>{collapseText}</span>
   {/if}
 </div>
 
