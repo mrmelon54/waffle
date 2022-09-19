@@ -1,6 +1,6 @@
 <script>
   import Dropdown from "../components/Dropdown.svelte";
-  import SchemaFormatter from "../components/SchemaFormatter.svelte";
+  import SchemaFormatter from "../components/schema-formatter/SchemaFormatter.svelte";
 
   export let schemas;
 </script>

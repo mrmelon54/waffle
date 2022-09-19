@@ -1,78 +1,25 @@
 <script>
+  import InnerSchema from "./InnerSchema.svelte";
+
   export let name;
   export let schema;
   let open;
 
-  let renderData;
-  $: renderData = generateRender(schema);
-
   const brackets = {
-    before: { array: "[", object: "{" },
-    after: { array: "]", object: "}" },
+    before: { array: "[", object: "{", undefined: "{" },
+    after: { array: "]", object: "}", undefined: "}" },
   };
 
   function handleClick() {
     open = !open;
   }
-
-  function sortedKeys(props) {
-    if (!props) return [];
-    let k = Object.keys(props);
-    k.sort();
-    return k;
-  }
-
-  function generateRender(schema) {
-    if (schema.properties) {
-      return ["all", [schema]];
-    } else if (schema.allOf) {
-      return ["all", schema.allOf];
-    } else if (schema.anyOf) {
-      return ["any", schema.anyOf];
-    }
-    return [];
-  }
-
-  function isRequired(key) {
-    if (!schema.required) return false;
-    return schema.required.indexOf(key) != -1;
-  }
 </script>
 
-<div class="schema-view {open ? 'schema-open' : 'schema-closed'}" on:click={handleClick} bracket-after={brackets.after[schema.type]}>
-  <h5 bracket-before={brackets.before[schema.type]}>{name}</h5>
+<div class="schema-view {open ? 'schema-open' : 'schema-closed'}" bracket-after={brackets.after[schema.type]}>
+  <h5 bracket-before={brackets.before[schema.type]} on:click={handleClick}>{name}</h5>
   {#if open}
     <div class="schema-content">
-      {#if schema.description}
-        <div class="schema-description">{schema.description}</div>
-      {/if}
-      <div class="schema-inner">
-        {console.log(renderData)}
-        {#if renderData}
-          {#if renderData.length == 2}
-            {#if renderData[0] == "all"}
-              {#each renderData[1] as innerSchema}
-                {#each sortedKeys(innerSchema) as key}
-                  <div class="schema-inner-key">{key}{isRequired(key) ? "*required" : ""}</div>
-                  <div class="schema-inner-value">{innerSchema[key]}</div>
-                {/each}
-              {/each}
-            {:else if renderData[0] == "any"}
-              <div>Any of:</div>
-              <ul>
-                {#each renderData[1] as innerSchema}
-                  <li>
-                    {#each sortedKeys(innerSchema) as key}
-                      <div class="schema-inner-key">{key}{isRequired(key) ? "*required" : ""}</div>
-                      <div class="schema-inner-value">{innerSchema[key]}</div>
-                    {/each}
-                  </li>
-                {/each}
-              </ul>
-            {/if}
-          {/if}
-        {/if}
-      </div>
+      <InnerSchema {schema} />
     </div>
   {/if}
 </div>
@@ -133,11 +80,5 @@
 
   .schema-view > .schema-content {
     padding: 8px 16px;
-  }
-
-  .schema-view > .schema-content > .schema-inner {
-    display: grid;
-    grid-template-columns: auto 100%;
-    grid-gap: 4px 16px;
   }
 </style>

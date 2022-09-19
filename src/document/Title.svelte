@@ -28,7 +28,7 @@
         {/if}
         {#if spec.info.contact.email}
           <div>
-            <a href={spec.info.contact.email} target="_blank">Send email to {spec.info.contact.name}</a>
+            <a href="mailto:{spec.info.contact.email}" target="_blank">Send email to {spec.info.contact.name}</a>
           </div>
         {/if}
       </div>
