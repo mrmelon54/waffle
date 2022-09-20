@@ -1,19 +1,20 @@
 <script>
   import SvelteMarkdown from "svelte-markdown";
-  import { magicGetFunc, magicGetAllProperties, magicGetInFunc } from "../../utils/ref-parser";
+  import { magicGetFunc, magicGetAllProperties, magicGetInFunc, magicGetSingleProperty } from "../../utils/ref-parser";
   import Model from "./Model.svelte";
   import SchemaCollapse from "./SchemaCollapse.svelte";
   import SchemaProperty from "./SchemaProperty.svelte";
 
-  export let name;
   export let schema;
+  export let parent;
   export let required;
   export let displayName;
 
-  let description = magicGetFunc(schema, "deprecated");
+  if (!schema) console.error("[ObjectModel] Schema is invalid:", schema, "[Parent]:", parent);
+  let description = magicGetFunc(schema, "description");
   let properties = magicGetAllProperties(schema) || {};
   let additionalProperties = magicGetFunc(schema, "additionalProperties") || {};
-  let title = (magicGetFunc(schema, "title") || displayName || name) + (required ? "*" : "");
+  let title = (magicGetFunc(schema, "title") || displayName) + (required ? "*" : "");
   let requiredProperties = magicGetFunc(schema, "required") || [];
   let deprecated = magicGetFunc(schema, "deprecated");
   let externalDocsUrl = magicGetInFunc(schema, ["externalDocs", "url"]);
@@ -33,9 +34,8 @@
 </script>
 
 <div>
-  <SchemaCollapse {title} collapsedText=" " beforeText={"{"} afterText={"}"}>
-    <div class="inner-object">
-      some object
+  <SchemaCollapse {title} collapseText={"{...}"} beforeText={"{"} afterText={"}"}>
+    <table class="inner-object">
       {#if description}
         <tr>
           <td colspan="2" class="schema-description">
@@ -58,24 +58,11 @@
       {/if}
       {#each properties as props}
         {#each props as k}
-        {console.log(props)}
-        {console.log(magicGetInFunc(schema,["properties",props[k]]))}
-          <tr class="property">
-            <td>{k}{isRequired(k) ? "*" : ""}:</td>
-            <td>
-              <Model name={""} schema={magicGetInFunc(schema, ["properties", props[k]])} />
-            </td>
-          </tr>
+          <SchemaProperty key={k} required={isRequired(k)}>
+            <Model schema={magicGetSingleProperty(schema, k)} parent={schema} displayName={""} />
+          </SchemaProperty>
         {/each}
       {/each}
-    </div>
+    </table>
   </SchemaCollapse>
 </div>
-
-<style>
-  .inner-object {
-    display: grid;
-    grid-template-columns: auto 100%;
-    grid-gap: 4px 16px;
-  }
-</style>

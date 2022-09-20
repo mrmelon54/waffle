@@ -8,9 +8,15 @@
 <div>
   <Dropdown open={true} title="Schemas">
     {#each Object.entries(schemas) as [key, schema]}
-      <div>
-        <Model name={key} {schema} />
+      <div class="schemas-list">
+        <Model displayName={key} {schema} required={false} topLevel={true} />
       </div>
     {/each}
   </Dropdown>
 </div>
+
+<style>
+  .schemas-list {
+    padding-left: 16px;
+  }
+</style>

@@ -78,7 +78,7 @@ export default class RefParser {
 
   fetchLocalRef(data, ref) {
     let v = ref.split("/").slice(1);
-    return nestedLookup(data, v);
+    return { $name: v[v.length - 1], ...nestedLookup(data, v) };
   }
 
   fetchCacheRef() {
@@ -122,24 +122,83 @@ function safeNestedLookup(data, ref) {
   let v = data;
   for (let a of ref) {
     v = v[a];
-    if (!v) return undefined;
+    if (v == undefined) return undefined;
   }
   return v;
 }
 
 export function magicGetFunc(b, k) {
-  if (b[k]) return b[k];
-  if (b.$ref && b.$ref[k]) return b.$ref[k];
+  if (b[k] !== undefined) return b[k];
+  if (b.$ref !== undefined && b.$ref[k]) return b.$ref[k];
+  if (b.allOf !== undefined)
+    for (let x of b.allOf) {
+      let z = magicGetFunc(x, k);
+      if (z !== undefined) return z;
+    }
+  if (b.anyOf !== undefined)
+    for (let x of b.anyOf) {
+      let z = magicGetFunc(x, k);
+      if (z !== undefined) return z;
+    }
+  if (b.oneOf !== undefined)
+    for (let x of b.oneOf) {
+      let z = magicGetFunc(x, k);
+      if (z !== undefined) return z;
+    }
   return undefined;
 }
 
 export function magicGetInFunc(b, k) {
-  let z = safeNestedLookup(b, k);
-  if (z) return z;
-  if (!b.$ref) return undefined;
-  let y = safeNestedLookup(b.$ref, k);
-  if (y) return y;
+  let z1 = safeNestedLookup(b, k);
+  if (z1 !== undefined) return z1;
+  if (b.$ref !== undefined) {
+    let z2 = safeNestedLookup(b.$ref, k);
+    if (z2 !== undefined) return z2;
+  }
+  if (b.allOf !== undefined)
+    for (let x of b.allOf) {
+      let z = magicGetInFunc(x, k);
+      if (z !== undefined) return z;
+    }
+  if (b.anyOf !== undefined)
+    for (let x of b.anyOf) {
+      let z = magicGetInFunc(x, k);
+      if (z !== undefined) return z;
+    }
+  if (b.oneOf !== undefined)
+    for (let x of b.oneOf) {
+      let z = magicGetInFunc(x, k);
+      if (z !== undefined) return z;
+    }
   return undefined;
+}
+
+export function magicGetSingleProperty(b, k) {
+  let a1 = magicGetFunc(b, "properties");
+  let a2 = magicGetFunc(b, "allOf");
+  let a3 = magicGetFunc(b, "anyOf");
+  let a4 = magicGetFunc(b, "oneOf");
+  let p;
+  if (a1 && a1[k]) p = a1[k];
+  if (a2 !== undefined) {
+    for (let x of a2) {
+      p = magicGetSingleProperty(x, k);
+      if (p !== undefined) return p;
+    }
+  }
+  if (a3 !== undefined) {
+    for (let x of a3) {
+      p = magicGetSingleProperty(x, k);
+      if (p !== undefined) return p;
+    }
+  }
+  if (a4 !== undefined) {
+    for (let x of a4) {
+      p = magicGetSingleProperty(x, k);
+      if (p !== undefined) return p;
+    }
+  }
+  return p;
 }
 
 export function magicGetAllProperties(b) {
@@ -148,12 +207,12 @@ export function magicGetAllProperties(b) {
   let a3 = magicGetFunc(b, "anyOf");
   let a4 = magicGetFunc(b, "oneOf");
   let k = [];
-  if (a1) k = [Object.keys(a1)];
-  else if (a2) {
+  if (a1 !== undefined) k.push(Object.keys(a1));
+  else if (a2 !== undefined) {
     for (let x of a2) k.push(...magicGetAllProperties(x));
-  } else if (a3) {
+  } else if (a3 !== undefined) {
     k = a3.map((x) => magicGetAllProperties(x));
-  } else if (a4) {
+  } else if (a4 !== undefined) {
     k = a4.map((x) => magicGetAllProperties(x));
   }
   return k;

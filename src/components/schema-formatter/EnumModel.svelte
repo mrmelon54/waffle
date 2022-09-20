@@ -5,7 +5,7 @@
 </script>
 
 <span class="prop-enum">
-  <SchemaCollapse title="Enum:" collapsedContent="Array [ {value.length} ]">
+  <SchemaCollapse title="Enum:" collapseText="Array [ {value.length} ]">
     [ {value.join(", ")} ]
   </SchemaCollapse>
 </span>

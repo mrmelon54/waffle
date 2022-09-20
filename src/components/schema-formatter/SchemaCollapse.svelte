@@ -24,8 +24,6 @@
 <style>
   .schema-view {
     position: relative;
-    padding-left: 16px;
-    margin-top: 16px;
   }
 
   .schema-view.schema-open {
