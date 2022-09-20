@@ -1,8 +1,8 @@
 <script>
   import Title from "./Title.svelte";
-  import Paths from "./Paths.svelte";
   import Schemas from "./Schemas.svelte";
   import Selector from "../components/Selector.svelte";
+  import RequestCategories from "./RequestCategories.svelte";
 
   export let spec;
   let serverUrl;
@@ -20,7 +20,9 @@
       {/each}
     </Selector>
   </div>
-  <Paths paths={spec.paths} components={spec.components} />
+  <div class="doc-gap" />
+  <RequestCategories tags={spec.tags} paths={spec.paths} components={spec.components} />
+  <div class="doc-gap" />
   <Schemas schemas={spec.components.schemas} />
 </div>
 
@@ -33,5 +35,9 @@
 
   #servers h4 {
     margin: 0 0 8px 0;
+  }
+
+  .doc-gap {
+    height: 16px;
   }
 </style>
