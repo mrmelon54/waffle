@@ -1,4 +1,5 @@
 <script>
+  import SvelteMarkdown from "svelte-markdown";
   import methods from "../utils/methods";
 
   export let open = false;
@@ -20,8 +21,12 @@
     </div>
   </div>
   {#if open}
-    <div class="request-content" style="height: 300px;">
-      <slot />
+    <div class="request-content">
+      {#if req.description}
+        <div class="request-description">
+          <SvelteMarkdown source={req.description} />
+        </div>
+      {/if}
     </div>
   {/if}
 </div>
@@ -93,5 +98,9 @@
   .request > .request-summary > .request-summary-inner > h5 > .request-summary-text {
     font-size: 13px;
     color: #959595;
+  }
+
+  .request > .request-content > .request-description {
+    padding: 15px 20px;
   }
 </style>
