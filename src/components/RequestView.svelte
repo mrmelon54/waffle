@@ -1,7 +1,5 @@
 <script>
   import SvelteMarkdown from "svelte-markdown";
-  import methods from "../utils/methods";
-
   export let open = false;
   export let req;
 
@@ -27,6 +25,47 @@
           <SvelteMarkdown source={req.description} />
         </div>
       {/if}
+      <div class="request-header">
+        <span class="request-header-tab">Parameters</span>
+      </div>
+      <div class="request-description">
+        <table>
+          <tr>
+            <th>Name</th>
+            <th>Description</th>
+          </tr>
+          {#each req.$params as param}
+            <tr>
+              <td>
+                <div>
+                  {param.name}{#if param.required}*{/if}
+                </div>
+                <div>
+                  <span>{param.schema.type}</span>
+                  <span>
+                    {#if param.schema.format}
+                      (${param.schema.format})
+                    {/if}
+                  </span>
+                </div>
+                <div>({param.in})</div>
+              </td>
+              <td>
+                <div>
+                  <SvelteMarkdown source={param.description} />
+                </div>
+                {#if param.schema.default}
+                  <div>Default value: {param.schema.default}</div>
+                {/if}
+                {#if param.example}
+                  <div>Default value: {param.example}</div>
+                {/if}
+              </td>
+            </tr>
+          {/each}
+          <tr />
+        </table>
+      </div>
     </div>
   {/if}
 </div>
@@ -102,5 +141,26 @@
 
   .request > .request-content > .request-description {
     padding: 15px 20px;
+  }
+
+  .request > .request-content > .request-header {
+    padding: 15px 20px;
+    background-color: #252832;
+  }
+
+  .request > .request-content > .request-header > .request-header-tab {
+    position: relative;
+  }
+
+  .request > .request-content > .request-header > .request-header-tab::after {
+    content: " ";
+    background-color: var(--method-color);
+    display: block;
+    width: 120%;
+    height: 4px;
+    position: absolute;
+    bottom: -16px;
+    left: 50%;
+    transform: translateX(-50%);
   }
 </style>

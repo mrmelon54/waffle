@@ -13,12 +13,15 @@
 
   for (let [x1, x2] of Object.entries(paths)) {
     console.log(x1, x2);
-    for (let met of methods()) {
-      let req = magicGetFunc(x2, met.method);
-      if (req === undefined) continue;
+    for (let [y1, req] of Object.entries(x2)) {
+      let met = methods()[y1];
+      if (met === undefined) {
+        console.error(`Invalid method: ${met}`);
+        continue;
+      }
       req.$path = x1;
       req.$method = met;
-      console.log(req);
+      req.$params = x2.parameters || [];
       putInCategory(req);
     }
   }
