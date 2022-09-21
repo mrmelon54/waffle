@@ -11,9 +11,11 @@
   <div class="dropdown-title" on:click={handleClick}>
     <h4>{title}</h4>
   </div>
-  <div class="dropdown-content">
-    <slot />
-  </div>
+  {#if open}
+    <div class="dropdown-content">
+      <slot />
+    </div>
+  {/if}
 </div>
 
 <style>
@@ -23,11 +25,11 @@
     border-radius: 16px;
   }
 
-  .dropdown>.dropdown-title {
+  .dropdown > .dropdown-title {
     position: relative;
   }
 
-  .dropdown>.dropdown-title::after {
+  .dropdown > .dropdown-title::after {
     content: "";
     position: absolute;
     background: transparent url('data:image/svg+xml;charset=utf-8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20"><path fill="%23c7c2bb" d="M13.418 7.859a.695.695 0 0 1 .978 0 .68.68 0 0 1 0 .969l-3.908 3.83a.697.697 0 0 1-.979 0l-3.908-3.83a.68.68 0 0 1 0-.969.695.695 0 0 1 .978 0L10 11l3.418-3.141z"/></svg>') right 10px center no-repeat;
@@ -40,11 +42,7 @@
     transition: ease-in-out transform 500ms;
   }
 
-  .dropdown.dropdown-open>.dropdown-title::after {
+  .dropdown.dropdown-open > .dropdown-title::after {
     transform: translateY(-50%) rotate(180deg);
-  }
-
-  .dropdown.dropdown-closed>.dropdown-content {
-    display: none;
   }
 </style>

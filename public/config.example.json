@@ -1,4 +1,10 @@
 {
-  "primary": "Pets",
-  "specs": [{ "url": "demo/openapi-3-1.yml", "name": "Pets" }]
+  "name": "Test Name",
+  "primary": "Methods",
+  "specs": [
+    { "url": "demo/openapi-3-1.yml", "name": "Pets v3.1" },
+    { "url": "demo/openapi-3.yml", "name": "Pets v3.0" },
+    { "url": "demo/methods.yml", "name": "Methods" },
+    { "url": "demo/missing.yml", "name": "Missing" }
+  ]
 }

@@ -1,0 +1,30 @@
+openapi: 3.0.0
+info:
+  title: Test Methods
+  version: 1.0.0
+paths:
+  /:
+    get:
+      summary: hi
+    put:
+      summary: hi
+    post:
+      summary: hi
+    delete:
+      summary: hi
+    options:
+      summary: hi
+      tags:
+        - wow
+    head:
+      summary: hi
+      tags:
+        - wow
+    patch:
+      summary: hi
+      tags:
+        - wow
+    trace:
+      summary: hi
+      tags:
+        - wow
