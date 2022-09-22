@@ -1,6 +1,6 @@
 <script>
   import Dropdown from "../components/Dropdown.svelte";
-  import RequestView from "../components/RequestView.svelte";
+  import RequestView from "../components/request-view/RequestView.svelte";
   import methods from "../utils/methods";
   import { magicGetFunc } from "../utils/ref-parser";
 
@@ -14,14 +14,15 @@
   for (let [x1, x2] of Object.entries(paths)) {
     console.log(x1, x2);
     for (let [y1, req] of Object.entries(x2)) {
+      if (y1 === "parameters" || y1 === "servers") continue;
       let met = methods()[y1];
       if (met === undefined) {
-        console.error(`Invalid method: ${met}`);
+        console.error(`Invalid method: ${y1} - ${met}`);
         continue;
       }
       req.$path = x1;
       req.$method = met;
-      req.$params = x2.parameters || [];
+      req.$params = req.parameters || x2.parameters || [];
       putInCategory(req);
     }
   }

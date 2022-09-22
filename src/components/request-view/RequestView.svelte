@@ -1,5 +1,6 @@
 <script>
   import SvelteMarkdown from "svelte-markdown";
+  import Parameter from "./Parameter.svelte";
   export let open = false;
   export let req;
 
@@ -8,7 +9,7 @@
   }
 </script>
 
-<div class="request {open ? 'request-dropdown-open' : 'request-dropdown-closed'}" style="--method-color:{req.$method.color};--method-high-color:{req.$method.highColor};--method-bg-color:{req.$method.bgColor};">
+<div class="request {open ? 'request-dropdown-open' : 'request-dropdown-closed'} {req.deprecated ? 'request-deprecated' : ''}" style="--method-color:{req.$method.color};--method-high-color:{req.$method.highColor};--method-bg-color:{req.$method.bgColor};">
   <div class="request-summary" on:click={handleClick}>
     <div class="request-summary-inner">
       <h5>
@@ -29,43 +30,33 @@
         <span class="request-header-tab">Parameters</span>
       </div>
       <div class="request-description">
-        <table>
-          <tr>
-            <th>Name</th>
-            <th>Description</th>
-          </tr>
-          {#each req.$params as param}
+        {#if req.$params.length > 0}
+          <table class="param-table">
             <tr>
-              <td>
-                <div>
-                  {param.name}{#if param.required}*{/if}
-                </div>
-                <div>
-                  <span>{param.schema.type}</span>
-                  <span>
-                    {#if param.schema.format}
-                      (${param.schema.format})
-                    {/if}
-                  </span>
-                </div>
-                <div>({param.in})</div>
-              </td>
-              <td>
-                <div>
-                  <SvelteMarkdown source={param.description} />
-                </div>
-                {#if param.schema.default}
-                  <div>Default value: {param.schema.default}</div>
-                {/if}
-                {#if param.example}
-                  <div>Default value: {param.example}</div>
-                {/if}
-              </td>
+              <th>Name</th>
+              <th>Description</th>
             </tr>
-          {/each}
-          <tr />
-        </table>
+            {#each req.$params as param}
+              <Parameter {param} />
+            {/each}
+            <tr />
+          </table>
+        {:else}
+          No parameters
+        {/if}
       </div>
+      {#if req.requestBody}
+        <div class="request-header">
+          <span class="request-header-tab info-required">Request Body</span>
+        </div>
+        <div class="request-description">Work In Progress</div>
+      {/if}
+      {#if req.responses}
+        <div class="request-header">
+          <span class="request-header-tab">Responses</span>
+        </div>
+        <div class="request-description">Work In Progress</div>
+      {/if}
     </div>
   {/if}
 </div>
@@ -154,7 +145,7 @@
 
   .request > .request-content > .request-header > .request-header-tab::after {
     content: " ";
-    background-color: var(--method-color);
+    background-color: var(--method-high-color);
     display: block;
     width: 120%;
     height: 4px;
@@ -162,5 +153,27 @@
     bottom: -16px;
     left: 50%;
     transform: translateX(-50%);
+  }
+
+  .request.request-deprecated {
+    --method-color: #232628 !important;
+    --method-high-color: #363a3c !important;
+    --method-bg-color: #565a5c1a !important;
+    color: #bcb6ad;
+  }
+
+  .request.request-deprecated > .request-summary > .request-summary-inner > h5 > .request-summary-path {
+    text-decoration: line-through;
+    text-decoration-color: currentColor;
+    color: #bcb6ad;
+  }
+
+  .request.request-deprecated > .request-summary > .request-summary-inner > h5 > .request-summary-text {
+    color: #a19c93;
+  }
+
+  table.param-table > tr > th {
+    vertical-align: top;
+    text-align: left;
   }
 </style>

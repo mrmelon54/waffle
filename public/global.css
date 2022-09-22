@@ -14,7 +14,3 @@ a {
   background: #1a1e24;
   border-radius: 8px;
 }
-
-table>tr>td {
-  vertical-align: top;
-}
