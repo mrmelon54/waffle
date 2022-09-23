@@ -10,6 +10,10 @@
     "@rollup/plugin-commonjs": "^17.0.0",
     "@rollup/plugin-node-resolve": "^11.0.0",
     "@rollup/plugin-replace": "^4.0.0",
+    "@rollup/plugin-typescript": "^8.5.0",
+    "@tsconfig/svelte": "^3.0.0",
+    "@types/js-yaml": "^4.0.5",
+    "@types/rollup-plugin-css-only": "^3.1.0",
     "@types/semver": "^7.3.12",
     "dotenv": "^16.0.0",
     "rollup": "^2.79.0",
@@ -18,7 +22,10 @@
     "rollup-plugin-polyfill-node": "^0.10.2",
     "rollup-plugin-svelte": "^7.0.0",
     "rollup-plugin-terser": "^7.0.0",
-    "svelte": "^3.50.1"
+    "svelte": "^3.50.1",
+    "svelte-check": "^2.9.0",
+    "svelte-preprocess": "^4.10.7",
+    "typescript": "^4.8.3"
   },
   "dependencies": {
     "compare-versions": "^5.0.1",
@@ -28,7 +35,6 @@
     "svelte-environment-variables": "^1.0.4",
     "svelte-highlight": "^6.2.1",
     "svelte-markdown": "^0.2.3",
-    "svelte-preprocess": "^4.10.7",
     "svelte-routing": "^1.6.0"
   }
 }

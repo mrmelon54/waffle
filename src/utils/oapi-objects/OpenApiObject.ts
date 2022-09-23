@@ -27,7 +27,9 @@ export default class OpenAPI {
   constructor(v: any) {
     this.$$raw = v;
     this.$$err = new ErrorCollector();
+    console.log("before parse");
     let ver = semver.parse(v.openapi);
+    console.log("after parse");
     if (ver == null) this.$$err.add("Invalid OpenAPI version");
     else if (this.$$err.falseError("Invalid OpenAPI version", semver.satisfies(this.openapi!, ">=3.0.0"))) {
     } else this.openapi = ver!;

@@ -1,6 +1,6 @@
 export default class ExternalDocumentationObject {
   $$raw: any;
-  description: string;
+  description?: string;
   url: Required<string>;
 
   constructor(v: any) {

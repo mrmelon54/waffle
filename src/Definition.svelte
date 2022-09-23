@@ -1,14 +1,15 @@
-<script>
-  import { satisfies } from "compare-versions";
+<script lang="ts">
   import Document from "./document/Document.svelte";
-  import RefParser from "./utils/ref-parser";
+  import MultipleFileSpec from "./utils/MultipleFileSpec";
+  import OpenApiObject from "./utils/oapi-objects/OpenApiObject";
 
-  export let specUrl;
+  export let specUrl: string;
+  let manager = new MultipleFileSpec();
 
-  async function fetchSpec(url) {
+  async function fetchSpec(url: string) {
     if (!url) return undefined;
-    let manager = new RefParser();
-    return await manager.dereferenceFromUrl(url);
+    let file = await manager.fetchAndParse(url);
+    return new OpenApiObject(file);
   }
 </script>
 
@@ -17,10 +18,16 @@
     <div>Loading...</div>
   {:then x}
     {#if x}
-      {#if satisfies(x.openapi, "3.x.x")}
+      {#if x.valid()}
         <Document spec={x} />
       {:else}
-        <span>Unsupported OpenAPI version: {x.openapi}</span>
+        <div id="spec-errors">
+          <ul>
+            {#each x.$$err.errors as err}
+              <li>{err}</li>
+            {/each}
+          </ul>
+        </div>
       {/if}
     {:else}
       <span>No OpenAPI spec selectod</span>

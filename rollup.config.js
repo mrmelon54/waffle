@@ -6,6 +6,8 @@ import { terser } from "rollup-plugin-terser";
 import css from "rollup-plugin-css-only";
 import replace from "@rollup/plugin-replace";
 import includeEnv from "svelte-environment-variables";
+import autoPreprocess from "svelte-preprocess";
+import typescript from "@rollup/plugin-typescript";
 
 const production = !process.env.ROLLUP_WATCH;
 
@@ -51,6 +53,7 @@ export default {
         // enable run-time checks when not in production
         dev: !production,
       },
+      preprocess: autoPreprocess(),
     }),
     // we'll extract any component CSS out into
     // a separate file - better for performance
@@ -66,6 +69,7 @@ export default {
       dedupe: ["svelte"],
     }),
     commonjs(),
+    typescript({ sourceMap: !production }),
 
     // In dev mode, call `npm run start` once
     // the bundle has been generated
