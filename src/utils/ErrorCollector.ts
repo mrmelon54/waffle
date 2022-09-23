@@ -9,11 +9,23 @@ export default class ErrorCollector {
     return this.errors.length == 0;
   }
 
-  trueError(msg: string, v: boolean) {
-    if (v) this.errors.push(msg);
+  add(msg: string) {
+    this.errors.push(msg);
   }
 
-  falseError(msg: string, v: boolean) {
-    if (!v) this.errors.push(msg);
+  trueError(msg: string, v: boolean): boolean {
+    if (v) {
+      this.errors.push(msg);
+      return true;
+    }
+    return false;
+  }
+
+  falseError(msg: string, v: boolean): boolean {
+    if (!v) {
+      this.errors.push(msg);
+      return true;
+    }
+    return false;
   }
 }

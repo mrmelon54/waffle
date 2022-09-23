@@ -13,9 +13,9 @@ import ExternalDocumentationObject from "./ExternalDocumentationObject";
 export default class OpenAPI {
   $$raw: any;
   $$err: ErrorCollector;
-  openapi: string;
+  openapi: Required<semver.SemVer>;
   info: InfoObject;
-  jsonSchemaDialect: string;
+  jsonSchemaDialect?: string;
   servers: ServerObject[];
   paths: PathsObject;
   webhooks: Map<string, PathItemObject | ReferenceObject>;
@@ -26,17 +26,30 @@ export default class OpenAPI {
 
   constructor(v: any) {
     this.$$raw = v;
-    this.openapi = v;
-    this.$$err.falseError("Invalid OpenAPI version", semver.satisfies(v, ">=3.0.0"));
+    this.$$err = new ErrorCollector();
+    let ver = semver.parse(v.openapi);
+    if (ver == null) this.$$err.add("Invalid OpenAPI version");
+    else if (this.$$err.falseError("Invalid OpenAPI version", semver.satisfies(this.openapi!, ">=3.0.0"))) {
+    } else this.openapi = ver!;
     this.info = new InfoObject(v.info);
     this.jsonSchemaDialect = v.jsonSchemaDialect;
     this.servers = v.servers.map((x: any) => new ServerObject(x));
     this.paths = new PathsObject(v.paths);
-    this.webhooks = new Map();
-    // TODO: read all the fields
+    this.webhooks = this.readWebhooks(v.webhooks);
+    this.components = new ComponentsObject(v.components);
+    this.security = v.security.map((x: any) => new SecurityRequirementObject(x));
+    this.tags = v.tags.map((x: any) => new TagObject(x));
+    this.externalDocs = new ExternalDocumentationObject(v.externalDocs);
   }
 
-  clean(): boolean {
+  valid(): boolean {
     return this.$$err.clean();
+  }
+
+  private readWebhooks(a: any): Map<string, PathItemObject | ReferenceObject> {
+    let z = new Map();
+    let b = Object.keys(a);
+    for (let c of b) z.set(c, a[c].$ref ? new ReferenceObject(a[c]) : new PathItemObject(a[c]));
+    return z;
   }
 }

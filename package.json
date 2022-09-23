@@ -10,6 +10,7 @@
     "@rollup/plugin-commonjs": "^17.0.0",
     "@rollup/plugin-node-resolve": "^11.0.0",
     "@rollup/plugin-replace": "^4.0.0",
+    "@types/semver": "^7.3.12",
     "dotenv": "^16.0.0",
     "rollup": "^2.79.0",
     "rollup-plugin-css-only": "^3.1.0",
