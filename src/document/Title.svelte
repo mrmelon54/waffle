@@ -1,46 +1,52 @@
-<script>
+<script lang="ts">
   import SvelteMarkdown from "svelte-markdown";
+  import OpenApiObject from "../utils/oapi-objects/OpenApiObject";
 
-  export let spec;
+  export let spec: OpenApiObject;
+  let contact = spec.info.contact.getOrDefault(undefined);
+  let license = spec.info.license.getOrDefault(undefined);
 </script>
 
 <div>
   <div class="main">
     <h2>{spec.info.title}</h2>
   </div>
-  {#if spec.info.description}
+  {#if spec.info.description.isFull()}
     <div class="description markdown">
-      <SvelteMarkdown source={spec.info.description} />
+      <SvelteMarkdown source={spec.info.description.get()} />
     </div>
   {/if}
   <div class="info-wrapper">
-    {#if spec.info.termsOfService}
+    {#if spec.info.termsOfService.isFull()}
       <div class="info info__tos">
-        <a href={spec.info.termsOfService} target="_blank">Terms of Service</a>
+        <a href={spec.info.termsOfService.get()} target="_blank">Terms of Service</a>
       </div>
     {/if}
-    {#if spec.info.contact}
+    {#if contact}
       <div class="info info__contact">
-        {#if spec.info.contact.url}
+        {(contact = spec.info.contact.get())}
+        {#if contact.url.isFull()}
           <div>
-            <a href={spec.info.contact.url} target="_blank">{spec.info.contact.name} - Website</a>
+            <a href={contact.url.get()} target="_blank">{contact.name} - Website</a>
           </div>
         {/if}
-        {#if spec.info.contact.email}
+        {#if contact.email.isFull()}
           <div>
-            <a href="mailto:{spec.info.contact.email}" target="_blank">Send email to {spec.info.contact.name}</a>
+            <a href="mailto:{contact.email.get()}" target="_blank">Send email to {contact.name}</a>
           </div>
         {/if}
       </div>
     {/if}
-    {#if spec.info.license}
+    {#if license}
       <div class="info info__license">
-        <a href={spec.info.license.url} target="_blank">{spec.info.license.name}</a>
+        {#if license.url.isFull()}
+          <a href={license.url.get()} target="_blank">{license.name}</a>
+        {/if}
       </div>
     {/if}
-    {#if spec.externalDocs}
+    {#if spec.externalDocs.isFull()}
       <div class="info info__extdocs">
-        <a href={spec.externalDocs.url} target="_blank">{spec.externalDocs.description}</a>
+        <a href={spec.externalDocs.get().url} target="_blank">{spec.externalDocs.get().description.getOrDefault(spec.externalDocs.get().url)}</a>
       </div>
     {/if}
   </div>

@@ -1,15 +1,26 @@
+import { parseArray } from "../ObjectUtils";
+import Optional from "../Optional";
 import ExternalDocumentationObject from "./ExternalDocumentationObject";
 
 export default class TagObject {
   $$raw: any;
   name: string;
-  description: string;
-  externalDocs: ExternalDocumentationObject;
+  description: Optional<string>;
+  externalDocs: Optional<ExternalDocumentationObject>;
 
-  constructor(v) {
-    this.$$raw = v;
-    this.name = v.name;
-    this.description = v.description;
-    this.externalDocs = new ExternalDocumentationObject(v.externalDocs);
+  private constructor() {}
+
+  static parseArray(v: any): Optional<TagObject[]> {
+    return parseArray<TagObject>(v, TagObject.parse);
+  }
+
+  static parse(v: any): Optional<TagObject> {
+    if (!v) return Optional.emptyWithError("object missing");
+    let o = new TagObject();
+    o.$$raw = v;
+    o.name = v.name;
+    o.description = Optional.full(v.description);
+    o.externalDocs = ExternalDocumentationObject.parse(v.externalDocs);
+    return Optional.full(o);
   }
 }

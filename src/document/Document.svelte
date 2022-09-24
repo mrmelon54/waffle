@@ -1,28 +1,28 @@
-<script>
+<script lang="ts">
   import Title from "./Title.svelte";
   import Schemas from "./Schemas.svelte";
   import Selector from "../components/Selector.svelte";
   import RequestCategories from "./RequestCategories.svelte";
+  import OpenApiObject from "../utils/oapi-objects/OpenApiObject";
 
-  export let spec;
+  export let spec: OpenApiObject;
 
-  let serverUrl;
-  if (spec.tags === undefined) spec.tags = [];
-  if (spec.paths === undefined) spec.paths = {};
-  if (spec.components === undefined) spec.components = {};
-  if (spec.components.responses === undefined) spec.components.responses = {};
-  if (spec.components.schemas === undefined) spec.components.schemas = {};
+  let serverUrl: string;
 </script>
 
 <div id="openapi-document">
   <Title {spec} />
-  {#if spec.servers}
+  {#if spec.servers.isFull()}
     <div id="servers">
       <h4>Servers</h4>
       <Selector bind:value={serverUrl}>
-        {#each spec.servers as server}
+        {#each spec.servers.get() as server}
           <option value={server.url}>
-            {server.url} - {server.description}
+            {#if server.description.isFull()}
+              {server.url} - {server.description.get()}
+            {:else}
+              {server.url}
+            {/if}
           </option>
         {/each}
       </Selector>
@@ -31,7 +31,9 @@
   <div class="doc-gap" />
   <RequestCategories tags={spec.tags} paths={spec.paths} components={spec.components} />
   <div class="doc-gap" />
-  <Schemas schemas={spec.components.schemas} />
+  {#if spec.components.isFull()}
+    <Schemas schemas={spec.components.get().schemas} />
+  {/if}
 </div>
 
 <style>

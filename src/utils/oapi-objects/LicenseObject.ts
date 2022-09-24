@@ -1,20 +1,19 @@
-import ErrorCollector from "../ErrorCollector";
+import Optional from "../Optional";
+import isURL from "validator/lib/isURL";
 
 export default class LicenseObject {
   $$raw: any;
-  $$err: ErrorCollector;
-  name: Required<string>;
-  identifier?: string;
-  url?: string;
+  name: string;
+  identifier: Optional<string>;
+  url: Optional<string>;
 
-  constructor(v: any) {
-    this.$$raw = v;
-    this.name = v.name;
-    this.identifier = v.identifier;
-    this.url = v.url;
-  }
-
-  valid(): boolean {
-    return this.$$err.clean();
+  static parse(v: any): Optional<LicenseObject> {
+    let o = new LicenseObject();
+    o.$$raw = v;
+    o.name = v.name;
+    o.identifier = Optional.full(v.identifier);
+    o.url = Optional.full(v.url);
+    if (o.url.isFull() && !isURL(v.url)) return Optional.emptyWithError(`Invalid URL value: '${v.url}'`);
+    return Optional.full(o);
   }
 }

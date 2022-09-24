@@ -1,13 +1,28 @@
+import isURL from "validator/lib/isURL";
+import { parseArray, parseMap } from "../ObjectUtils";
+import Optional from "../Optional";
+import ServerVariableObject from "./ServerVariableObject";
+
 export default class ServerObject {
   $$raw: any;
   url: string;
-  description: string;
-  variables: Map<string, ServerVariableObject>;
+  description: Optional<string>;
+  variables: Optional<Map<string, ServerVariableObject>>;
 
-  constructor(v) {
-    this.$$raw = v;
-    this.url = v.url;
-    this.description = v.description;
-    // TODO: brrr
+  private constructor() {}
+
+  static parseArray(v: any): Optional<ServerObject[]> {
+    return parseArray<ServerObject>(v, ServerObject.parse);
+  }
+
+  static parse(v: any): Optional<ServerObject> {
+    if (!v) return Optional.emptyWithError("object missing");
+    let o = new ServerObject();
+    o.$$raw = v;
+    o.url = v.url;
+    o.description = Optional.full(v.description);
+    o.variables = parseMap(v.variables, ServerVariableObject.parse);
+    if (!isURL(v.url)) return Optional.emptyWithError(`Invalid URL value: '${v.url}'`);
+    return Optional.full(o);
   }
 }

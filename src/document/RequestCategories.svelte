@@ -1,17 +1,23 @@
-<script>
+<script lang="ts">
   import Dropdown from "../components/Dropdown.svelte";
   import RequestView from "../components/request-view/RequestView.svelte";
   import methods from "../utils/methods";
+  import ComponentsObject from "../utils/oapi-objects/ComponentsObject";
+  import PathsObject from "../utils/oapi-objects/PathsObject";
+  import TagObject from "../utils/oapi-objects/TagObject";
+  import Optional from "../utils/Optional";
   import { magicGetFunc } from "../utils/ref-parser";
 
-  export let tags;
-  export let paths;
-  export let components;
+  export let tags: Optional<TagObject[]>;
+  export let paths: Optional<PathsObject>;
+  export let components: Optional<ComponentsObject>;
 
   let defaultCategory = { name: "default", description: "", requests: [] };
-  let categories = [defaultCategory, ...tags.map((x) => ({ ...x, requests: [] }))];
+  let rawTags = tags.isFull() ? tags.get() : [];
+  let categories = [defaultCategory, ...rawTags.map((x) => ({ ...x, requests: [] }))];
 
-  for (let [x1, x2] of Object.entries(paths)) {
+  let rawPaths = paths.isFull() ? paths.get() : {};
+  for (let [x1, x2] of Object.entries(rawPaths)) {
     console.log(x1, x2);
     for (let [y1, req] of Object.entries(x2)) {
       if (y1 === "parameters" || y1 === "servers") continue;

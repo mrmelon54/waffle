@@ -2,7 +2,7 @@
   import Dropdown from "../components/Dropdown.svelte";
   import Model from "../components/schema-formatter/Model.svelte";
 
-  export let schemas;
+  export let schemas: Map<String, string>;
 </script>
 
 <div>

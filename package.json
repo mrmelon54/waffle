@@ -7,14 +7,15 @@
     "start": "sirv public"
   },
   "devDependencies": {
-    "@rollup/plugin-commonjs": "^17.0.0",
-    "@rollup/plugin-node-resolve": "^11.0.0",
+    "@rollup/plugin-commonjs": "^22.0.2",
+    "@rollup/plugin-node-resolve": "^14.1.0",
     "@rollup/plugin-replace": "^4.0.0",
     "@rollup/plugin-typescript": "^8.5.0",
     "@tsconfig/svelte": "^3.0.0",
     "@types/js-yaml": "^4.0.5",
     "@types/rollup-plugin-css-only": "^3.1.0",
     "@types/semver": "^7.3.12",
+    "@types/validator": "^13.7.6",
     "dotenv": "^16.0.0",
     "rollup": "^2.79.0",
     "rollup-plugin-css-only": "^3.1.0",
@@ -35,6 +36,7 @@
     "svelte-environment-variables": "^1.0.4",
     "svelte-highlight": "^6.2.1",
     "svelte-markdown": "^0.2.3",
-    "svelte-routing": "^1.6.0"
+    "svelte-routing": "^1.6.0",
+    "validator": "^13.7.0"
   }
 }

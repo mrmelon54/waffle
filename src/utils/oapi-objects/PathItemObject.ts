@@ -1,32 +1,45 @@
+import Optional from "../Optional";
+import ReferenceObject from "./ReferenceObject";
+import ServerObject from "./ServerObject";
+
+type OperationObject = string;
+type ParameterObject = string;
+
 export default class PathItemObject {
   $$raw: any;
-  $ref: string;
-  summary: string;
-  description: string;
-  get: OperationObject;
-  put: OperationObject;
-  post: OperationObject;
-  delete: OperationObject;
-  options: OperationObject;
-  head: OperationObject;
-  patch: OperationObject;
-  trace: OperationObject;
-  servers: ServerObject[];
-  parameters: ParameterObject | ReferenceObject[];
+  summary: Optional<string>;
+  description: Optional<string>;
+  get: Optional<OperationObject>;
+  put: Optional<OperationObject>;
+  post: Optional<OperationObject>;
+  delete: Optional<OperationObject>;
+  options: Optional<OperationObject>;
+  head: Optional<OperationObject>;
+  patch: Optional<OperationObject>;
+  trace: Optional<OperationObject>;
+  servers: Optional<ServerObject[]>;
+  parameters: Optional<(ParameterObject | ReferenceObject)[]>;
 
-  constructor(v) {
-    this.$$raw = v;
-    this.$ref = v.$ref;
-    this.summary = v.summary;
-    this.description = v.description;
-    this.get = new OperationObject(v.get);
-    this.put = new OperationObject(v.put);
-    this.post = new OperationObject(v.post);
-    this.delete = new OperationObject(v.delete);
-    this.options = new OperationObject(v.options);
-    this.head = new OperationObject(v.head);
-    this.patch = new OperationObject(v.patch);
-    this.trace = new OperationObject(v.trace);
-    // TODO: brrr
+  private constructor() {}
+
+  static parse(v: any): Optional<PathItemObject> {
+    if (!v) return Optional.empty();
+    let o = new PathItemObject();
+    o.$$raw = v;
+    o.summary = Optional.full(v.summary);
+    o.description = Optional.full(v.description);
+    /*&
+    o.get = OperationObject.parse(v.get);
+    o.put = OperationObject.parse(v.put);
+    o.post = OperationObject.parse(v.post);
+    o.delete = OperationObject.parse(v.delete);
+    o.options = OperationObject.parse(v.options);
+    o.head = OperationObject.parse(v.head);
+    o.patch = OperationObject.parse(v.patch);
+    o.trace = OperationObject.parse(v.trace);
+    */
+    o.servers = ServerObject.parseArray(v.servers);
+    //o.parameters = ParameterObject.parse(v.parameters);
+    return Optional.full(o);
   }
 }

@@ -1,3 +1,17 @@
+import Optional from "../Optional";
+import PathItemObject from "./PathItemObject";
+import ReferenceObject from "./ReferenceObject";
+
+type SchemaObject = string;
+type ResponseObject = string;
+type ParameterObject = string;
+type ExampleObject = string;
+type RequestBodyObject = string;
+type HeaderObject = string;
+type SecuritySchemeObject = string;
+type LinkObject = string;
+type CallbackObject = string;
+
 export default class ComponentsObject {
   $$raw: any;
   schemas: Map<string, SchemaObject>;
@@ -11,8 +25,13 @@ export default class ComponentsObject {
   callbacks: Map<string, CallbackObject | ReferenceObject>;
   pathItems: Map<string, PathItemObject | ReferenceObject>;
 
-  constructor(v) {
-    this.$$raw=v;
+  private constructor() {}
+
+  static parse(v: any): Optional<ComponentsObject> {
+    if (!v) return Optional.empty();
+    let o = new ComponentsObject();
+    o.$$raw = v;
     // TODO: brrr
+    return Optional.full(o);
   }
 }

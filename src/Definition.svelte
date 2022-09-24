@@ -2,14 +2,21 @@
   import Document from "./document/Document.svelte";
   import MultipleFileSpec from "./utils/MultipleFileSpec";
   import OpenApiObject from "./utils/oapi-objects/OpenApiObject";
+  import Optional from "./utils/Optional";
 
   export let specUrl: string;
   let manager = new MultipleFileSpec();
 
-  async function fetchSpec(url: string) {
+  async function fetchSpec(url: string): Promise<Optional<OpenApiObject>> {
     if (!url) return undefined;
     let file = await manager.fetchAndParse(url);
-    return new OpenApiObject(file);
+    console.log(file);
+    try {
+      return OpenApiObject.parse(file);
+    } catch (err) {
+      console.error("OpenApi parsing error: ", err);
+      throw new Error("OpenApi parsing error");
+    }
   }
 </script>
 
@@ -18,19 +25,15 @@
     <div>Loading...</div>
   {:then x}
     {#if x}
-      {#if x.valid()}
-        <Document spec={x} />
+      {#if x.isFull()}
+        <Document spec={x.get()} />
       {:else}
         <div id="spec-errors">
-          <ul>
-            {#each x.$$err.errors as err}
-              <li>{err}</li>
-            {/each}
-          </ul>
+          {x.errorReason() ?? "No reason"}
         </div>
       {/if}
     {:else}
-      <span>No OpenAPI spec selectod</span>
+      <div id="spec-missing">No OpenAPI spec selectod</div>
     {/if}
   {:catch err}
     <span>{err}</span>
