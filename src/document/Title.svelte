@@ -24,7 +24,6 @@
     {/if}
     {#if contact}
       <div class="info info__contact">
-        {(contact = spec.info.contact.get())}
         {#if contact.url.isFull()}
           <div>
             <a href={contact.url.get()} target="_blank">{contact.name} - Website</a>

@@ -31,6 +31,16 @@ export default class ComponentsObject {
     if (!v) return Optional.empty();
     let o = new ComponentsObject();
     o.$$raw = v;
+    o.schemas = new Map();
+    o.responses = new Map();
+    o.parameters = new Map();
+    o.examples = new Map();
+    o.requestBodies = new Map();
+    o.headers = new Map();
+    o.securitySchemes = new Map();
+    o.links = new Map();
+    o.callbacks = new Map();
+    o.pathItems = new Map();
     // TODO: brrr
     return Optional.full(o);
   }

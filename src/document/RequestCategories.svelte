@@ -3,6 +3,7 @@
   import RequestView from "../components/request-view/RequestView.svelte";
   import methods from "../utils/methods";
   import ComponentsObject from "../utils/oapi-objects/ComponentsObject";
+  import PathItemObject from "../utils/oapi-objects/PathItemObject";
   import PathsObject from "../utils/oapi-objects/PathsObject";
   import TagObject from "../utils/oapi-objects/TagObject";
   import Optional from "../utils/Optional";
@@ -16,8 +17,8 @@
   let rawTags = tags.isFull() ? tags.get() : [];
   let categories = [defaultCategory, ...rawTags.map((x) => ({ ...x, requests: [] }))];
 
-  let rawPaths = paths.isFull() ? paths.get() : {};
-  for (let [x1, x2] of Object.entries(rawPaths)) {
+  let rawPaths: Map<string, PathItemObject> = paths.isFull() ? paths.get().paths : new Map();
+  for (let [x1, x2] of rawPaths.entries()) {
     console.log(x1, x2);
     for (let [y1, req] of Object.entries(x2)) {
       if (y1 === "parameters" || y1 === "servers") continue;
