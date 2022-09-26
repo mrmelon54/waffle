@@ -11,7 +11,7 @@ export function parseArray<T>(v: any, parser: Parser<T>): Optional<T[]> {
 }
 
 export function parseCtxArray<T>(ctx: OpenApiContext, v: any, parser: CtxParser<T>): Optional<T[]> {
-  if (!v) return Optional.empty();
+  if (v === null || v === undefined) return Optional.empty();
   if (!Array.isArray(v)) return Optional.emptyWithError("SecurityRequrementObject.parseArray() expects an array");
   let o: T[] = [];
 
@@ -28,7 +28,7 @@ export function parseMap<T, U>(v: any, parser: Parser<U>): Optional<Map<T, U>> {
 }
 
 export function parseCtxMap<T, U>(ctx: OpenApiContext, v: any, parser: CtxParser<U>): Optional<Map<T, U>> {
-  if (!v) return Optional.empty();
+  if (v === null || v === undefined) return Optional.empty();
   if (typeof v !== "object") Optional.emptyWithError(`Cannot convert ${typeof v} to map`);
   let z = new Map();
   let b = Object.keys(v);

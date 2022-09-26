@@ -4,6 +4,7 @@ import OperationObject from "./OperationObject";
 import ParameterObject from "./ParameterObject";
 import ReferenceObject from "./ReferenceObject";
 import ServerObject from "./ServerObject";
+import { Method, Methods } from "../values/Methods";
 
 export default class PathItemObject {
   $$raw: any;
@@ -19,6 +20,8 @@ export default class PathItemObject {
   trace: Optional<OperationObject>;
   servers: Optional<ServerObject[]>;
   parameters: Optional<(ParameterObject | ReferenceObject)[]>;
+
+  opOrder: Method[];
 
   private constructor() {}
 
@@ -37,7 +40,11 @@ export default class PathItemObject {
     o.patch = OperationObject.parse(ctx, v.patch);
     o.trace = OperationObject.parse(ctx, v.trace);
     o.servers = ServerObject.parseArray(v.servers);
-    //o.parameters = ParameterObject.parse(v.parameters);
+    o.parameters = ParameterObject.parseArray(ctx, v.parameters);
+
+    o.opOrder = Object.entries(v)
+      .filter((x) => Methods[x[0]] !== undefined)
+      .map((x) => Methods[x[0]]);
     return Optional.full(o);
   }
 }

@@ -1,6 +1,6 @@
 import semver from "semver";
 import InfoObject from "./InfoObject";
-import PathsObject from "./PathsObject";
+import { parsePaths, PathsObject } from "./PathsObject";
 import ServerObject from "./ServerObject";
 import PathItemObject from "./PathItemObject";
 import ReferenceObject from "./ReferenceObject";
@@ -40,7 +40,7 @@ export default class OpenApiObject {
     o.info = info.get();
     o.jsonSchemaDialect = Optional.full(v.jsonSchemaDialect);
     o.servers = ServerObject.parseArray(v.servers);
-    o.paths = PathsObject.parse(ctx, v.paths);
+    o.paths = parsePaths(ctx, v.paths);
     o.webhooks = parseCtxMap(ctx, v.webhooks, PathItemObject.parse);
     o.components = ComponentsObject.parse(ctx, v.components);
     o.security = SecurityRequirementObject.parseArray(v.security);

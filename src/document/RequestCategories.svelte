@@ -1,54 +1,54 @@
 <script lang="ts">
-  import Dropdown from "../components/Dropdown.svelte";
-  import RequestView from "../components/request-view/RequestView.svelte";
-  import methods from "../utils/oapi/values/Methods";
   import ComponentsObject from "../utils/oapi/objects/ComponentsObject";
+  import OperationObject from "../utils/oapi/objects/OperationObject";
   import PathItemObject from "../utils/oapi/objects/PathItemObject";
-  import PathsObject from "../utils/oapi/objects/PathsObject";
+  import { PathsObject } from "../utils/oapi/objects/PathsObject";
   import TagObject from "../utils/oapi/objects/TagObject";
   import Optional from "../utils/Optional";
-  import { magicGetFunc } from "../utils/ref-parser";
+  import RequestCategory from "./RequestCategory.svelte";
 
   export let tags: Optional<TagObject[]>;
   export let paths: Optional<PathsObject>;
   export let components: Optional<ComponentsObject>;
 
-  let defaultCategory = { name: "default", description: "", requests: [] };
+  let defaultCategory = TagObject.parse({ name: "default", description: "" }).get();
   let rawTags = tags.isFull() ? tags.get() : [];
-  let categories = [defaultCategory, ...rawTags.map((x) => ({ ...x, requests: [] }))];
+  let categories = [defaultCategory, ...rawTags];
 
-  let rawPaths: Map<string, PathItemObject> = paths.isFull() ? paths.get().paths : new Map();
-  for (let [x1, x2] of rawPaths.entries()) {
-    console.log(x1, x2);
-    for (let [y1, req] of Object.entries(x2)) {
-      if (y1 === "parameters" || y1 === "servers") continue;
-      let met = methods()[y1];
-      if (met === undefined) {
-        console.error(`Invalid method: ${y1} - ${met}`);
-        continue;
-      }
-      req.$path = x1;
-      req.$method = met;
-      req.$params = req.parameters || x2.parameters || [];
-      putInCategory(req);
+  let rawPaths: Map<string, PathItemObject> = paths.isFull() ? paths.get() : new Map();
+  for (let [pathKey, pathItem] of rawPaths.entries()) {
+    for (let met of pathItem.opOrder) {
+      let opz: Optional<OperationObject> = pathItem[met.name];
+      if (opz.isEmpty()) continue;
+      let op = opz.get();
+      op.$$path = pathKey;
+      op.$$method = met;
+      if (op.parameters !== undefined && op.parameters.isFull()) op.$$params = op.parameters.get();
+      else if (pathItem.parameters !== undefined && pathItem.parameters.isFull()) op.$$params = pathItem.parameters.get();
+      else op.$$params = [];
+      putInCategory(op);
     }
   }
 
-  if (defaultCategory.requests.length === 0) categories.splice(0, 1);
+  if (defaultCategory.$$requests.length === 0) categories.splice(0, 1);
 
-  function putInCategory(req) {
-    let tags = magicGetFunc(req, "tags") || [];
+  function putInCategory(req: OperationObject) {
+    let tags = req.tags ? req.tags.getOrDefault([]) : [];
     if (tags.length >= 1) {
       let tag = tags[0];
       let cat = findCategory(tag);
-      if (cat !== undefined) cat.requests.push(req);
-      else categories.push({ name: tag, description: "", requests: [req] });
+      if (cat !== undefined) cat.$$requests.push(req);
+      else {
+        let o = TagObject.parse({ name: tag }).get();
+        o.$$requests = [req];
+        categories.push();
+      }
       return;
     }
-    defaultCategory.requests.push(req);
+    defaultCategory.$$requests.push(req);
   }
 
-  function findCategory(tag) {
+  function findCategory(tag: string) {
     for (let x of categories) {
       if (x.name == tag) return x;
     }
@@ -61,11 +61,7 @@
     {#if i != 0}
       <div class="req-cat-gap" />
     {/if}
-    <Dropdown open={true} title={`${category.name} - ${category.description}`}>
-      {#each category.requests as req}
-        <RequestView {req} />
-      {/each}
-    </Dropdown>
+    <RequestCategory open={true} {category} />
   {/each}
 </div>
 

@@ -1,5 +1,5 @@
 import Optional from "../../Optional";
-import { parseCtxMap, parseMap } from "../utils/ObjectUtils";
+import { parseArray, parseCtxArray, parseCtxMap, parseMap } from "../utils/ObjectUtils";
 import { parseStyle, Style } from "../values/Styles";
 import ExampleObject from "./ExampleObject";
 import ReferenceObject from "./ReferenceObject";
@@ -28,6 +28,10 @@ export default class ParameterObject {
   content: Optional<Map<string, MediaTypeObject>>;
 
   private constructor() {}
+
+  static parseArray(ctx: OpenApiContext, v: any): Optional<ParameterObject[]> {
+    return parseCtxArray(ctx, v, this.parse);
+  }
 
   static parse(ctx: OpenApiContext, v: any): Optional<ParameterObject> {
     if (v === null || v === undefined) return Optional.empty();

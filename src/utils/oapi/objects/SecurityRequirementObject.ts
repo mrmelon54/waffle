@@ -1,5 +1,5 @@
-import { parseArray } from "../ObjectUtils";
-import Optional from "../Optional";
+import { parseArray } from "../utils/ObjectUtils";
+import Optional from "../../Optional";
 
 export default class SecurityRequirementObject {
   $$raw: any;

@@ -11,6 +11,10 @@ export class Method {
     this.bgColor = bgColor;
   }
 
+  style() {
+    return `--method-color:${this.getColor()};--method-high-color:${this.getHighColor()};--method-bg-color:${this.getBgColor()};`;
+  }
+
   getColor(): string {
     return this.getHexString(this.color);
   }

@@ -1,6 +1,7 @@
 import Optional from "../../Optional";
 import { parseCtxMap } from "../utils/ObjectUtils";
 import OpenApiContext from "../utils/OpenApiContext";
+import { Method } from "../values/Methods";
 import { CallbackObject, parseCallback } from "./CallbackObject";
 import ExternalDocumentationObject from "./ExternalDocumentationObject";
 import ParameterObject from "./ParameterObject";
@@ -12,13 +13,16 @@ import ServerObject from "./ServerObject";
 
 export default class OperationObject {
   $$raw: any;
+  $$path: string;
+  $$method: Method;
+  $$params: (ParameterObject | ReferenceObject)[];
   tags: Optional<string[]>;
   summary: Optional<string>;
   description: Optional<string>;
   externalDocs: Optional<ExternalDocumentationObject>;
   operationId: Optional<string>;
-  parameters: Optional<ParameterObject | ReferenceObject>;
-  reqestBody: Optional<RequestBodyObject | ReferenceObject>;
+  parameters: Optional<(ParameterObject | ReferenceObject)[]>;
+  requestBody: Optional<RequestBodyObject | ReferenceObject>;
   responses: Optional<ResponsesObject>;
   callbacks: Optional<Map<string, CallbackObject | ReferenceObject>>;
   deprecated: Optional<boolean>;
@@ -31,12 +35,12 @@ export default class OperationObject {
     if (v === null || v === undefined) return Optional.empty();
     let o = new OperationObject();
     o.$$raw = v;
-    o.tags = Optional.full(v.tags || []);
+    o.tags = Optional.full(v.tags);
     o.summary = Optional.full(v.summary);
     o.description = Optional.full(v.description);
     o.externalDocs = ExternalDocumentationObject.parse(v.externalDocs);
     o.operationId = Optional.full(v.operationId);
-    o.parameters = ParameterObject.parse(ctx, v.parameters);
+    o.parameters = ParameterObject.parseArray(ctx, v.parameters);
     o.requestBody = RequestBodyObject.parse(ctx, v.requestBody);
     o.responses = ResponsesObject.parse(ctx, v.responses);
     o.callbacks = parseCtxMap(ctx, v.callbacks, parseCallback);

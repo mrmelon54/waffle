@@ -1,7 +1,7 @@
 <script lang="ts">
   import Document from "./document/Document.svelte";
   import MultipleFileSpec from "./utils/MultipleFileSpec";
-  import OpenApiObject from "./utils/oapi-objects/OpenApiObject";
+  import OpenApiObject from "./utils/oapi/objects/OpenApiObject";
   import Optional from "./utils/Optional";
 
   export let specUrl: string;

@@ -1,42 +1,46 @@
-<script>
+<script lang="ts">
   import SvelteMarkdown from "svelte-markdown";
+  import OperationObject from "../../utils/oapi/objects/OperationObject";
+  import ParameterObject from "../../utils/oapi/objects/ParameterObject";
   import Parameter from "./Parameter.svelte";
   export let open = false;
-  export let req;
+  export let req: OperationObject;
 
   function handleClick() {
     open = !open;
   }
 </script>
 
-<div class="request {open ? 'request-dropdown-open' : 'request-dropdown-closed'} {req.deprecated ? 'request-deprecated' : ''}" style="--method-color:{req.$method.color};--method-high-color:{req.$method.highColor};--method-bg-color:{req.$method.bgColor};">
+<div class="request {open ? 'request-dropdown-open' : 'request-dropdown-closed'} {req.deprecated.getOrDefault(false) ? 'request-deprecated' : ''}" style={req.$$method.style()}>
   <div class="request-summary" on:click={handleClick}>
     <div class="request-summary-inner">
       <h5>
-        <span class="request-summary-method">{req.$method.method.toUpperCase()}</span>
-        <span class="request-summary-path">{req.$path}</span>
-        <span class="request-summary-text">{req.summary}</span>
+        <span class="request-summary-method">{req.$$method.name.toUpperCase()}</span>
+        <span class="request-summary-path">{req.$$path}</span>
+        {#if req.summary.isFull()}
+          <span class="request-summary-text">{req.summary.get()}</span>
+        {/if}
       </h5>
     </div>
   </div>
   {#if open}
     <div class="request-content">
-      {#if req.description}
+      {#if req.description.isFull()}
         <div class="request-description">
-          <SvelteMarkdown source={req.description} />
+          <SvelteMarkdown source={req.description.get()} />
         </div>
       {/if}
       <div class="request-header">
         <span class="request-header-tab">Parameters</span>
       </div>
       <div class="request-description">
-        {#if req.$params.length > 0}
+        {#if req.$$params.length > 0}
           <table class="param-table">
             <tr>
               <th>Name</th>
               <th>Description</th>
             </tr>
-            {#each req.$params as param}
+            {#each req.$$params as param}
               <Parameter {param} />
             {/each}
             <tr />
@@ -71,7 +75,8 @@
     background-color: var(--method-bg-color);
   }
 
-  .request > .request-summary {
+  .request > .request-summary,
+  .request > .request-summary > .request-summary-inner {
     position: relative;
   }
 
@@ -87,7 +92,7 @@
     border-bottom: solid 2px var(--method-high-color);
   }
 
-  .request > .request-summary::after {
+  .request > .request-summary > .request-summary-inner::after {
     content: "";
     position: absolute;
     background: transparent url('data:image/svg+xml;charset=utf-8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20"><path fill="%23c7c2bb" d="M13.418 7.859a.695.695 0 0 1 .978 0 .68.68 0 0 1 0 .969l-3.908 3.83a.697.697 0 0 1-.979 0l-3.908-3.83a.68.68 0 0 1 0-.969.695.695 0 0 1 .978 0L10 11l3.418-3.141z"/></svg>') right 10px center no-repeat;
@@ -100,7 +105,7 @@
     transition: ease-in-out transform 500ms;
   }
 
-  .request.request-dropdown-open > .request-summary::after {
+  .request.request-dropdown-open > .request-summary > .request-summary-inner::after {
     transform: translateY(-50%) rotate(180deg);
   }
 

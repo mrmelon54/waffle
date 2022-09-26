@@ -1,7 +1,10 @@
-<script>
+<script lang="ts">
   import SvelteMarkdown from "svelte-markdown";
+  import ParameterObject from "../../utils/oapi/objects/ParameterObject";
+  import Optional from "../../utils/Optional";
 
-  export let param;
+  export let param: ParameterObject;
+  let schema = param.schema.getOrDefault({ $$raw: {}, $ref: Optional.full("") }).$$raw;
 </script>
 
 <tr class="param-row">
@@ -9,28 +12,30 @@
     <div class="param-info-name {param.required ? 'info-required' : ''}">
       {param.name}{#if param.required}<span>&nbsp;*</span>{/if}
     </div>
-    <div class="param-info-type">
-      <span>{param.schema.type}</span>
-      <span>
-        {#if param.schema.format}
-          (${param.schema.format})
+    {#if param.schema.isFull()}
+      <div class="param-info-type">
+        <span>{schema.type}</span>
+        {#if schema.format}
+          <span>(${schema.format})</span>
         {/if}
-      </span>
-    </div>
-    {#if param.deprecated}
+      </div>
+    {/if}
+    {#if param.deprecated.getOrDefault(false)}
       <div class="param-info-deprecated">deprecated</div>
     {/if}
     <div class="param-info-in">({param.in})</div>
   </td>
   <td>
-    <div class="param-description">
-      <SvelteMarkdown source={param.description} />
-    </div>
-    {#if param.schema.default}
-      <p class="param-default">Default value: {param.schema.default}</p>
+    {#if param.description.isFull()}
+      <div class="param-description">
+        <SvelteMarkdown source={param.description.get()} />
+      </div>
     {/if}
-    {#if param.example}
-      <p class="param-example">Example: {param.example}</p>
+    {#if schema.default}
+      <p class="param-default">Default value: {schema.default}</p>
+    {/if}
+    {#if param.example.isFull()}
+      <p class="param-example">Example: {param.example.get()}</p>
     {/if}
   </td>
 </tr>
