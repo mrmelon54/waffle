@@ -1,4 +1,4 @@
-import Optional from "../../Optional";
+import StaticOptional from "../../StaticOptional";
 import { parseCtxMap } from "../utils/ObjectUtils";
 import OpenApiContext from "../utils/OpenApiContext";
 import { Method } from "../values/Methods";
@@ -31,22 +31,22 @@ export default class OperationObject {
 
   private constructor() {}
 
-  static parse(ctx: OpenApiContext, v: any): Optional<OperationObject> {
-    if (v === null || v === undefined) return Optional.empty();
+  static parse(ctx: OpenApiContext, v: any): StaticOptional<OperationObject> {
+    if (v === null || v === undefined) return StaticOptional.empty();
     let o = new OperationObject();
     o.$$raw = v;
-    o.tags = Optional.full(v.tags);
-    o.summary = Optional.full(v.summary);
-    o.description = Optional.full(v.description);
+    o.tags = StaticOptional.full(v.tags);
+    o.summary = StaticOptional.full(v.summary);
+    o.description = StaticOptional.full(v.description);
     o.externalDocs = ExternalDocumentationObject.parse(v.externalDocs);
-    o.operationId = Optional.full(v.operationId);
+    o.operationId = StaticOptional.full(v.operationId);
     o.parameters = ParameterObject.parseArray(ctx, v.parameters);
     o.requestBody = RequestBodyObject.parse(ctx, v.requestBody);
     o.responses = ResponsesObject.parse(ctx, v.responses);
     o.callbacks = parseCtxMap(ctx, v.callbacks, parseCallback);
-    o.deprecated = Optional.full(v.deprecated);
+    o.deprecated = StaticOptional.full(v.deprecated);
     o.security = SecurityRequirementObject.parseArray(v.security);
     o.servers = ServerObject.parseArray(v.servers);
-    return Optional.full(o);
+    return StaticOptional.full(o);
   }
 }

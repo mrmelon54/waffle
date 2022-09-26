@@ -1,4 +1,4 @@
-import Optional from "../../Optional";
+import StaticOptional from "../../StaticOptional";
 import { parseCtxMap } from "../utils/ObjectUtils";
 import OpenApiContext from "../utils/OpenApiContext";
 import { parseStyle, Style } from "../values/Styles";
@@ -15,13 +15,13 @@ export default class EncodingObject {
 
   private constructor() {}
 
-  static parse(ctx: OpenApiContext, v: any): Optional<EncodingObject> {
-    if (v === null || v === undefined) return Optional.empty();
+  static parse(ctx: OpenApiContext, v: any): StaticOptional<EncodingObject> {
+    if (v === null || v === undefined) return StaticOptional.empty();
     let o = new EncodingObject();
     o.$$raw = v;
-    o.contentType = Optional.full(v.contentType);
+    o.contentType = StaticOptional.full(v.contentType);
     o.headers = parseCtxMap(ctx, v.headers, HeaderObject.parse);
     o.style = parseStyle(v.style);
-    return Optional.full(o);
+    return StaticOptional.full(o);
   }
 }

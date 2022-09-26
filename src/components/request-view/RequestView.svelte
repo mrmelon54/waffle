@@ -2,6 +2,7 @@
   import SvelteMarkdown from "svelte-markdown";
   import OperationObject from "../../utils/oapi/objects/OperationObject";
   import Parameter from "./Parameter.svelte";
+  import Response from "./Response.svelte";
   export let open = false;
   export let req: OperationObject;
 
@@ -24,6 +25,11 @@
   </div>
   {#if open}
     <div class="request-content">
+      {#if req.deprecated.getOrDefault(false)}
+        <div class="request-description">
+          <p>Warning: Deprecated</p>
+        </div>
+      {/if}
       {#if req.description.isFull()}
         <div class="request-description">
           <SvelteMarkdown source={req.description.get()} />
@@ -59,18 +65,14 @@
           <span class="request-header-tab">Responses</span>
         </div>
         <div class="request-description">
-          <table class="response-table">
+          <table class="resp-table">
             <tr>
               <th>Code</th>
               <th>Description</th>
               <th>Links</th>
             </tr>
             {#each req.responses.get().all() as resp}
-              <tr>
-                <td>{resp}</td>
-                <td>{req.responses.get().get(resp).get().description}</td>
-                <td />
-              </tr>
+              <Response key={resp} resp={req.responses.get().get(resp).get()} />
             {/each}
           </table>
         </div>
@@ -194,5 +196,20 @@
   table.param-table > tr > th {
     vertical-align: top;
     text-align: left;
+    padding-left: 0.76em;
+  }
+
+  table.param-table > tr > th:first-child {
+    padding-left: 0;
+  }
+
+  table.resp-table > tr > th {
+    vertical-align: top;
+    text-align: left;
+    padding-left: 0.76em;
+  }
+
+  table.resp-table > tr > th:first-child {
+    padding-left: 0;
   }
 </style>

@@ -1,4 +1,4 @@
-import Optional from "../../Optional";
+import StaticOptional from "../../StaticOptional";
 
 export default class SchemaObject {
   $$raw: any;
@@ -6,11 +6,11 @@ export default class SchemaObject {
 
   private constructor() {}
 
-  static parse(v: any): Optional<SchemaObject> {
-    if (v === null || v === undefined) return Optional.empty();
+  static parse(v: any): StaticOptional<SchemaObject> {
+    if (v === null || v === undefined) return StaticOptional.empty();
     let o = new SchemaObject();
     o.$$raw = v;
-    o.$ref = Optional.full(v.$ref);
-    return Optional.full(o);
+    o.$ref = StaticOptional.full(v.$ref);
+    return StaticOptional.full(o);
   }
 }

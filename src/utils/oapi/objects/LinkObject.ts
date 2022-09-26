@@ -1,4 +1,4 @@
-import Optional from "../../Optional";
+import StaticOptional from "../../StaticOptional";
 import { parseMap } from "../utils/ObjectUtils";
 import ServerObject from "./ServerObject";
 
@@ -13,16 +13,16 @@ export default class LinkObject {
 
   private constructor() {}
 
-  static parse(v: any): Optional<LinkObject> {
-    if (v === null || v === undefined) return Optional.empty();
+  static parse(v: any): StaticOptional<LinkObject> {
+    if (v === null || v === undefined) return StaticOptional.empty();
     let o = new LinkObject();
     o.$$raw = v;
-    o.operationRef = Optional.full(v.operationRef);
-    o.operationId = Optional.full(v.operationId);
+    o.operationRef = StaticOptional.full(v.operationRef);
+    o.operationId = StaticOptional.full(v.operationId);
     o.parameters = parseMap(v.parameters, (x) => x);
-    o.requestBody = Optional.full(o.requestBody);
-    o.description = Optional.full(v.description);
+    o.requestBody = StaticOptional.full(o.requestBody);
+    o.description = StaticOptional.full(v.description);
     o.server = ServerObject.parse(v.server);
-    return Optional.full(o);
+    return StaticOptional.full(o);
   }
 }

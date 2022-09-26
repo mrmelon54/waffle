@@ -1,4 +1,4 @@
-import Optional from "../../Optional";
+import StaticOptional from "../../StaticOptional";
 import OpenApiContext from "../utils/OpenApiContext";
 import OperationObject from "./OperationObject";
 import ParameterObject from "./ParameterObject";
@@ -25,12 +25,12 @@ export default class PathItemObject {
 
   private constructor() {}
 
-  static parse(ctx: OpenApiContext, v: any): Optional<PathItemObject> {
-    if (v === null || v === undefined) return Optional.empty();
+  static parse(ctx: OpenApiContext, v: any): StaticOptional<PathItemObject> {
+    if (v === null || v === undefined) return StaticOptional.empty();
     let o = new PathItemObject();
     o.$$raw = v;
-    o.summary = Optional.full(v.summary);
-    o.description = Optional.full(v.description);
+    o.summary = StaticOptional.full(v.summary);
+    o.description = StaticOptional.full(v.description);
     o.get = OperationObject.parse(ctx, v.get);
     o.put = OperationObject.parse(ctx, v.put);
     o.post = OperationObject.parse(ctx, v.post);
@@ -45,6 +45,6 @@ export default class PathItemObject {
     o.opOrder = Object.entries(v)
       .filter((x) => Methods[x[0]] !== undefined)
       .map((x) => Methods[x[0]]);
-    return Optional.full(o);
+    return StaticOptional.full(o);
   }
 }

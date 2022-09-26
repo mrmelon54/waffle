@@ -1,4 +1,4 @@
-import Optional from "../../Optional";
+import StaticOptional from "../../StaticOptional";
 import { parseCtxMap } from "../utils/ObjectUtils";
 import OpenApiContext from "../utils/OpenApiContext";
 import EncodingObject from "./EncodingObject";
@@ -15,14 +15,14 @@ export default class MediaTypeObject {
 
   private constructor() {}
 
-  static parse(ctx: OpenApiContext, v: any): Optional<MediaTypeObject> {
-    if (v === null || v === undefined) return Optional.empty();
+  static parse(ctx: OpenApiContext, v: any): StaticOptional<MediaTypeObject> {
+    if (v === null || v === undefined) return StaticOptional.empty();
     let o = new MediaTypeObject();
     o.$$raw = v;
     o.schema = SchemaObject.parse(v);
-    o.example = Optional.full(v.example);
+    o.example = StaticOptional.full(v.example);
     o.examples = parseCtxMap(ctx, v.examples, ExampleObject.parse);
     o.encoding = parseCtxMap(ctx, v.encoding, EncodingObject.parse);
-    return Optional.full(o);
+    return StaticOptional.full(o);
   }
 }

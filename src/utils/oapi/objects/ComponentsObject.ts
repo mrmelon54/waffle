@@ -1,4 +1,4 @@
-import Optional from "../../Optional";
+import StaticOptional from "../../StaticOptional";
 import PathItemObject from "./PathItemObject";
 import ReferenceObject from "./ReferenceObject";
 import OpenApiContext from "../utils/OpenApiContext";
@@ -28,8 +28,8 @@ export default class ComponentsObject {
 
   private constructor() {}
 
-  static parse(ctx: OpenApiContext, v: any): Optional<ComponentsObject> {
-    if (v === null || v === undefined) return Optional.empty();
+  static parse(ctx: OpenApiContext, v: any): StaticOptional<ComponentsObject> {
+    if (v === null || v === undefined) return StaticOptional.empty();
     let o = new ComponentsObject();
     o.$$raw = v;
     o.schemas = new Map();
@@ -43,6 +43,6 @@ export default class ComponentsObject {
     o.callbacks = new Map();
     o.pathItems = new Map();
     // TODO: brrr
-    return Optional.full(o);
+    return StaticOptional.full(o);
   }
 }

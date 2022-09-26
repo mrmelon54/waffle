@@ -1,14 +1,15 @@
 <script lang="ts">
   import SvelteMarkdown from "svelte-markdown";
   import ParameterObject from "../../utils/oapi/objects/ParameterObject";
-  import Optional from "../../utils/Optional";
+  import StaticOptional from "../../utils/StaticOptional";
 
   export let param: ParameterObject;
-  let schema = param.schema.getOrDefault({ $$raw: {}, $ref: Optional.full("") }).$$raw;
+  let schema = param.schema.getOrDefault({ $$raw: {}, $ref: StaticOptional.full("") }).$$raw;
 </script>
 
 <tr class="param-row">
   <td>
+    <p />
     <div class="param-info-name {param.required ? 'info-required' : ''}">
       {param.name}{#if param.required}<span>&nbsp;*</span>{/if}
     </div>
@@ -44,10 +45,11 @@
   tr.param-row > td {
     vertical-align: top;
     text-align: left;
+    padding-left: 0.76em;
   }
 
-  .param-info-name {
-    margin-right: 0.76em;
+  tr.param-row > td:first-child {
+    padding-left: 0;
   }
 
   .info-required > span {

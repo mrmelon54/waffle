@@ -1,4 +1,4 @@
-import Optional from "../../Optional";
+import StaticOptional from "../../StaticOptional";
 import { parseArray, parseCtxArray, parseCtxMap, parseMap } from "../utils/ObjectUtils";
 import { parseStyle, Style } from "../values/Styles";
 import ExampleObject from "./ExampleObject";
@@ -29,31 +29,31 @@ export default class ParameterObject {
 
   private constructor() {}
 
-  static parseArray(ctx: OpenApiContext, v: any): Optional<ParameterObject[]> {
+  static parseArray(ctx: OpenApiContext, v: any): StaticOptional<ParameterObject[]> {
     return parseCtxArray(ctx, v, this.parse);
   }
 
-  static parse(ctx: OpenApiContext, v: any): Optional<ParameterObject> {
-    if (v === null || v === undefined) return Optional.empty();
+  static parse(ctx: OpenApiContext, v: any): StaticOptional<ParameterObject> {
+    if (v === null || v === undefined) return StaticOptional.empty();
     let o = new ParameterObject();
     o.$$raw = v;
     o.name = v.name;
     o.in = v.in;
-    o.description = Optional.full(v.description);
-    o.required = Optional.full(v.required);
-    o.deprecated = Optional.full(v.deprecated);
-    o.allowEmptyValue = Optional.full(v.allowEmptyValue);
+    o.description = StaticOptional.full(v.description);
+    o.required = StaticOptional.full(v.required);
+    o.deprecated = StaticOptional.full(v.deprecated);
+    o.allowEmptyValue = StaticOptional.full(v.allowEmptyValue);
 
     // Simplier scenarios
     o.style = parseStyle(v.style);
-    o.explode = Optional.full(v.explode);
-    o.allowReserved = Optional.full(v.allowReserved);
+    o.explode = StaticOptional.full(v.explode);
+    o.allowReserved = StaticOptional.full(v.allowReserved);
     o.schema = SchemaObject.parse(v.schema);
-    o.example = Optional.full(v.example);
+    o.example = StaticOptional.full(v.example);
     o.examples = parseMap(v.examples, ExampleObject.parse);
 
     // Complex scenarios
     o.content = parseCtxMap(ctx, v.content, MediaTypeObject.parse);
-    return Optional.full(o);
+    return StaticOptional.full(o);
   }
 }

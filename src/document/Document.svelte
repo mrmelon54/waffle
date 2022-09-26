@@ -30,8 +30,8 @@
     <div class="doc-gap" />
   {/if}
   <RequestCategories tags={spec.tags} paths={spec.paths} components={spec.components} />
-  <div class="doc-gap" />
   {#if spec.components.isFull()}
+    <div class="doc-gap" />
     <Schemas schemas={spec.components.get().schemas} />
   {/if}
 </div>

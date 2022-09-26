@@ -1,5 +1,5 @@
 import { parseArray } from "../utils/ObjectUtils";
-import Optional from "../../Optional";
+import StaticOptional from "../../StaticOptional";
 import ExternalDocumentationObject from "./ExternalDocumentationObject";
 import OperationObject from "./OperationObject";
 
@@ -12,18 +12,18 @@ export default class TagObject {
 
   private constructor() {}
 
-  static parseArray(v: any): Optional<TagObject[]> {
+  static parseArray(v: any): StaticOptional<TagObject[]> {
     return parseArray<TagObject>(v, TagObject.parse);
   }
 
-  static parse(v: any): Optional<TagObject> {
-    if (v === null || v === undefined) return Optional.emptyWithError("object missing");
+  static parse(v: any): StaticOptional<TagObject> {
+    if (v === null || v === undefined) return StaticOptional.emptyWithError("object missing");
     let o = new TagObject();
     o.$$raw = v;
     o.$$requests = [];
     o.name = v.name;
-    o.description = Optional.full(v.description);
+    o.description = StaticOptional.full(v.description);
     o.externalDocs = ExternalDocumentationObject.parse(v.externalDocs);
-    return Optional.full(o);
+    return StaticOptional.full(o);
   }
 }

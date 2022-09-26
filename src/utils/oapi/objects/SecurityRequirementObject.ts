@@ -1,5 +1,5 @@
 import { parseArray } from "../utils/ObjectUtils";
-import Optional from "../../Optional";
+import StaticOptional from "../../StaticOptional";
 
 export default class SecurityRequirementObject {
   $$raw: any;
@@ -7,12 +7,12 @@ export default class SecurityRequirementObject {
 
   private constructor() {}
 
-  static parseArray(v: any): Optional<SecurityRequirementObject[]> {
+  static parseArray(v: any): StaticOptional<SecurityRequirementObject[]> {
     return parseArray<SecurityRequirementObject>(v, SecurityRequirementObject.parse);
   }
 
-  static parse(v: any): Optional<SecurityRequirementObject> {
-    if (v === null || v === undefined) return Optional.emptyWithError("object missing");
+  static parse(v: any): StaticOptional<SecurityRequirementObject> {
+    if (v === null || v === undefined) return StaticOptional.emptyWithError("object missing");
     let o = new SecurityRequirementObject();
     o.$$raw = v;
     o.fields = new Map();
@@ -20,8 +20,8 @@ export default class SecurityRequirementObject {
       if (Array.isArray(v[a]) && v[a].length > 0 && v[a].every((x) => typeof x === "string")) {
         let b = <string[]>v[a];
         o.fields.set(a, b);
-      } else return Optional.emptyWithError("Invalid security requirement values array");
+      } else return StaticOptional.emptyWithError("Invalid security requirement values array");
     }
-    return Optional.full(o);
+    return StaticOptional.full(o);
   }
 }

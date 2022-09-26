@@ -1,4 +1,4 @@
-import Optional from "../../Optional";
+import StaticOptional from "../../StaticOptional";
 
 export default class ExampleObject {
   $$raw: any;
@@ -9,14 +9,14 @@ export default class ExampleObject {
 
   private constructor() {}
 
-  static parse(v: any):Optional<ExampleObject> {
-    if (v === null || v === undefined) return Optional.empty();
+  static parse(v: any):StaticOptional<ExampleObject> {
+    if (v === null || v === undefined) return StaticOptional.empty();
     let o = new ExampleObject();
     o.$$raw = v;
-    o.summary = Optional.full(v.summary);
-    o.description = Optional.full(v.description);
-    o.value = Optional.full(v.value);
-    o.externalValue = Optional.full(v.externalValue);
-    return Optional.full(o);
+    o.summary = StaticOptional.full(v.summary);
+    o.description = StaticOptional.full(v.description);
+    o.value = StaticOptional.full(v.value);
+    o.externalValue = StaticOptional.full(v.externalValue);
+    return StaticOptional.full(o);
   }
 }
