@@ -1,7 +1,6 @@
 <script lang="ts">
   import SvelteMarkdown from "svelte-markdown";
   import OperationObject from "../../utils/oapi/objects/OperationObject";
-  import ParameterObject from "../../utils/oapi/objects/ParameterObject";
   import Parameter from "./Parameter.svelte";
   export let open = false;
   export let req: OperationObject;
@@ -49,17 +48,32 @@
           No parameters
         {/if}
       </div>
-      {#if req.requestBody}
+      {#if req.requestBody.isFull()}
         <div class="request-header">
           <span class="request-header-tab info-required">Request Body</span>
         </div>
         <div class="request-description">Work In Progress</div>
       {/if}
-      {#if req.responses}
+      {#if req.responses.isFull()}
         <div class="request-header">
           <span class="request-header-tab">Responses</span>
         </div>
-        <div class="request-description">Work In Progress</div>
+        <div class="request-description">
+          <table class="response-table">
+            <tr>
+              <th>Code</th>
+              <th>Description</th>
+              <th>Links</th>
+            </tr>
+            {#each req.responses.get().all() as resp}
+              <tr>
+                <td>{resp}</td>
+                <td>{req.responses.get().get(resp).get().description}</td>
+                <td />
+              </tr>
+            {/each}
+          </table>
+        </div>
       {/if}
     </div>
   {/if}

@@ -27,8 +27,8 @@
         {/each}
       </Selector>
     </div>
+    <div class="doc-gap" />
   {/if}
-  <div class="doc-gap" />
   <RequestCategories tags={spec.tags} paths={spec.paths} components={spec.components} />
   <div class="doc-gap" />
   {#if spec.components.isFull()}

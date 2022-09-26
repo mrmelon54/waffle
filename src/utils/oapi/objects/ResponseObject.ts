@@ -8,6 +8,7 @@ import OpenApiContext from "../utils/OpenApiContext";
 
 export default class ResponseObject {
   $$raw: any;
+  $$code: string;
   description: string;
   headers: Optional<Map<string, HeaderObject | ReferenceObject>>;
   content: Optional<Map<string, MediaTypeObject>>;

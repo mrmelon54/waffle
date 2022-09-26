@@ -37,4 +37,15 @@ export default class ResponsesObject {
     if (this.$$internal.has("default")) return Optional.full(this.$$internal.get("default"));
     return Optional.emptyWithError("No valid status code, range or default response found");
   }
+
+  all(): string[] {
+    // Custom sorting to put `default` and generic `1XX` codes after specific values
+    return Array.from(this.$$internal.keys()).sort((a, b) => {
+      if (a == "default") return 1;
+      if (b == "default") return -1;
+      if (a[0] == b[0] && a.slice(1) == "XX") return 1;
+      if (a[0] == b[0] && b.slice(1) == "XX") return -1;
+      return a.localeCompare(b);
+    });
+  }
 }

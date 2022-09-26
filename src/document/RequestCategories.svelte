@@ -41,7 +41,7 @@
       else {
         let o = TagObject.parse({ name: tag }).get();
         o.$$requests = [req];
-        categories.push();
+        categories.push(o);
       }
       return;
     }
