@@ -12,7 +12,7 @@ export default class SecurityRequirementObject {
   }
 
   static parse(v: any): Optional<SecurityRequirementObject> {
-    if (!v) return Optional.emptyWithError("object missing");
+    if (v === null || v === undefined) return Optional.emptyWithError("object missing");
     let o = new SecurityRequirementObject();
     o.$$raw = v;
     o.fields = new Map();

@@ -1,4 +1,4 @@
-import Optional from "../Optional";
+import Optional from "../../Optional";
 
 export default class ReferenceObject {
   $$raw: any;
@@ -9,7 +9,7 @@ export default class ReferenceObject {
   private constructor() {}
 
   static parse(v: any): Optional<ReferenceObject> {
-    if (!v) return Optional.empty();
+    if (v === null || v === undefined) return Optional.empty();
     let o = new ReferenceObject();
     o.$$raw = v;
     o.summary = Optional.full(v.summary);

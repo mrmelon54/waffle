@@ -1,9 +1,9 @@
-import Optional from "../Optional";
+import Optional from "../../Optional";
+import OpenApiContext from "../utils/OpenApiContext";
+import OperationObject from "./OperationObject";
+import ParameterObject from "./ParameterObject";
 import ReferenceObject from "./ReferenceObject";
 import ServerObject from "./ServerObject";
-
-type OperationObject = string;
-type ParameterObject = string;
 
 export default class PathItemObject {
   $$raw: any;
@@ -22,22 +22,20 @@ export default class PathItemObject {
 
   private constructor() {}
 
-  static parse(v: any): Optional<PathItemObject> {
-    if (!v) return Optional.empty();
+  static parse(ctx: OpenApiContext, v: any): Optional<PathItemObject> {
+    if (v === null || v === undefined) return Optional.empty();
     let o = new PathItemObject();
     o.$$raw = v;
     o.summary = Optional.full(v.summary);
     o.description = Optional.full(v.description);
-    /*&
-    o.get = OperationObject.parse(v.get);
-    o.put = OperationObject.parse(v.put);
-    o.post = OperationObject.parse(v.post);
-    o.delete = OperationObject.parse(v.delete);
-    o.options = OperationObject.parse(v.options);
-    o.head = OperationObject.parse(v.head);
-    o.patch = OperationObject.parse(v.patch);
-    o.trace = OperationObject.parse(v.trace);
-    */
+    o.get = OperationObject.parse(ctx, v.get);
+    o.put = OperationObject.parse(ctx, v.put);
+    o.post = OperationObject.parse(ctx, v.post);
+    o.delete = OperationObject.parse(ctx, v.delete);
+    o.options = OperationObject.parse(ctx, v.options);
+    o.head = OperationObject.parse(ctx, v.head);
+    o.patch = OperationObject.parse(ctx, v.patch);
+    o.trace = OperationObject.parse(ctx, v.trace);
     o.servers = ServerObject.parseArray(v.servers);
     //o.parameters = ParameterObject.parse(v.parameters);
     return Optional.full(o);

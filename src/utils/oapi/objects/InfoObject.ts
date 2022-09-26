@@ -1,6 +1,6 @@
 import semver from "semver";
 import isURL from "validator/lib/isURL";
-import Optional from "../Optional";
+import Optional from "../../Optional";
 import ContactObject from "./ContactObject";
 import LicenseObject from "./LicenseObject";
 
@@ -17,7 +17,7 @@ export default class InfoObject {
   private constructor() {}
 
   static parse(v: any): Optional<InfoObject> {
-    if (!v) return Optional.emptyWithError("Invalid info object");
+    if (v === null || v === undefined) return Optional.emptyWithError("Invalid info object");
     let o = new InfoObject();
     o.$$raw = v;
     o.title = v.title;

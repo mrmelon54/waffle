@@ -1,4 +1,4 @@
-import Optional from "../Optional";
+import Optional from "../../Optional";
 import isEmail from "validator/es/lib/isEmail";
 import isURL from "validator/es/lib/isURL";
 
@@ -9,6 +9,7 @@ export default class ContactObject {
   email: Optional<string>;
 
   static parse(v: any): Optional<ContactObject> {
+    if (v === null || v === undefined) return Optional.empty();
     let o = new ContactObject();
     o.$$raw = v;
     o.name = v.name;

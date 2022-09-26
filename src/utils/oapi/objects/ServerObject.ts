@@ -1,6 +1,6 @@
 import isURL from "validator/lib/isURL";
-import { parseArray, parseMap } from "../ObjectUtils";
-import Optional from "../Optional";
+import { parseArray, parseMap } from "../utils/ObjectUtils";
+import Optional from "../../Optional";
 import ServerVariableObject from "./ServerVariableObject";
 
 export default class ServerObject {
@@ -15,8 +15,8 @@ export default class ServerObject {
     return parseArray<ServerObject>(v, ServerObject.parse);
   }
 
-  static parse(v: any): Optional<ServerObject> {
-    if (!v) return Optional.emptyWithError("object missing");
+  private static parse(v: any): Optional<ServerObject> {
+    if (v === null || v === undefined) return Optional.emptyWithError("object missing");
     let o = new ServerObject();
     o.$$raw = v;
     o.url = v.url;

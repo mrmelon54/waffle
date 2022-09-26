@@ -1,4 +1,4 @@
-import Optional from "../Optional";
+import Optional from "../../Optional";
 import isURL from "validator/lib/isURL";
 
 export default class LicenseObject {
@@ -8,6 +8,7 @@ export default class LicenseObject {
   url: Optional<string>;
 
   static parse(v: any): Optional<LicenseObject> {
+    if (v === null || v === undefined) return Optional.empty();
     let o = new LicenseObject();
     o.$$raw = v;
     o.name = v.name;

@@ -1,6 +1,7 @@
-import Optional from "../Optional";
+import Optional from "../../Optional";
 import PathItemObject from "./PathItemObject";
 import ReferenceObject from "./ReferenceObject";
+import OpenApiContext from "../utils/OpenApiContext";
 
 type SchemaObject = string;
 type ResponseObject = string;
@@ -27,8 +28,8 @@ export default class ComponentsObject {
 
   private constructor() {}
 
-  static parse(v: any): Optional<ComponentsObject> {
-    if (!v) return Optional.empty();
+  static parse(ctx: OpenApiContext, v: any): Optional<ComponentsObject> {
+    if (v === null || v === undefined) return Optional.empty();
     let o = new ComponentsObject();
     o.$$raw = v;
     o.schemas = new Map();

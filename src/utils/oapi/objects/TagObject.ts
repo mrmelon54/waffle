@@ -1,5 +1,5 @@
-import { parseArray } from "../ObjectUtils";
-import Optional from "../Optional";
+import { parseArray } from "../utils/ObjectUtils";
+import Optional from "../../Optional";
 import ExternalDocumentationObject from "./ExternalDocumentationObject";
 
 export default class TagObject {
@@ -14,8 +14,8 @@ export default class TagObject {
     return parseArray<TagObject>(v, TagObject.parse);
   }
 
-  static parse(v: any): Optional<TagObject> {
-    if (!v) return Optional.emptyWithError("object missing");
+  private static parse(v: any): Optional<TagObject> {
+    if (v === null || v === undefined) return Optional.emptyWithError("object missing");
     let o = new TagObject();
     o.$$raw = v;
     o.name = v.name;

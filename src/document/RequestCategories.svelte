@@ -1,11 +1,11 @@
 <script lang="ts">
   import Dropdown from "../components/Dropdown.svelte";
   import RequestView from "../components/request-view/RequestView.svelte";
-  import methods from "../utils/methods";
-  import ComponentsObject from "../utils/oapi-objects/ComponentsObject";
-  import PathItemObject from "../utils/oapi-objects/PathItemObject";
-  import PathsObject from "../utils/oapi-objects/PathsObject";
-  import TagObject from "../utils/oapi-objects/TagObject";
+  import methods from "../utils/oapi/values/Methods";
+  import ComponentsObject from "../utils/oapi/objects/ComponentsObject";
+  import PathItemObject from "../utils/oapi/objects/PathItemObject";
+  import PathsObject from "../utils/oapi/objects/PathsObject";
+  import TagObject from "../utils/oapi/objects/TagObject";
   import Optional from "../utils/Optional";
   import { magicGetFunc } from "../utils/ref-parser";
 

@@ -1,4 +1,4 @@
-import Optional from "../Optional";
+import Optional from "../../Optional";
 import isURL from "validator/lib/isURL";
 
 export default class ExternalDocumentationObject {
@@ -9,6 +9,7 @@ export default class ExternalDocumentationObject {
   private constructor() {}
 
   static parse(v: any): Optional<ExternalDocumentationObject> {
+    if (v === null || v === undefined) return Optional.empty();
     if (!v) return Optional.empty();
     let o = new ExternalDocumentationObject();
     o.$$raw = v;
