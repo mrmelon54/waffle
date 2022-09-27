@@ -9,7 +9,7 @@ export default class ExampleObject {
 
   private constructor() {}
 
-  static parse(v: any):StaticOptional<ExampleObject> {
+  static parse(v: any):Optional<ExampleObject> {
     if (v === null || v === undefined) return StaticOptional.empty();
     let o = new ExampleObject();
     o.$$raw = v;

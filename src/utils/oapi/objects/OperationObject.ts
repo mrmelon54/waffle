@@ -31,7 +31,7 @@ export default class OperationObject {
 
   private constructor() {}
 
-  static parse(ctx: OpenApiContext, v: any): StaticOptional<OperationObject> {
+  static parse(ctx: OpenApiContext, v: any): Optional<OperationObject> {
     if (v === null || v === undefined) return StaticOptional.empty();
     let o = new OperationObject();
     o.$$raw = v;

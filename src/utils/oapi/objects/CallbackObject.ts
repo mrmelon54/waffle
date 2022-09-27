@@ -6,6 +6,6 @@ import ReferenceObject from "./ReferenceObject";
 
 export type CallbackObject = Map<string, PathItemObject | ReferenceObject>;
 
-export function parseCallback(ctx: OpenApiContext, v: any): StaticOptional<CallbackObject> {
+export function parseCallback(ctx: OpenApiContext, v: any): Optional<CallbackObject> {
   return parseCtxMap(ctx, v, PathItemObject.parse);
 }

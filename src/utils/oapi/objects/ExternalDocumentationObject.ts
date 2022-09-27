@@ -8,7 +8,7 @@ export default class ExternalDocumentationObject {
 
   private constructor() {}
 
-  static parse(v: any): StaticOptional<ExternalDocumentationObject> {
+  static parse(v: any): Optional<ExternalDocumentationObject> {
     if (v === null || v === undefined) return StaticOptional.empty();
     if (!v) return StaticOptional.empty();
     let o = new ExternalDocumentationObject();

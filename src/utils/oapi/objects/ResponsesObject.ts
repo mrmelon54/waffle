@@ -10,7 +10,7 @@ export default class ResponsesObject {
 
   private constructor() {}
 
-  static parse(ctx: OpenApiContext, v: any): StaticOptional<ResponsesObject> {
+  static parse(ctx: OpenApiContext, v: any): Optional<ResponsesObject> {
     let o = new ResponsesObject();
     o.$$raw = v;
     let m = parseCtxMap<string, ResponseObject | ReferenceObject>(ctx, v, ResponseObject.parse);
@@ -19,7 +19,7 @@ export default class ResponsesObject {
     return StaticOptional.full(o);
   }
 
-  get(code: string): StaticOptional<ResponseObject | ReferenceObject> {
+  get(code: string): Optional<ResponseObject | ReferenceObject> {
     if (code.length !== 3) return StaticOptional.emptyWithError(`Invalid code length: ${code.length} must be length 3`);
     switch (code[0]) {
       case "1":

@@ -25,7 +25,7 @@ export default class PathItemObject {
 
   private constructor() {}
 
-  static parse(ctx: OpenApiContext, v: any): StaticOptional<PathItemObject> {
+  static parse(ctx: OpenApiContext, v: any): Optional<PathItemObject> {
     if (v === null || v === undefined) return StaticOptional.empty();
     let o = new PathItemObject();
     o.$$raw = v;

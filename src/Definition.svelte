@@ -9,14 +9,7 @@
 
   async function fetchSpec(url: string): Promise<Optional<OpenApiObject>> {
     if (!url) return undefined;
-    let file = await manager.fetchAndParse(url);
-    console.log(file);
-    try {
-      return OpenApiObject.parse(file);
-    } catch (err) {
-      console.error("OpenApi parsing error: ", err);
-      throw new Error("OpenApi parsing error");
-    }
+    return await manager.fetchAndParse(url);
   }
 </script>
 

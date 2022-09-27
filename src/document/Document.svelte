@@ -4,6 +4,7 @@
   import Selector from "../components/Selector.svelte";
   import RequestCategories from "./RequestCategories.svelte";
   import OpenApiObject from "../utils/oapi/objects/OpenApiObject";
+  import ComponentsObject from "../utils/oapi/objects/ComponentsObject";
 
   export let spec: OpenApiObject;
 
@@ -12,8 +13,14 @@
 
 <div id="openapi-document">
   <Title {spec} />
-  {#if spec.servers.isFull()}
+  {#if spec.servers.hasError()}
     <div id="servers">
+      <h4>Servers</h4>
+      <p>{spec.servers.errorReason()}</p>
+    </div>
+    <div class="doc-gap" />
+  {:else if spec.servers.isFull()}
+    <div class="bubble-block">
       <h4>Servers</h4>
       <Selector bind:value={serverUrl}>
         {#each spec.servers.get() as server}
@@ -30,14 +37,20 @@
     <div class="doc-gap" />
   {/if}
   <RequestCategories tags={spec.tags} paths={spec.paths} components={spec.components} />
-  {#if spec.components.isFull()}
+  {#if spec.components.hasError()}
+    <div class="doc-gap" />
+    <div class="bubble-block">
+      <h4>Schemas</h4>
+      <p>{spec.components.errorReason()}</p>
+    </div>
+  {:else if spec.components.isFull()}
     <div class="doc-gap" />
     <Schemas schemas={spec.components.get().schemas} />
   {/if}
 </div>
 
 <style>
-  #servers {
+  .bubble-block {
     background: #252832;
     padding: 16px;
     border-radius: 16px;

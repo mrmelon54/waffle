@@ -1,3 +1,4 @@
+import Optional from "../../Optional";
 import StaticOptional from "../../StaticOptional";
 import { parseCtxMap } from "../utils/ObjectUtils";
 import OpenApiContext from "../utils/OpenApiContext";
@@ -11,13 +12,14 @@ export default class RequestBodyObject {
 
   private constructor() {}
 
-  static parse(ctx: OpenApiContext, v: any): StaticOptional<RequestBodyObject> {
+  static parse(ctx: OpenApiContext, v: any): Optional<RequestBodyObject> {
     if (v === null || v === undefined) return StaticOptional.empty();
     let o = new RequestBodyObject();
     o.$$raw = v;
     o.description = StaticOptional.full(v.description);
-    let content = parseCtxMap(ctx, v.content, MediaTypeObject.parse);
-    if (content.isEmpty()) return StaticOptional.emptyWithError(`RequestBodyObject with invalid content`);
+    let content = parseCtxMap<string, MediaTypeObject>(ctx, v.content, MediaTypeObject.parse);
+    if (content.isEmpty() || content.hasError()) return StaticOptional.emptyWithError(`RequestBodyObject with invalid content: ${content.errorReason() ?? "No reason"}`);
+    o.content = content.get();
     o.required = StaticOptional.full(v.required);
     return StaticOptional.full(o);
   }

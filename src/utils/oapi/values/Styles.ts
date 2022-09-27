@@ -39,7 +39,7 @@ export function AllStyles() {
   return Object.values(Styles);
 }
 
-export function parseStyle(v: any): StaticOptional<Style> {
+export function parseStyle(v: any): Optional<Style> {
   if (v === null || v === undefined) return StaticOptional.empty();
   if (typeof v !== "string") return StaticOptional.emptyWithError("Style name must be a string");
   if (Styles[v]) return StaticOptional.full(Styles[v]);

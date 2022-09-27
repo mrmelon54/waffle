@@ -9,8 +9,10 @@ import SecurityRequirementObject from "./SecurityRequirementObject";
 import TagObject from "./TagObject";
 import ExternalDocumentationObject from "./ExternalDocumentationObject";
 import StaticOptional from "../../StaticOptional";
-import { parseCtxMap, parseMap } from "../utils/ObjectUtils";
+import { parseCtxMap } from "../utils/ObjectUtils";
 import OpenApiContext from "../utils/OpenApiContext";
+import Optional from "../../Optional";
+import MultipleFileSpec from "../../MultipleFileSpec";
 
 export default class OpenApiObject {
   $$raw: any;
@@ -25,10 +27,10 @@ export default class OpenApiObject {
   tags: Optional<TagObject[]>;
   externalDocs: Optional<ExternalDocumentationObject>;
 
-  static parse(v: any): StaticOptional<OpenApiObject> {
+  static parse(manager: MultipleFileSpec, v: any): Optional<OpenApiObject> {
     if (v === null || v === undefined) return StaticOptional.empty();
     let o = new OpenApiObject();
-    let ctx = OpenApiContext.generate(o);
+    let ctx = OpenApiContext.generate(manager, o);
     o.$$raw = v;
     let ver = semver.parse(v.openapi);
     if (!ver) return StaticOptional.emptyWithError(`Invalid OpenAPI version: ${ver}`);
@@ -51,5 +53,14 @@ export default class OpenApiObject {
 
   private static validVersion(v: semver.SemVer): boolean {
     return semver.satisfies(v, "3.x.x");
+  }
+
+  lookup(ref: string[]): any {
+    let v: any = this;
+    for (let i of ref) {
+      v = v[i];
+      if (v === null || v === undefined) return undefined;
+    }
+    return v;
   }
 }

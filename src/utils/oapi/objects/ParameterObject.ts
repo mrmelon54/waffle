@@ -29,11 +29,11 @@ export default class ParameterObject {
 
   private constructor() {}
 
-  static parseArray(ctx: OpenApiContext, v: any): StaticOptional<ParameterObject[]> {
+  static parseArray(ctx: OpenApiContext, v: any): Optional<ParameterObject[]> {
     return parseCtxArray(ctx, v, this.parse);
   }
 
-  static parse(ctx: OpenApiContext, v: any): StaticOptional<ParameterObject> {
+  static parse(ctx: OpenApiContext, v: any): Optional<ParameterObject> {
     if (v === null || v === undefined) return StaticOptional.empty();
     let o = new ParameterObject();
     o.$$raw = v;

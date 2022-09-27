@@ -1,16 +1,18 @@
+import Optional from "./Optional";
+
 export default class StaticOptional<T> {
   private value: T | null;
   private error?: string;
 
-  static empty<U>(): StaticOptional<U> {
+  static empty<U>(): Optional<U> {
     return new this<U>(null);
   }
 
-  static emptyWithError<U>(msg: string): StaticOptional<U> {
+  static emptyWithError<U>(msg: string): Optional<U> {
     return new this<U>(null, msg);
   }
 
-  static full<U>(value: U | null | undefined): StaticOptional<U> {
+  static full<U>(value: U | null | undefined): Optional<U> {
     if (value === null || value === undefined) return new this<U>(null);
     return new this<U>(value);
   }

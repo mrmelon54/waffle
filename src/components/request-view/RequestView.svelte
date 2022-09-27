@@ -1,6 +1,7 @@
 <script lang="ts">
   import SvelteMarkdown from "svelte-markdown";
   import OperationObject from "../../utils/oapi/objects/OperationObject";
+  import RequestBodyObject from "../../utils/oapi/objects/RequestBodyObject";
   import Parameter from "./Parameter.svelte";
   import Response from "./Response.svelte";
   export let open = false;
@@ -35,6 +36,8 @@
           <SvelteMarkdown source={req.description.get()} />
         </div>
       {/if}
+
+      <!-- Parameters -->
       <div class="request-header">
         <span class="request-header-tab">Parameters</span>
       </div>
@@ -54,13 +57,31 @@
           No parameters
         {/if}
       </div>
-      {#if req.requestBody.isFull()}
+
+      <!-- Request Body -->
+      {#if req.requestBody.hasError()}
+        <div class="request-header">
+          <span class="request-header-tab info-required">Request Body</span>
+        </div>
+        <div class="request-description">
+          <p>{req.requestBody.errorReason()}</p>
+        </div>
+      {:else if req.requestBody.isFull()}
         <div class="request-header">
           <span class="request-header-tab info-required">Request Body</span>
         </div>
         <div class="request-description">Work In Progress</div>
       {/if}
-      {#if req.responses.isFull()}
+
+      <!-- Responses -->
+      {#if req.responses.hasError()}
+        <div class="request-header">
+          <span class="request-header-tab info-required">Responses</span>
+        </div>
+        <div class="request-description">
+          <p>{req.responses.errorReason()}</p>
+        </div>
+      {:else if req.responses.isFull()}
         <div class="request-header">
           <span class="request-header-tab">Responses</span>
         </div>

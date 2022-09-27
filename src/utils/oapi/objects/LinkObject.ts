@@ -13,7 +13,7 @@ export default class LinkObject {
 
   private constructor() {}
 
-  static parse(v: any): StaticOptional<LinkObject> {
+  static parse(v: any): Optional<LinkObject> {
     if (v === null || v === undefined) return StaticOptional.empty();
     let o = new LinkObject();
     o.$$raw = v;

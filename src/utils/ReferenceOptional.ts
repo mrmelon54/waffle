@@ -1,5 +1,4 @@
 import OpenApiContext from "./oapi/utils/OpenApiContext";
-import { isInstanceOf } from "./instance";
 
 type InstanceTester = (value: any) => boolean;
 
@@ -7,7 +6,7 @@ export default class ReferenceOptional<T> {
   private ctx: OpenApiContext;
   private ref: string;
   private error?: string;
-  private needLookup: boolean;
+  private doneLookup: boolean;
   private value: T | null;
   private test: InstanceTester;
 
@@ -16,12 +15,14 @@ export default class ReferenceOptional<T> {
     o.ctx = ctx;
     o.ref = ref;
     o.test = test;
+    ctx.waitFor(o.lookup());
     return o;
   }
 
-  private lookup() {
-    if (!this.needLookup) return;
-    let v: any = this.ctx.get().lookup(this.ref);
+  private async lookup(): Promise<void> {
+    if (this.doneLookup) return;
+    this.doneLookup = true;
+    let v: any = await this.ctx.lookup(this.ref);
     if (this.test(v)) {
       this.value = <T>v;
     } else {
@@ -31,12 +32,10 @@ export default class ReferenceOptional<T> {
   }
 
   isEmpty(): boolean {
-    this.lookup();
     return this.value === null;
   }
 
   isFull(): boolean {
-    this.lookup();
     return this.value !== null;
   }
 

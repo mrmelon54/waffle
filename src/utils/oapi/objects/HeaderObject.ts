@@ -10,7 +10,7 @@ export default class HeaderObject {
 
   private constructor() {}
 
-  static parse(ctx: OpenApiContext, v: any): StaticOptional<HeaderObject> {
+  static parse(ctx: OpenApiContext, v: any): Optional<HeaderObject> {
     if (v === null || v === undefined) return StaticOptional.empty();
     let o = new HeaderObject();
     o.$$raw = v;

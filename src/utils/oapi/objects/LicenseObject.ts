@@ -7,7 +7,7 @@ export default class LicenseObject {
   identifier: Optional<string>;
   url: Optional<string>;
 
-  static parse(v: any): StaticOptional<LicenseObject> {
+  static parse(v: any): Optional<LicenseObject> {
     if (v === null || v === undefined) return StaticOptional.empty();
     let o = new LicenseObject();
     o.$$raw = v;

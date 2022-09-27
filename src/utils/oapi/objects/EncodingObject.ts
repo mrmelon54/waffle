@@ -15,7 +15,7 @@ export default class EncodingObject {
 
   private constructor() {}
 
-  static parse(ctx: OpenApiContext, v: any): StaticOptional<EncodingObject> {
+  static parse(ctx: OpenApiContext, v: any): Optional<EncodingObject> {
     if (v === null || v === undefined) return StaticOptional.empty();
     let o = new EncodingObject();
     o.$$raw = v;

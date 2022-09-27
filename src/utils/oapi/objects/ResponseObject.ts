@@ -16,7 +16,7 @@ export default class ResponseObject {
 
   private constructor() {}
 
-  static parse(ctx: OpenApiContext, v: any): StaticOptional<ResponseObject> {
+  static parse(ctx: OpenApiContext, v: any): Optional<ResponseObject> {
     if (v === null || v === undefined) return StaticOptional.empty();
     let o = new ResponseObject();
     o.$$raw = v;

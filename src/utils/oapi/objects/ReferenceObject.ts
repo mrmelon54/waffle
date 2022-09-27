@@ -8,7 +8,7 @@ export default class ReferenceObject {
 
   private constructor() {}
 
-  static parse(v: any): StaticOptional<ReferenceObject> {
+  static parse(v: any): Optional<ReferenceObject> {
     if (v === null || v === undefined) return StaticOptional.empty();
     let o = new ReferenceObject();
     o.$$raw = v;

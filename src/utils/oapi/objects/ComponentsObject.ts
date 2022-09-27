@@ -28,7 +28,7 @@ export default class ComponentsObject {
 
   private constructor() {}
 
-  static parse(ctx: OpenApiContext, v: any): StaticOptional<ComponentsObject> {
+  static parse(ctx: OpenApiContext, v: any): Optional<ComponentsObject> {
     if (v === null || v === undefined) return StaticOptional.empty();
     let o = new ComponentsObject();
     o.$$raw = v;

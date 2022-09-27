@@ -12,11 +12,11 @@ export default class TagObject {
 
   private constructor() {}
 
-  static parseArray(v: any): StaticOptional<TagObject[]> {
+  static parseArray(v: any): Optional<TagObject[]> {
     return parseArray<TagObject>(v, TagObject.parse);
   }
 
-  static parse(v: any): StaticOptional<TagObject> {
+  static parse(v: any): Optional<TagObject> {
     if (v === null || v === undefined) return StaticOptional.emptyWithError("object missing");
     let o = new TagObject();
     o.$$raw = v;
