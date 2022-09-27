@@ -1,21 +1,19 @@
 import YAML from "js-yaml";
 import OpenApiObject from "./oapi/objects/OpenApiObject";
+import StaticOptional from "./StaticOptional";
 
 export default class MultipleFileSpec {
   files: Map<string, OpenApiObject>;
 
-  constructor() {}
+  constructor() {
+    this.files = new Map();
+  }
 
-  async fetchAndParse(url: string): Promise<OpenApiObject> {
+  async fetchAndParse(url: string): Promise<any> {
+    if (this.files.has(url)) return StaticOptional.full(this.files.get(url));
     console.log(`Trying to fetch ${url}`);
     let v: any = await this.remoteFetch(url);
-    let file = this.parseAny(v);
-    let o = OpenApiObject.parse(this, file);
-    console.log(o);
-    if (o.isEmpty() || o.hasError()) throw new Error(`OpenApi parsing error: ${o.errorReason() ?? "No reason"}`);
-    let g = o.get();
-    this.files.set(url, g);
-    return g;
+    return this.parseAny(v);
   }
 
   private async remoteFetch(url: string): Promise<string> {

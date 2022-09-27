@@ -21,7 +21,7 @@ export default class MediaTypeObject {
     let o = new MediaTypeObject();
     o.$$raw = v;
     o.schema = SchemaObject.parse(ctx, v.schema);
-    console.log(o.schema);
+    // TODO: console.log(o.schema);
     o.example = StaticOptional.full(v.example);
     o.examples = parseCtxMap(ctx, v.examples, ExampleObject.parse);
     o.encoding = parseCtxMap(ctx, v.encoding, EncodingObject.parse);

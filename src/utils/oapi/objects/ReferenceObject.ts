@@ -1,3 +1,4 @@
+import Optional from "../../Optional";
 import StaticOptional from "../../StaticOptional";
 
 export default class ReferenceObject {

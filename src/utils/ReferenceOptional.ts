@@ -23,6 +23,7 @@ export default class ReferenceOptional<T> {
     if (this.doneLookup) return;
     this.doneLookup = true;
     let v: any = await this.ctx.lookup(this.ref);
+    console.log("v:", v);
     if (this.test(v)) {
       this.value = <T>v;
     } else {

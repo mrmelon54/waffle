@@ -12,7 +12,6 @@ import StaticOptional from "../../StaticOptional";
 import { parseCtxMap } from "../utils/ObjectUtils";
 import OpenApiContext from "../utils/OpenApiContext";
 import Optional from "../../Optional";
-import MultipleFileSpec from "../../MultipleFileSpec";
 
 export default class OpenApiObject {
   $$raw: any;
@@ -27,10 +26,10 @@ export default class OpenApiObject {
   tags: Optional<TagObject[]>;
   externalDocs: Optional<ExternalDocumentationObject>;
 
-  static parse(manager: MultipleFileSpec, v: any): Optional<OpenApiObject> {
+  static parse(fromCtx: OpenApiContext, v: any): Optional<OpenApiObject> {
     if (v === null || v === undefined) return StaticOptional.empty();
     let o = new OpenApiObject();
-    let ctx = OpenApiContext.generate(manager, o);
+    let ctx = fromCtx.withMainFile(o);
     o.$$raw = v;
     let ver = semver.parse(v.openapi);
     if (!ver) return StaticOptional.emptyWithError(`Invalid OpenAPI version: ${ver}`);
