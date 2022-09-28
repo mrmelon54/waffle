@@ -1,18 +1,19 @@
-<script>
-  import { magicGetFunc } from "../../utils/ref-parser";
+<script lang="ts">
+  import SchemaObject from "../../utils/oapi/objects/SchemaObject";
   import ArrayModel from "./ArrayModel.svelte";
   import ModelWrapper from "./ModelWrapper.svelte";
   import ObjectModel from "./ObjectModel.svelte";
   import PrimitiveModel from "./PrimitiveModel.svelte";
   import SchemaCollapse from "./SchemaCollapse.svelte";
 
-  export let schema;
-  export let required;
-  export let displayName;
+  export let schema: SchemaObject;
+  export let required = false;
+  export let displayName: string | undefined;
   export let topLevel = false;
   if (displayName === undefined) displayName = "";
 
-  let type = (schema && magicGetFunc(schema, "type")) || "object";
+  console.log("[Model] schema:", schema);
+  let type = schema ? schema.type.getOrDefault("object") : "object";
 </script>
 
 <ModelWrapper {topLevel}>

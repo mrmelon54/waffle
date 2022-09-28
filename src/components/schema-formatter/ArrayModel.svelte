@@ -1,6 +1,5 @@
 <script>
   import SvelteMarkdown from "svelte-markdown";
-  import { magicGetAllProperties, magicGetFunc, magicGetInFunc } from "../../utils/ref-parser";
   import Model from "./Model.svelte";
   import SchemaCollapse from "./SchemaCollapse.svelte";
   import RawProperty from "./RawProperty.svelte";

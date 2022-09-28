@@ -2,16 +2,22 @@ import StaticOptional from "../../StaticOptional";
 import PathItemObject from "./PathItemObject";
 import ReferenceObject from "./ReferenceObject";
 import OpenApiContext from "../utils/OpenApiContext";
+import { parseCtxMap } from "../utils/ObjectUtils";
+import SchemaObject from "./SchemaObject";
+import Optional from "../../Optional";
+import ResponseObject from "./ResponseObject";
+import ParameterObject from "./ParameterObject";
+import ExampleObject from "./ExampleObject";
+import RequestBodyObject from "./RequestBodyObject";
+import HeaderObject from "./HeaderObject";
+import LinkObject from "./LinkObject";
+import { CallbackObject, parseCallback } from "./CallbackObject";
 
-type SchemaObject = string;
-type ResponseObject = string;
-type ParameterObject = string;
-type ExampleObject = string;
-type RequestBodyObject = string;
-type HeaderObject = string;
-type SecuritySchemeObject = string;
-type LinkObject = string;
-type CallbackObject = string;
+class SecuritySchemeObject {
+  static parse(v: any): Optional<SecuritySchemeObject> {
+    return StaticOptional.empty();
+  }
+}
 
 export default class ComponentsObject {
   $$raw: any;
@@ -32,16 +38,16 @@ export default class ComponentsObject {
     if (v === null || v === undefined) return StaticOptional.empty();
     let o = new ComponentsObject();
     o.$$raw = v;
-    o.schemas = new Map();
-    o.responses = new Map();
-    o.parameters = new Map();
-    o.examples = new Map();
-    o.requestBodies = new Map();
-    o.headers = new Map();
-    o.securitySchemes = new Map();
-    o.links = new Map();
-    o.callbacks = new Map();
-    o.pathItems = new Map();
+    o.schemas = parseCtxMap(ctx, v.schemas, SchemaObject.parse);
+    o.responses = parseCtxMap(ctx, v.responses, ResponseObject.parse);
+    o.parameters = parseCtxMap(ctx, v.parameters, ParameterObject.parse);
+    o.examples = parseCtxMap(ctx, v.examples, ExampleObject.parse);
+    o.requestBodies = parseCtxMap(ctx, v.requestBodies, RequestBodyObject.parse);
+    o.headers = parseCtxMap(ctx, v.headers, HeaderObject.parse);
+    o.securitySchemes = parseCtxMap(ctx, v.securitySchemes, SecuritySchemeObject.parse);
+    o.links = parseCtxMap(ctx, v.links, LinkObject.parse);
+    o.callbacks = parseCtxMap(ctx, v.callbacks, parseCallback);
+    o.pathItems = parseCtxMap(ctx, v.pathItems, PathItemObject.parse);
     // TODO: brrr
     return StaticOptional.full(o);
   }

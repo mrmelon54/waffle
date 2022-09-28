@@ -1,6 +1,5 @@
 <script>
   import SvelteMarkdown from "svelte-markdown";
-  import { magicGetFunc, magicGetInFunc } from "../../utils/ref-parser";
   import EnumModel from "./EnumModel.svelte";
   import RawProperty from "./RawProperty.svelte";
 

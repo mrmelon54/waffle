@@ -2,7 +2,6 @@ import MultipleFileSpec from "../../MultipleFileSpec";
 import Optional from "../../Optional";
 import StaticOptional from "../../StaticOptional";
 import OpenApiObject from "../objects/OpenApiObject";
-import OperationObject from "../objects/OperationObject";
 
 export default class OpenApiContext {
   mainFile?: OpenApiObject;
@@ -42,8 +41,6 @@ export default class OpenApiContext {
     let hashIdx = ref.indexOf("#");
     let file = ref.slice(0, hashIdx);
     let tree = ref.slice(hashIdx + 1);
-    console.log("File:", file);
-    console.log("Tree:", tree);
     let f = await this.loadFile(file);
     if (f.isEmpty()) return Promise.reject(f.errorReason() ?? "No reason");
     return f.get().lookup(tree.split("/").slice(1));
@@ -53,10 +50,8 @@ export default class OpenApiContext {
     if (url == "") return StaticOptional.full(this.mainFile!);
     if (this.files.has(url)) return StaticOptional.full(this.files.get(url));
     let file = await this.manager!.fetchAndParse(url);
-    console.log(file);
 
     let o = OpenApiObject.parse(this, file);
-    console.log(o);
     if (o.isEmpty() || o.hasError()) return StaticOptional.emptyWithError(`OpenApi parsing error: ${o.errorReason() ?? "No reason"}`);
     let g = o.get();
     this.files.set(url, g);

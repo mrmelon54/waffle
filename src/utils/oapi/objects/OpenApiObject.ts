@@ -57,6 +57,10 @@ export default class OpenApiObject {
   lookup(ref: string[]): any {
     let v: any = this;
     for (let i of ref) {
+      if (v.isEmpty !== undefined) {
+        if (v.isEmpty() || v.hasError()) return undefined;
+        if (v.isFull()) v = v.get();
+      }
       v = v[i];
       if (v === null || v === undefined) return undefined;
     }

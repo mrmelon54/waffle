@@ -1,16 +1,16 @@
 <script>
   import SvelteMarkdown from "svelte-markdown";
-  import { magicGetFunc, magicGetAllProperties, magicGetInFunc, magicGetSingleProperty } from "../../utils/ref-parser";
   import Model from "./Model.svelte";
   import SchemaCollapse from "./SchemaCollapse.svelte";
   import SchemaProperty from "./SchemaProperty.svelte";
 
-  export let schema;
+  export let schema:ObjectSchemaObject;
   export let parent;
   export let required;
   export let displayName;
 
   if (!schema) console.error("[ObjectModel] Schema is invalid:", schema, "[Parent]:", parent);
+  console.log(schema.description);
   let description = magicGetFunc(schema, "description");
   let properties = magicGetAllProperties(schema) || {};
   let additionalProperties = magicGetFunc(schema, "additionalProperties") || {};
