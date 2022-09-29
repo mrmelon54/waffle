@@ -1,16 +1,17 @@
-<script>
+<script lang="ts">
   import SvelteMarkdown from "svelte-markdown";
+  import SchemaObjectObject from "../../utils/oapi/objects/SchemaObject-Object";
   import Model from "./Model.svelte";
   import SchemaCollapse from "./SchemaCollapse.svelte";
   import SchemaProperty from "./SchemaProperty.svelte";
 
-  export let schema:ObjectSchemaObject;
+  export let schema: SchemaObjectObject;
   export let parent;
   export let required;
   export let displayName;
 
   if (!schema) console.error("[ObjectModel] Schema is invalid:", schema, "[Parent]:", parent);
-  console.log(schema.description);
+  console.error("Sparta:", schema.$$raw);
   let description = magicGetFunc(schema, "description");
   let properties = magicGetAllProperties(schema) || {};
   let additionalProperties = magicGetFunc(schema, "additionalProperties") || {};
