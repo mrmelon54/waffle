@@ -1,35 +1,31 @@
 <script lang="ts">
   import SvelteMarkdown from "svelte-markdown";
-  import SchemaObjectObject from "../../utils/oapi/objects/SchemaObject-Object";
+  import { get } from "svelte/store";
+  import SchemaObject from "../../utils/oapi/objects/SchemaObject";
+  import SchemaObjectObject from "../../utils/oapi/schemas/SchemaObject-Object";
   import Model from "./Model.svelte";
   import SchemaCollapse from "./SchemaCollapse.svelte";
   import SchemaProperty from "./SchemaProperty.svelte";
 
   export let schema: SchemaObjectObject;
-  export let parent;
-  export let required;
-  export let displayName;
+  export let required: boolean;
+  export let displayName: string;
 
   if (!schema) console.error("[ObjectModel] Schema is invalid:", schema, "[Parent]:", parent);
-  console.error("Sparta:", schema.$$raw);
-  let description = magicGetFunc(schema, "description");
-  let properties = magicGetAllProperties(schema) || {};
-  let additionalProperties = magicGetFunc(schema, "additionalProperties") || {};
-  let title = (magicGetFunc(schema, "title") || displayName) + (required ? "*" : "");
-  let requiredProperties = magicGetFunc(schema, "required") || [];
-  let deprecated = magicGetFunc(schema, "deprecated");
-  let externalDocsUrl = magicGetInFunc(schema, ["externalDocs", "url"]);
-  let externalDocsDescription = magicGetInFunc(schema, ["externalDocs", "description"]);
+  console.error(schema);
+  let title = (schema.title !== undefined && schema.title.isFull() ? schema.title.get() : displayName) + (required ? "*" : "");
+  let requiredProperties = schema.requiredProperties.getOrDefault([]);
+  let properties = schema.properties.getOrDefault(new Map());
+  let propKeys = sortedKeys(properties);
 
-  function sortedKeys(props) {
+  function sortedKeys(props: Map<string, SchemaObject>) {
     if (!props) return [];
-    let k = Object.keys(props);
-    k = Array.from(new Set(k));
-    k.sort();
+    let k = Array.from(props.entries());
+    k.sort((a, b) => a[0].localeCompare(b[0]));
     return k;
   }
 
-  function isRequired(key) {
+  function isRequired(key: string): boolean {
     return requiredProperties.indexOf(key) != -1;
   }
 </script>
@@ -37,32 +33,30 @@
 <div>
   <SchemaCollapse {title} collapseText={"{...}"} beforeText={"{"} afterText={"}"}>
     <table class="inner-object">
-      {#if description}
+      {#if schema.description.isFull()}
         <tr>
           <td colspan="2" class="schema-description">
-            <SvelteMarkdown source={description} />
+            <SvelteMarkdown source={schema.description.get()} />
           </td>
         </tr>
       {/if}
-      {#if externalDocsUrl}
+      {#if schema.externalDocs.isFull()}
         <tr>
           <td colspan="2" class="external-docs">
-            <a target="_blank" href={externalDocsUrl}>{externalDocsDescription || externalDocsUrl}</a>
+            <a target="_blank" href={schema.externalDocs.get().url}>{schema.externalDocs.get().description.getOrDefault(schema.externalDocs.get().url)}</a>
           </td>
         </tr>
       {/if}
-      {#if deprecated}
+      {#if schema.deprecated.getOrDefault(false)}
         <tr class="property">
           <td>deprecated:</td>
           <td>true</td>
         </tr>
       {/if}
-      {#each properties as props}
-        {#each props as k}
-          <SchemaProperty key={k} required={isRequired(k)}>
-            <Model schema={magicGetSingleProperty(schema, k)} parent={schema} displayName={""} />
-          </SchemaProperty>
-        {/each}
+      {#each propKeys as k}
+        <SchemaProperty key={k[0]} required={isRequired(k[0])}>
+          <Model schema={k[1]} displayName={""} />
+        </SchemaProperty>
       {/each}
     </table>
   </SchemaCollapse>

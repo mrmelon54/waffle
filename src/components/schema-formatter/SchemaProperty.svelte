@@ -1,10 +1,10 @@
 <script>
   export let key;
-  export let isRequired;
+  export let required;
 </script>
 
 <tr>
-  <td class="schema-inner-key">{key}{isRequired ? "*" : ""}</td>
+  <td class="schema-inner-key">{key}{required ? "*" : ""}</td>
   <td class="schema-inner-value">
     <slot />
   </td>
