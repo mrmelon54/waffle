@@ -15,7 +15,7 @@
   let rawObj = schema.asObject();
   let rawArr = schema.asArray();
   let rawPrim = schema.asPrimitive();
-  let isRaw = rawObj.isFull() || rawArr.isFull() || rawPrim.isFull();
+  let isRaw = type in ["object", "array", "string", "integer", "number", "boolean"] && (rawObj.isFull() || rawArr.isFull() || rawPrim.isFull());
   console.log("[Model]", schema, type, isRaw);
 
   let allOf = schema.allOf.getOrDefault([]);

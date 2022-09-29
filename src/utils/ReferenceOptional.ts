@@ -15,6 +15,7 @@ export default class ReferenceOptional<T> {
     o.ctx = ctx;
     o.ref = ref;
     o.test = test;
+    console.log("Starting lookup for:", o);
     ctx.waitFor(o.lookup());
     return o;
   }
@@ -25,6 +26,7 @@ export default class ReferenceOptional<T> {
     this.error = "Still looking up";
     let v: any = await this.ctx.lookup(this.ref);
     if (this.test(v)) {
+      console.log("Final value is:", v);
       this.value = <T>v;
       this.error = "[ReferenceOptional] Value is null or undefined";
     } else {

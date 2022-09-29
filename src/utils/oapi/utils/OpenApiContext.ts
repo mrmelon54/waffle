@@ -43,6 +43,7 @@ export default class OpenApiContext {
     let tree = ref.slice(hashIdx + 1);
     let f = await this.loadFile(file);
     if (f.isEmpty()) return Promise.reject(f.errorReason() ?? "No reason");
+    console.info("Context lookup", f, tree.split("/").slice(1));
     return f.get().lookup(tree.split("/").slice(1));
   }
 

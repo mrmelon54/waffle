@@ -19,19 +19,24 @@ export default class SchemaObject {
   private constructor() {}
 
   static parse(ctx: OpenApiContext, v: any): Optional<SchemaObject> {
-    console.error("[SchemaObject] parsing", v);
     if (v === null || v === undefined) return StaticOptional.empty();
     let o = new SchemaObject();
     o.$$raw = v;
     o.$$ctx = ctx;
     o.$ref = StaticOptional.full(v.$ref);
-    o.type = v.type || "detect";
+    o.type = v.type || SchemaObject.detectType(v);
     o.allOf = parseCtxArray(ctx, v.allOf, SchemaObject.parse);
     o.anyOf = parseCtxArray(ctx, v.anyOf, SchemaObject.parse);
     o.oneOf = parseCtxArray(ctx, v.oneOf, SchemaObject.parse);
     if (v.allOf !== undefined) console.log("Trying to parse", v.allOf, o.allOf);
     if (o.$ref.isFull()) return ReferenceOptional.generate(ctx, o.$ref.get(), () => true);
     return StaticOptional.full(o);
+  }
+
+  static detectType(v: any) {
+    if (v.properties !== undefined) return "object";
+    if (v.items !== undefined) return "array";
+    return "unknown";
   }
 
   asObject(): Optional<SchemaObjectObject> {
@@ -47,17 +52,5 @@ export default class SchemaObject {
   asPrimitive(): Optional<SchemaObjectPrimitive> {
     if (this.type === "object" || this.type === "array") return StaticOptional.emptyWithError("SchemaObject of type 'object' or 'array' cannot be converted to primitive");
     return SchemaObjectPrimitive.parse(this.$$ctx, this);
-  }
-
-  asAllOf(): Optional<SchemaObject[]> {
-    return this.allOf;
-  }
-
-  asAnyOf(): Optional<SchemaObject[]> {
-    return this.anyOf;
-  }
-
-  asOneOf(): Optional<SchemaObject[]> {
-    return this.oneOf;
   }
 }
