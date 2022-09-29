@@ -5,7 +5,7 @@ export default class StaticOptional<T> {
   private error?: string;
 
   static empty<U>(): Optional<U> {
-    return new this<U>(null);
+    return new this<U>(null, "EMPTY");
   }
 
   static emptyWithError<U>(msg: string): Optional<U> {

@@ -1,11 +1,9 @@
 <script lang="ts">
-  import { get } from "svelte/store";
   import SchemaObject from "../../utils/oapi/objects/SchemaObject";
   import ArrayModel from "./ArrayModel.svelte";
   import ModelWrapper from "./ModelWrapper.svelte";
   import ObjectModel from "./ObjectModel.svelte";
   import PrimitiveModel from "./PrimitiveModel.svelte";
-  import SchemaCollapse from "./SchemaCollapse.svelte";
 
   export let schema: SchemaObject;
   export let required = false;
@@ -18,18 +16,11 @@
   let rawArr = schema.asArray();
   let rawPrim = schema.asPrimitive();
   let isRaw = rawObj.isFull() || rawArr.isFull() || rawPrim.isFull();
-  console.log(schema, isRaw);
+  console.log("[Model]", schema, type, isRaw);
 
   let allOf = schema.allOf.getOrDefault([]);
   let anyOf = schema.anyOf.getOrDefault([]);
   let oneOf = schema.oneOf.getOrDefault([]);
-
-  function sortedKeys(props: Map<string, SchemaObject>) {
-    if (!props) return [];
-    let k = Array.from(props.entries());
-    k.sort((a, b) => a[0].localeCompare(b[0]));
-    return k;
-  }
 </script>
 
 <ModelWrapper {topLevel}>
@@ -47,11 +38,11 @@
         <div>Failed to render ArrayModel</div>
       {/if}
     {:else if rawPrim.isFull()}
-      <PrimitiveModel schema={rawPrim.get()} {displayName} {required} />
+      <PrimitiveModel schema={rawPrim.get()} {displayName} />
     {:else}
       <div>Failed to render model</div>
     {/if}
-  {:else if allOf.length > 0}
+  {:else if schema.allOf.isFull()}
     <h5>All of:</h5>
     <ul>
       {#each allOf as schema}
@@ -60,7 +51,7 @@
         </li>
       {/each}
     </ul>
-  {:else if anyOf.length > 0}
+  {:else if schema.anyOf.isFull() || schema.anyOf.hasError()}
     <h5>Any of:</h5>
     <ul>
       {#each anyOf as schema}
@@ -69,7 +60,7 @@
         </li>
       {/each}
     </ul>
-  {:else if oneOf.length > 0}
+  {:else if schema.oneOf.isFull() || schema.oneOf.hasError()}
     <h5>One of:</h5>
     <ul>
       {#each oneOf as schema}

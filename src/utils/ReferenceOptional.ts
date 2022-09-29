@@ -22,13 +22,14 @@ export default class ReferenceOptional<T> {
   private async lookup(): Promise<void> {
     if (this.doneLookup) return;
     this.doneLookup = true;
+    this.error = "Still looking up";
     let v: any = await this.ctx.lookup(this.ref);
-    console.log("v:", v);
     if (this.test(v)) {
       this.value = <T>v;
+      this.error = "[ReferenceOptional] Value is null or undefined";
     } else {
       this.value = null;
-      this.error = `Referenced value has wrong type '${typeof v}'`;
+      this.error = "[ReferenceOptional] Referenced value failed the lookup test";
     }
   }
 

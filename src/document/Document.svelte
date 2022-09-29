@@ -4,7 +4,6 @@
   import Selector from "../components/Selector.svelte";
   import RequestCategories from "./RequestCategories.svelte";
   import OpenApiObject from "../utils/oapi/objects/OpenApiObject";
-  import ComponentsObject from "../utils/oapi/objects/ComponentsObject";
 
   export let spec: OpenApiObject;
 
@@ -43,9 +42,9 @@
       <h4>Schemas</h4>
       <p>{spec.components.errorReason()}</p>
     </div>
-  {:else if spec.components.isFull()}
+  {:else if spec.components.isFull() && spec.components.get().schemas.isFull()}
     <div class="doc-gap" />
-    <Schemas schemas={spec.components.get().schemas} />
+    <Schemas schemas={spec.components.get().schemas.get()} />
   {/if}
 </div>
 

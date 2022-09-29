@@ -20,7 +20,6 @@
     <div>Loading...</div>
   {:then x}
     {#if x.isFull()}
-      {console.log("a:", x.get())}
       <Document spec={x.get().get()} />
     {:else}
       <div id="spec-errors">

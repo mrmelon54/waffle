@@ -21,16 +21,16 @@ class SecuritySchemeObject {
 
 export default class ComponentsObject {
   $$raw: any;
-  schemas: Map<string, SchemaObject>;
-  responses: Map<string, ResponseObject | ReferenceObject>;
-  parameters: Map<string, ParameterObject | ReferenceObject>;
-  examples: Map<string, ExampleObject | ReferenceObject>;
-  requestBodies: Map<string, RequestBodyObject | ReferenceObject>;
-  headers: Map<string, HeaderObject | ReferenceObject>;
-  securitySchemes: Map<string, SecuritySchemeObject | ReferenceObject>;
-  links: Map<string, LinkObject | ReferenceObject>;
-  callbacks: Map<string, CallbackObject | ReferenceObject>;
-  pathItems: Map<string, PathItemObject | ReferenceObject>;
+  schemas: Optional<Map<string, SchemaObject>>;
+  responses: Optional<Map<string, ResponseObject | ReferenceObject>>;
+  parameters: Optional<Map<string, ParameterObject | ReferenceObject>>;
+  examples: Optional<Map<string, ExampleObject | ReferenceObject>>;
+  requestBodies: Optional<Map<string, RequestBodyObject | ReferenceObject>>;
+  headers: Optional<Map<string, HeaderObject | ReferenceObject>>;
+  securitySchemes: Optional<Map<string, SecuritySchemeObject | ReferenceObject>>;
+  links: Optional<Map<string, LinkObject | ReferenceObject>>;
+  callbacks: Optional<Map<string, CallbackObject | ReferenceObject>>;
+  pathItems: Optional<Map<string, PathItemObject | ReferenceObject>>;
 
   private constructor() {}
 

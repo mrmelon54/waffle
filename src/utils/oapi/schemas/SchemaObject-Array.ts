@@ -27,9 +27,7 @@ export default class SchemaObjectArray {
     o.$$orig = z;
     o.$ref = z.$ref;
     o.type = "array";
-    console.log(v.items);
     let rItems = SchemaObject.parse(ctx, v.items);
-    console.log(rItems);
     o.items = rItems.isFull() ? rItems.get().asPrimitive() : StaticOptional.empty();
     o.description = StaticOptional.full(v.description);
     o.title = StaticOptional.full(v.title);
