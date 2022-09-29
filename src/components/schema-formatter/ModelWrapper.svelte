@@ -12,6 +12,6 @@
 
 <style>
   .model-wrapper {
-    margin: 16px;
+    margin: 16px 0;
   }
 </style>

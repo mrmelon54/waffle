@@ -1,26 +1,20 @@
-<script>
+<script lang="ts">
   import SvelteMarkdown from "svelte-markdown";
+  import SchemaObjectPrimitive from "../../utils/oapi/schemas/SchemaObject-Primitive";
   import EnumModel from "./EnumModel.svelte";
   import RawProperty from "./RawProperty.svelte";
 
-  export let schema;
-  export let displayName;
+  export let schema: SchemaObjectPrimitive;
+  export let displayName: string;
 
-  let type = magicGetFunc(schema, "type");
-  let format = magicGetFunc(schema, "format");
-  let xml = magicGetFunc(schema, "xml");
-  let enumArray = magicGetFunc(schema, "enum");
-  let title = magicGetFunc(schema, "title") || displayName;
-  let description = magicGetFunc(schema, "description");
-  let externalDocsUrl = magicGetInFunc(schema, ["externalDocs", "url"]);
-  let externalDocsDescription = magicGetInFunc(schema, ["externalDocs", "description"]);
+  let title = schema.title.getOrDefault(displayName);
 
   let rawProps = [];
   addRawProps("default", "readOnly", "writeOnly", "minLength", "maxLength", "pattern", "example");
 
-  function addRawProps(...keys) {
+  function addRawProps(...keys: string[]) {
     for (let x of keys) {
-      let z = magicGetFunc(schema, x);
+      let z = schema[x];
       if (z !== undefined) rawProps.push({ key: x, value: z });
     }
   }
@@ -31,32 +25,32 @@
     {#if title}
       <span class="prop-title">{title}</span>
     {/if}
-    <span class="prop-type">{type}</span>
-    {#if format}
-      <span class="prop-format">(${format})</span>
+    <span class="prop-type">{schema.type}</span>
+    {#if schema.format !== undefined && schema.format.isFull()}
+      <span class="prop-format">(${schema.format.get()})</span>
     {/if}
   </h5>
   <table>
     {#each rawProps as prop}
-      <RawProperty propKey={prop.key} propVal={prop.value} />
+      <RawProperty propKey={prop.key} propVal={prop.value} isRequired={false} />
     {/each}
-    {#if description}
+    {#if schema.description.isFull()}
       <tr>
         <td colspan="2" class="schema-description">
-          <SvelteMarkdown source={description} />
+          <SvelteMarkdown source={schema.description.get()} />
         </td>
       </tr>
     {/if}
-    {#if externalDocsUrl}
+    {#if schema.externalDocs.isFull()}
       <tr>
         <td colspan="2" class="external-docs">
-          <a target="_blank" href={externalDocsUrl}>{externalDocsDescription || externalDocsUrl}</a>
+          <a target="_blank" href={schema.externalDocs.get().url}>{schema.externalDocs.get().description.getOrDefault(schema.externalDocs.get().url)}</a>
         </td>
       </tr>
     {/if}
   </table>
-  {#if enumArray}
-    <EnumModel value={enumArray} />
+  {#if schema.enumValues.isFull()}
+    <EnumModel value={schema.enumValues.get()} />
   {/if}
 </span>
 

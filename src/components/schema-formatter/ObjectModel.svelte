@@ -1,6 +1,5 @@
 <script lang="ts">
   import SvelteMarkdown from "svelte-markdown";
-  import { get } from "svelte/store";
   import SchemaObject from "../../utils/oapi/objects/SchemaObject";
   import SchemaObjectObject from "../../utils/oapi/schemas/SchemaObject-Object";
   import Model from "./Model.svelte";
@@ -11,9 +10,7 @@
   export let required: boolean;
   export let displayName: string;
 
-  if (!schema) console.error("[ObjectModel] Schema is invalid:", schema, "[Parent]:", parent);
-  console.error(schema);
-  let title = (schema.title !== undefined && schema.title.isFull() ? schema.title.get() : displayName) + (required ? "*" : "");
+  let title = schema.title.getOrDefault(displayName) + (required ? "*" : "");
   let requiredProperties = schema.requiredProperties.getOrDefault([]);
   let properties = schema.properties.getOrDefault(new Map());
   let propKeys = sortedKeys(properties);

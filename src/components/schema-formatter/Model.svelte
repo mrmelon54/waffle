@@ -1,4 +1,5 @@
 <script lang="ts">
+  import { get } from "svelte/store";
   import SchemaObject from "../../utils/oapi/objects/SchemaObject";
   import ArrayModel from "./ArrayModel.svelte";
   import ModelWrapper from "./ModelWrapper.svelte";
@@ -17,6 +18,7 @@
   let rawArr = schema.asArray();
   let rawPrim = schema.asPrimitive();
   let isRaw = rawObj.isFull() || rawArr.isFull() || rawPrim.isFull();
+  console.log(schema, isRaw);
 
   let allOf = schema.allOf.getOrDefault([]);
   let anyOf = schema.anyOf.getOrDefault([]);
@@ -40,22 +42,14 @@
       {/if}
     {:else if type == "array"}
       {#if rawArr.isFull()}
-        <ArrayModel {schema} {displayName} {required} />
+        <ArrayModel schema={rawArr.get()} {displayName} {required} />
       {:else}
         <div>Failed to render ArrayModel</div>
       {/if}
-    {:else if topLevel}
-      {#if rawPrim.isFull()}
-        <SchemaCollapse title={displayName} collapseText=" " beforeText="" afterText="">
-          <PrimitiveModel {schema} displayName="" {required} />
-        </SchemaCollapse>
-      {:else}
-        <div>Failed to renderPrimitiveModel</div>
-      {/if}
     {:else if rawPrim.isFull()}
-      <PrimitiveModel {schema} {displayName} {required} />
+      <PrimitiveModel schema={rawPrim.get()} {displayName} {required} />
     {:else}
-      <div>Failed to renderPrimitiveModel</div>
+      <div>Failed to render model</div>
     {/if}
   {:else if allOf.length > 0}
     <h5>All of:</h5>

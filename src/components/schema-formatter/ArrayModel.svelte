@@ -1,63 +1,65 @@
-<script>
+<script lang="ts">
   import SvelteMarkdown from "svelte-markdown";
-  import Model from "./Model.svelte";
   import SchemaCollapse from "./SchemaCollapse.svelte";
   import RawProperty from "./RawProperty.svelte";
   import SchemaProperty from "./SchemaProperty.svelte";
+  import SchemaObjectArray from "../../utils/oapi/schemas/SchemaObject-Array";
+  import PrimitiveModel from "./PrimitiveModel.svelte";
+  import ModelWrapper from "./ModelWrapper.svelte";
+  import { get } from "svelte/store";
 
-  export let schema;
-  export let displayName;
-  export let required;
+  export let schema: SchemaObjectArray;
+  export let displayName: string;
+  export let required: boolean;
 
-  let description = magicGetFunc(schema, "description");
-  let properties = magicGetAllProperties(schema) || {};
-  let items = magicGetFunc(schema, "items");
-  let title = (magicGetFunc(schema, "title") || displayName) + (required ? "*" : "");
-  // ["type", "items", "description", "$ref", "externalDocs"].indexOf(key) === -1
-  let deprecated = magicGetFunc(schema, "deprecated");
-  let externalDocsUrl = magicGetInFunc(schema, ["externalDocs", "url"]);
-  let externalDocsDescription = magicGetInFunc(schema, ["externalDocs", "description"]);
+  let title = schema.title.getOrDefault(displayName) + (required ? "*" : "");
 
   let rawProps = [];
   addRawProps("readOnly", "writeOnly", "minItems", "maxItems", "minLength", "maxLength");
   addJsonProps("xml", "additionalItems");
 
-  function addRawProps(...keys) {
+  function addRawProps(...keys: string[]) {
     for (let x of keys) {
-      let z = magicGetFunc(schema, x);
+      let z = schema[x];
       if (z !== undefined) rawProps.push({ key: x, value: String(z) });
     }
   }
 
-  function addJsonProps(...keys) {
+  function addJsonProps(...keys: string[]) {
     for (let x of keys) {
-      let z = magicGetFunc(schema, x);
+      let z = schema[x];
       if (z !== undefined) rawProps.push({ key: x, value: JSON.stringify(z) });
     }
   }
 </script>
 
 <span class="model">
-  <SchemaCollapse {title} collapseText="[...]">
+  <SchemaCollapse {title} collapseText="[...]" beforeText="" afterText="">
     <table class="inner-table">
       {#each rawProps as prop}
-        <RawProperty propKey={prop.key} propVal={prop.value} />
+        <RawProperty propKey={prop.key} propVal={prop.value} isRequired={false} />
       {/each}
-      {#if description}
+      {#if schema.description.isFull()}
         <tr>
           <td colspan="2" class="schema-description">
-            <SvelteMarkdown source={description} />
+            <SvelteMarkdown source={schema.description.get()} />
           </td>
         </tr>
       {/if}
-      {#if externalDocsUrl}
-        <div class="external-docs">
-          <a target="_blank" href={externalDocsUrl}>{externalDocsDescription || externalDocsUrl}</a>
-        </div>
+      {#if schema.externalDocs.isFull()}
+        <tr>
+          <td colspan="2" class="external-docs">
+            <a target="_blank" href={schema.externalDocs.get().url}>{schema.externalDocs.get().description.getOrDefault(schema.externalDocs.get().url)}</a>
+          </td>
+        </tr>
       {/if}
-      <SchemaProperty key={"items"} open={true}>
-        <Model displayName={magicGetFunc(items, "$name")} schema={items} required={false} />
-      </SchemaProperty>
+      {#if schema.items.isFull()}
+        <SchemaProperty key={"items"} open={true}>
+          <ModelWrapper topLevel={false}>
+            <PrimitiveModel schema={schema.items.get()} displayName={schema.items.get().toString()} required={false} />
+          </ModelWrapper>
+        </SchemaProperty>
+      {/if}
     </table>
   </SchemaCollapse>
 </span>

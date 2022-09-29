@@ -4,6 +4,8 @@ import ReferenceOptional from "../../ReferenceOptional";
 import OpenApiContext from "../utils/OpenApiContext";
 import SchemaObjectObject from "../schemas/SchemaObject-Object";
 import { parseCtxArray } from "../utils/ObjectUtils";
+import SchemaObjectArray from "../schemas/SchemaObject-Array";
+import SchemaObjectPrimitive from "../schemas/SchemaObject-Primitive";
 
 export default class SchemaObject {
   $$raw: any;
@@ -26,7 +28,7 @@ export default class SchemaObject {
     o.allOf = parseCtxArray(ctx, v.allOf, SchemaObject.parse);
     o.anyOf = parseCtxArray(ctx, v.anyOf, SchemaObject.parse);
     o.oneOf = parseCtxArray(ctx, v.oneOf, SchemaObject.parse);
-    if (o.$ref.isFull()) return ReferenceOptional.generate(ctx, o.$ref.get(), (x) => x instanceof SchemaObject);
+    if (o.$ref.isFull()) return ReferenceOptional.generate(ctx, o.$ref.get(), () => true);
     return StaticOptional.full(o);
   }
 
@@ -35,13 +37,13 @@ export default class SchemaObject {
     return SchemaObjectObject.parse(this.$$ctx, this);
   }
 
-  asArray(): Optional<SchemaObjectObject> {
-    if (this.type !== "array") return StaticOptional.emptyWithError("Only SchemaObject of type 'object' will convert to an object");
+  asArray(): Optional<SchemaObjectArray> {
+    if (this.type !== "array") return StaticOptional.emptyWithError("Only SchemaObject of type 'array' will convert to an object");
     return SchemaObjectArray.parse(this.$$ctx, this);
   }
 
-  asPrimitive(): Optional<SchemaObjectObject> {
-    if (this.type !== "primitive") return StaticOptional.emptyWithError("Only SchemaObject of type 'object' will convert to an object");
+  asPrimitive(): Optional<SchemaObjectPrimitive> {
+    if (this.type === "object" || this.type === "array") return StaticOptional.emptyWithError("SchemaObject of type 'object' or 'array' cannot be converted to primitive");
     return SchemaObjectPrimitive.parse(this.$$ctx, this);
   }
 

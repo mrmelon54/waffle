@@ -33,11 +33,11 @@ export default class ReferenceOptional<T> {
   }
 
   isEmpty(): boolean {
-    return this.value === null;
+    return this.value === null || this.value === undefined;
   }
 
   isFull(): boolean {
-    return this.value !== null;
+    return !this.isEmpty();
   }
 
   hasError(): boolean {

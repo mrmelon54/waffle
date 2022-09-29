@@ -13,7 +13,7 @@ export default class StaticOptional<T> {
   }
 
   static full<U>(value: U | null | undefined): Optional<U> {
-    if (value === null || value === undefined) return new this<U>(null);
+    if (value === null || value === undefined) return this.empty<U>();
     return new this<U>(value);
   }
 
@@ -23,11 +23,11 @@ export default class StaticOptional<T> {
   }
 
   isEmpty() {
-    return this.value === null;
+    return this.value === null || this.value === undefined;
   }
 
   isFull() {
-    return this.value !== null;
+    return !this.isEmpty();
   }
 
   hasError(): boolean {

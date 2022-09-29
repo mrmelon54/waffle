@@ -12,12 +12,10 @@
     {#if schemas.isFull()}
       {#each [...schemas.get().entries()] as [key, schema]}
         <div class="schemas-list">
-          {console.error("[Model] Schema:", schema)}
           <Model displayName={key} {schema} required={false} topLevel={true} />
         </div>
       {/each}
     {/if}
-    {console.log(schemas)}
   </Dropdown>
 </div>
 
