@@ -1,6 +1,6 @@
 <script lang="ts">
   import SvelteMarkdown from "svelte-markdown";
-  import SchemaObject from "../../utils/oapi/objects/SchemaObject";
+  import SchemaObject from "../../utils/oapi/objects-old/SchemaObject";
   import SchemaObjectObject from "../../utils/oapi/schemas/SchemaObject-Object";
   import Model from "./Model.svelte";
   import SchemaCollapse from "./SchemaCollapse.svelte";

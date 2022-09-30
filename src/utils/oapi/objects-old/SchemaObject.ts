@@ -18,18 +18,17 @@ export default class SchemaObject {
 
   private constructor() {}
 
-  static parse(ctx: OpenApiContext, v: any): Optional<SchemaObject> {
+  static parse(ctx: OpenApiContext, v: any): Promise<Optional<SchemaObject>> {
     if (v === null || v === undefined) return StaticOptional.empty();
     let o = new SchemaObject();
     o.$$raw = v;
     o.$$ctx = ctx;
     o.$ref = StaticOptional.full(v.$ref);
+    if (o.$ref.isFull()) return ReferenceOptional.generateCtx(ctx, o.$ref.get(), SchemaObject.parse);
     o.type = v.type || SchemaObject.detectType(v);
     o.allOf = parseCtxArray(ctx, v.allOf, SchemaObject.parse);
     o.anyOf = parseCtxArray(ctx, v.anyOf, SchemaObject.parse);
     o.oneOf = parseCtxArray(ctx, v.oneOf, SchemaObject.parse);
-    if (v.allOf !== undefined) console.log("Trying to parse", v.allOf, o.allOf);
-    if (o.$ref.isFull()) return ReferenceOptional.generate(ctx, o.$ref.get(), () => true);
     return StaticOptional.full(o);
   }
 

@@ -10,7 +10,7 @@ export default class ResponsesObject {
 
   private constructor() {}
 
-  static parse(ctx: OpenApiContext, v: any): Optional<ResponsesObject> {
+  static parse(ctx: OpenApiContext, v: any): Promise<Optional<ResponsesObject>> {
     let o = new ResponsesObject();
     o.$$raw = v;
     let m = parseCtxMap<string, ResponseObject | ReferenceObject>(ctx, v, ResponseObject.parse);

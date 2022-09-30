@@ -16,7 +16,7 @@ export default class TagObject {
     return parseArray<TagObject>(v, TagObject.parse);
   }
 
-  static parse(v: any): Optional<TagObject> {
+  static parse( v: any): Promise<Optional<TagObject>> {
     if (v === null || v === undefined) return StaticOptional.emptyWithError("object missing");
     let o = new TagObject();
     o.$$raw = v;

@@ -16,7 +16,7 @@ export default class MediaTypeObject {
 
   private constructor() {}
 
-  static parse(ctx: OpenApiContext, v: any): Optional<MediaTypeObject> {
+  static parse(ctx: OpenApiContext, v: any): Promise<Optional<MediaTypeObject>> {
     if (v === null || v === undefined) return StaticOptional.empty();
     let o = new MediaTypeObject();
     o.$$raw = v;

@@ -1,7 +1,7 @@
 <script lang="ts">
   import SvelteMarkdown from "svelte-markdown";
-  import OperationObject from "../../utils/oapi/objects/OperationObject";
-  import RequestBodyObject from "../../utils/oapi/objects/RequestBodyObject";
+  import OperationObject from "../../utils/oapi/objects-old/OperationObject";
+  import RequestBodyObject from "../../utils/oapi/objects-old/RequestBodyObject";
   import Parameter from "./Parameter.svelte";
   import Response from "./Response.svelte";
   export let open = false;

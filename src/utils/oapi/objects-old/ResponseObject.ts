@@ -5,6 +5,7 @@ import LinkObject from "./LinkObject";
 import ReferenceObject from "./ReferenceObject";
 import { parseCtxMap } from "../utils/ObjectUtils";
 import OpenApiContext from "../utils/OpenApiContext";
+import Optional from "../../Optional";
 
 export default class ResponseObject {
   $$raw: any;
@@ -16,7 +17,7 @@ export default class ResponseObject {
 
   private constructor() {}
 
-  static parse(ctx: OpenApiContext, v: any): Optional<ResponseObject> {
+  static parse(ctx: OpenApiContext, v: any): Promise<Optional<ResponseObject>> {
     if (v === null || v === undefined) return StaticOptional.empty();
     let o = new ResponseObject();
     o.$$raw = v;

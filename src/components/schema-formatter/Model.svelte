@@ -1,5 +1,5 @@
 <script lang="ts">
-  import SchemaObject from "../../utils/oapi/objects/SchemaObject";
+  import SchemaObject from "../../utils/oapi/objects-old/SchemaObject";
   import ArrayModel from "./ArrayModel.svelte";
   import ModelWrapper from "./ModelWrapper.svelte";
   import ObjectModel from "./ObjectModel.svelte";

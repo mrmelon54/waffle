@@ -16,7 +16,7 @@ export default class InfoObject {
 
   private constructor() {}
 
-  static parse(v: any): Optional<InfoObject> {
+  static parse( v: any): Promise<Optional<InfoObject>> {
     if (v === null || v === undefined) return StaticOptional.emptyWithError("Invalid info object");
     let o = new InfoObject();
     o.$$raw = v;

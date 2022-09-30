@@ -8,7 +8,7 @@ export default class ContactObject {
   url: Optional<string>;
   email: Optional<string>;
 
-  static parse(v: any): Optional<ContactObject> {
+  static parse( v: any): Promise<Optional<ContactObject>> {
     if (v === null || v === undefined) return StaticOptional.empty();
     let o = new ContactObject();
     o.$$raw = v;

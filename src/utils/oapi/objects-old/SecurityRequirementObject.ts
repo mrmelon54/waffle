@@ -11,7 +11,7 @@ export default class SecurityRequirementObject {
     return parseArray<SecurityRequirementObject>(v, SecurityRequirementObject.parse);
   }
 
-  static parse(v: any): Optional<SecurityRequirementObject> {
+  static parse( v: any): Promise<Optional<SecurityRequirementObject>> {
     if (v === null || v === undefined) return StaticOptional.emptyWithError("object missing");
     let o = new SecurityRequirementObject();
     o.$$raw = v;

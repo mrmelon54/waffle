@@ -1,6 +1,5 @@
+import { CtxParser, Parser } from "./oapi/utils/ObjectUtils";
 import OpenApiContext from "./oapi/utils/OpenApiContext";
-
-type InstanceTester = (value: any) => boolean;
 
 export default class ReferenceOptional<T> {
   private ctx: OpenApiContext;
@@ -8,16 +7,19 @@ export default class ReferenceOptional<T> {
   private error?: string;
   private doneLookup: boolean;
   private value: T | null;
-  private test: InstanceTester;
+  private parser: CtxParser<T>;
 
-  static generate<U>(ctx: OpenApiContext, ref: string, test: InstanceTester): ReferenceOptional<U> {
+  static generateCtx<U>(ctx: OpenApiContext, ref: string, parser: CtxParser<U>): ReferenceOptional<U> {
     let o = new ReferenceOptional<U>();
     o.ctx = ctx;
     o.ref = ref;
-    o.test = test;
-    console.log("Starting lookup for:", o);
+    o.parser = parser;
     ctx.waitFor(o.lookup());
     return o;
+  }
+
+  static generate<U>(ctx: OpenApiContext, ref: string, parser: Parser<U>): ReferenceOptional<U> {
+    return this.generateCtx<U>(ctx, ref, (_, x) => parser(x));
   }
 
   private async lookup(): Promise<void> {
@@ -25,13 +27,13 @@ export default class ReferenceOptional<T> {
     this.doneLookup = true;
     this.error = "Still looking up";
     let v: any = await this.ctx.lookup(this.ref);
-    if (this.test(v)) {
-      console.log("Final value is:", v);
-      this.value = <T>v;
+    let z = this.parser(this.ctx, v);
+    if (z.isFull()) {
+      this.value = z.get();
       this.error = "[ReferenceOptional] Value is null or undefined";
     } else {
       this.value = null;
-      this.error = "[ReferenceOptional] Referenced value failed the lookup test";
+      this.error = `[ReferenceOptional] Referenced value failed to parse: ${z.errorReason() ?? "No reason"}`;
     }
   }
 

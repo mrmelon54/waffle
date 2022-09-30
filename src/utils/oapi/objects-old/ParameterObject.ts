@@ -33,7 +33,7 @@ export default class ParameterObject {
     return parseCtxArray(ctx, v, this.parse);
   }
 
-  static parse(ctx: OpenApiContext, v: any): Optional<ParameterObject> {
+  static parse(ctx: OpenApiContext, v: any): Promise<Optional<ParameterObject>> {
     if (v === null || v === undefined) return StaticOptional.empty();
     let o = new ParameterObject();
     o.$$raw = v;

@@ -1,9 +1,9 @@
 <script lang="ts">
-  import ComponentsObject from "../utils/oapi/objects/ComponentsObject";
-  import OperationObject from "../utils/oapi/objects/OperationObject";
-  import PathItemObject from "../utils/oapi/objects/PathItemObject";
-  import { PathsObject } from "../utils/oapi/objects/PathsObject";
-  import TagObject from "../utils/oapi/objects/TagObject";
+  import ComponentsObject from "../utils/oapi/objects-old/ComponentsObject";
+  import OperationObject from "../utils/oapi/objects-old/OperationObject";
+  import PathItemObject from "../utils/oapi/objects-old/PathItemObject";
+  import { PathsObject } from "../utils/oapi/objects-old/PathsObject";
+  import TagObject from "../utils/oapi/objects-old/TagObject";
   import Optional from "../utils/Optional";
   import RequestCategory from "./RequestCategory.svelte";
 

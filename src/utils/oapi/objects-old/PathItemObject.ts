@@ -5,6 +5,7 @@ import ParameterObject from "./ParameterObject";
 import ReferenceObject from "./ReferenceObject";
 import ServerObject from "./ServerObject";
 import { Method, Methods } from "../values/Methods";
+import Optional from "../../Optional";
 
 export default class PathItemObject {
   $$raw: any;
@@ -25,7 +26,7 @@ export default class PathItemObject {
 
   private constructor() {}
 
-  static parse(ctx: OpenApiContext, v: any): Optional<PathItemObject> {
+  static parse(ctx: OpenApiContext, v: any): Promise<Optional<PathItemObject>> {
     if (v === null || v === undefined) return StaticOptional.empty();
     let o = new PathItemObject();
     o.$$raw = v;

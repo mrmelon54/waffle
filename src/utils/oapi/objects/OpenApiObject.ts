@@ -1,69 +1,23 @@
 import semver from "semver";
-import InfoObject from "./InfoObject";
-import { parsePaths, PathsObject } from "./PathsObject";
-import ServerObject from "./ServerObject";
-import PathItemObject from "./PathItemObject";
-import ReferenceObject from "./ReferenceObject";
-import ComponentsObject from "./ComponentsObject";
-import SecurityRequirementObject from "./SecurityRequirementObject";
-import TagObject from "./TagObject";
-import ExternalDocumentationObject from "./ExternalDocumentationObject";
-import StaticOptional from "../../StaticOptional";
-import { parseCtxMap } from "../utils/ObjectUtils";
-import OpenApiContext from "../utils/OpenApiContext";
-import Optional from "../../Optional";
+import ComponentsObject from "../objects-old/ComponentsObject";
+import ExternalDocumentationObject from "../objects-old/ExternalDocumentationObject";
+import InfoObject from "../objects-old/InfoObject";
+import PathItemObject from "../objects-old/PathItemObject";
+import { PathsObject } from "../objects-old/PathsObject";
+import SecurityRequirementObject from "../objects-old/SecurityRequirementObject";
+import ServerObject from "../objects-old/ServerObject";
+import TagObject from "../objects-old/TagObject";
 
 export default class OpenApiObject {
   $$raw: any;
   openapi: semver.SemVer;
   info: InfoObject;
-  jsonSchemaDialect: Optional<string>;
-  servers: Optional<ServerObject[]>;
-  paths: Optional<PathsObject>;
-  webhooks: Optional<Map<string, PathItemObject | ReferenceObject>>;
-  components: Optional<ComponentsObject>;
-  security: Optional<SecurityRequirementObject[]>;
-  tags: Optional<TagObject[]>;
-  externalDocs: Optional<ExternalDocumentationObject>;
-
-  static parse(fromCtx: OpenApiContext, v: any): Optional<OpenApiObject> {
-    if (v === null || v === undefined) return StaticOptional.empty();
-    let o = new OpenApiObject();
-    let ctx = fromCtx.withMainFile(o);
-    o.$$raw = v;
-    let ver = semver.parse(v.openapi);
-    if (!ver) return StaticOptional.emptyWithError(`Invalid OpenAPI version: ${ver}`);
-    if (!this.validVersion(ver!)) return StaticOptional.emptyWithError(`Unsupported OpenAPI version: ${ver}`);
-    o.openapi = ver!;
-
-    let info = InfoObject.parse(v.info);
-    if (info.isEmpty()) return StaticOptional.emptyWithError(`Missing 'info': ${info.errorReason() ?? "No reason"}`);
-    o.info = info.get();
-    o.jsonSchemaDialect = StaticOptional.full(v.jsonSchemaDialect);
-    o.servers = ServerObject.parseArray(v.servers);
-    o.paths = parsePaths(ctx, v.paths);
-    o.webhooks = parseCtxMap(ctx, v.webhooks, PathItemObject.parse);
-    o.components = ComponentsObject.parse(ctx, v.components);
-    o.security = SecurityRequirementObject.parseArray(v.security);
-    o.tags = TagObject.parseArray(v.tags);
-    o.externalDocs = ExternalDocumentationObject.parse(v.externalDocs);
-    return StaticOptional.full(o);
-  }
-
-  private static validVersion(v: semver.SemVer): boolean {
-    return semver.satisfies(v, "3.x.x");
-  }
-
-  lookup(ref: string[]): any {
-    let v: any = this;
-    for (let i of ref) {
-      if (v.isEmpty !== undefined) {
-        if (v.isEmpty() || v.hasError()) return undefined;
-        if (v.isFull()) v = v.get();
-      }
-      v = v[i];
-      if (v === null || v === undefined) return undefined;
-    }
-    return v;
-  }
+  jsonSchemaDialect: string | null;
+  servers: ServerObject[] | null;
+  paths: PathsObject | null;
+  webhooks: Map<string, PathItemObject> | null;
+  components: ComponentsObject | null;
+  security: SecurityRequirementObject[] | null;
+  tags: TagObject[] | null;
+  externalDocs: ExternalDocumentationObject | null;
 }

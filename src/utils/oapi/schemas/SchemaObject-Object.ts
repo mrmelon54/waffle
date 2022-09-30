@@ -2,8 +2,8 @@ import Optional from "../../Optional";
 import StaticOptional from "../../StaticOptional";
 import { parseArray, parseCtxMap } from "../utils/ObjectUtils";
 import OpenApiContext from "../utils/OpenApiContext";
-import ExternalDocumentationObject from "../objects/ExternalDocumentationObject";
-import SchemaObject from "../objects/SchemaObject";
+import ExternalDocumentationObject from "../objects-old/ExternalDocumentationObject";
+import SchemaObject from "../objects-old/SchemaObject";
 
 export default class SchemaObjectObject {
   $$raw: any;

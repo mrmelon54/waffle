@@ -1,8 +1,8 @@
 import Optional from "../../Optional";
 import StaticOptional from "../../StaticOptional";
 import OpenApiContext from "../utils/OpenApiContext";
-import ExternalDocumentationObject from "../objects/ExternalDocumentationObject";
-import SchemaObject from "../objects/SchemaObject";
+import ExternalDocumentationObject from "../objects-old/ExternalDocumentationObject";
+import SchemaObject from "../objects-old/SchemaObject";
 import { parseArray } from "../utils/ObjectUtils";
 
 export default class SchemaObjectPrimitive {

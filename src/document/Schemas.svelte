@@ -1,7 +1,7 @@
 <script lang="ts">
   import Dropdown from "../components/Dropdown.svelte";
   import Model from "../components/schema-formatter/Model.svelte";
-  import SchemaObject from "../utils/oapi/objects/SchemaObject";
+  import SchemaObject from "../utils/oapi/objects-old/SchemaObject";
 
   export let schemas: Map<string, SchemaObject>;
 </script>

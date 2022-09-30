@@ -1,7 +1,8 @@
 import MultipleFileSpec from "../../MultipleFileSpec";
 import Optional from "../../Optional";
+import OptionalCheck from "../../OptionalCheck";
 import StaticOptional from "../../StaticOptional";
-import OpenApiObject from "../objects/OpenApiObject";
+import OpenApiObject from "../objects-old/OpenApiObject";
 
 export default class OpenApiContext {
   mainFile?: OpenApiObject;
@@ -38,13 +39,19 @@ export default class OpenApiContext {
   }
 
   async lookup(ref: string): Promise<any> {
+    console.info("lookup $ref:", ref);
+    if (OptionalCheck(<any>ref)) {
+      console.error("Ref is an Optional:", ref);
+      return Promise.reject("Ref is an Optional");
+    }
     let hashIdx = ref.indexOf("#");
     let file = ref.slice(0, hashIdx);
     let tree = ref.slice(hashIdx + 1);
     let f = await this.loadFile(file);
-    if (f.isEmpty()) return Promise.reject(f.errorReason() ?? "No reason");
-    console.info("Context lookup", f, tree.split("/").slice(1));
-    return f.get().lookup(tree.split("/").slice(1));
+    if (f.isEmpty()) return Promise.reject(`Context lookup error: ${f.errorReason() ?? "No reason"}`);
+    let z = f.get().lookup(tree.split("/").slice(1));
+    if (z.isFull()) return z.get();
+    return Promise.reject(`Context lookup error: ${z.errorReason() ?? "No reason"}`);
   }
 
   async loadFile(url: string): Promise<Optional<OpenApiObject>> {

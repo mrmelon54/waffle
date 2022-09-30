@@ -1,6 +1,6 @@
 <script lang="ts">
   import RequestView from "../components/request-view/RequestView.svelte";
-  import TagObject from "../utils/oapi/objects/TagObject";
+  import TagObject from "../utils/oapi/objects-old/TagObject";
 
   export let category: TagObject;
   export let open = false;

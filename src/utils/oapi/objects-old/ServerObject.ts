@@ -16,7 +16,7 @@ export default class ServerObject {
     return parseArray<ServerObject>(v, ServerObject.parse);
   }
 
-  static parse(v: any): Optional<ServerObject> {
+  static parse( v: any): Promise<Optional<ServerObject>> {
     if (v === null || v === undefined) return StaticOptional.emptyWithError("object missing");
     let o = new ServerObject();
     o.$$raw = v;

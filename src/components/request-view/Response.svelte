@@ -1,6 +1,6 @@
 <script lang="ts">
   import SvelteMarkdown from "svelte-markdown";
-  import ResponseObject from "../../utils/oapi/objects/ResponseObject";
+  import ResponseObject from "../../utils/oapi/objects-old/ResponseObject";
 
   export let key: string;
   export let resp: ResponseObject;

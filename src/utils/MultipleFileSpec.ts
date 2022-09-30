@@ -1,5 +1,5 @@
 import YAML from "js-yaml";
-import OpenApiObject from "./oapi/objects/OpenApiObject";
+import OpenApiObject from "./oapi/objects-old/OpenApiObject";
 import StaticOptional from "./StaticOptional";
 
 export default class MultipleFileSpec {

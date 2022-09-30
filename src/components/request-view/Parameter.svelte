@@ -1,6 +1,6 @@
 <script lang="ts">
   import SvelteMarkdown from "svelte-markdown";
-  import ParameterObject from "../../utils/oapi/objects/ParameterObject";
+  import ParameterObject from "../../utils/oapi/objects-old/ParameterObject";
   import StaticOptional from "../../utils/StaticOptional";
 
   export let param: ParameterObject;
