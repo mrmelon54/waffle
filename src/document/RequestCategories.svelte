@@ -1,46 +1,58 @@
 <script lang="ts">
-  import ComponentsObject from "../utils/oapi/objects/ComponentsObject";
-  import OperationObject from "../utils/oapi/objects/OperationObject";
-  import PathItemObject from "../utils/oapi/objects/PathItemObject";
+  import { ComponentsObject } from "../utils/oapi/objects/ComponentsObject";
+  import { OperationObject } from "../utils/oapi/objects/OperationObject";
+
+  import { getPathOpOrder, PathItemObject } from "../utils/oapi/objects/PathItemObject";
   import { PathsObject } from "../utils/oapi/objects/PathsObject";
-  import TagObject from "../utils/oapi/objects/TagObject";
-  import Optional from "../utils/Optional";
+  import type { TagObject } from "../utils/oapi/objects/TagObject";
+  import { getOrDefault } from "../utils/oapi/utils/ObjectUtils";
+  import Ref from "../utils/oapi/utils/Ref";
   import RequestCategory from "./RequestCategory.svelte";
 
-  export let tags: Optional<TagObject[]>;
-  export let paths: Optional<PathsObject>;
-  export let components: Optional<ComponentsObject>;
+  export let tags: TagObject[];
+  export let paths: PathsObject;
+  export let components: ComponentsObject;
 
-  let defaultCategory = TagObject.parse({ name: "default", description: "" }).get();
-  let rawTags = tags.isFull() ? tags.get() : [];
-  let categories = [defaultCategory, ...rawTags];
+  let defaultCategory: TagObject = { name: "default", $$requests: [] };
+  let rawTags =
+    tags !== undefined
+      ? tags.map((x) => {
+          x.$$requests = [];
+          return x;
+        })
+      : [];
 
-  let rawPaths: Map<string, PathItemObject> = paths.isFull() ? paths.get() : new Map();
-  for (let [pathKey, pathItem] of rawPaths.entries()) {
-    for (let met of pathItem.opOrder) {
-      let opz: Optional<OperationObject> = pathItem[met.name];
-      if (opz.isEmpty()) continue;
-      let op = opz.get();
-      op.$$path = pathKey;
-      op.$$method = met;
-      if (op.parameters !== undefined && op.parameters.isFull()) op.$$params = op.parameters.get();
-      else if (pathItem.parameters !== undefined && pathItem.parameters.isFull()) op.$$params = pathItem.parameters.get();
-      else op.$$params = [];
-      putInCategory(op);
+  async function generateOperations(): Promise<TagObject[]> {
+    let categories = [defaultCategory, ...rawTags];
+    let rawPaths: PathsObject = getOrDefault(paths, {});
+
+    for (let [pathKey, rawPathItem] of Object.entries(rawPaths)) {
+      let pathItem = await Ref.getValueOrRef(rawPathItem, {});
+      for (let met of getPathOpOrder(pathItem)) {
+        let opz: OperationObject | undefined = pathItem[met.name];
+        if (opz === undefined) continue;
+        let op = opz!;
+        op.$$path = pathKey;
+        op.$$method = met;
+        if (op.parameters !== undefined) op.$$params = op.parameters!;
+        else if (pathItem.parameters !== undefined) op.$$params = pathItem.parameters!;
+        else op.$$params = [];
+        putInCategory(categories, op);
+      }
     }
+
+    if (defaultCategory.$$requests.length === 0) categories.splice(0, 1);
+    return categories;
   }
 
-  if (defaultCategory.$$requests.length === 0) categories.splice(0, 1);
-
-  function putInCategory(req: OperationObject) {
-    let tags = req.tags ? req.tags.getOrDefault([]) : [];
+  function putInCategory(categories: TagObject[], req: OperationObject) {
+    let tags = getOrDefault(req.tags, []);
     if (tags.length >= 1) {
       let tag = tags[0];
-      let cat = findCategory(tag);
+      let cat = findCategory(categories, tag);
       if (cat !== undefined) cat.$$requests.push(req);
       else {
-        let o = TagObject.parse({ name: tag }).get();
-        o.$$requests = [req];
+        let o: TagObject = { name: tag, $$requests: [req] };
         categories.push(o);
       }
       return;
@@ -48,7 +60,7 @@
     defaultCategory.$$requests.push(req);
   }
 
-  function findCategory(tag: string) {
+  function findCategory(categories: TagObject[], tag: string) {
     for (let x of categories) {
       if (x.name == tag) return x;
     }
@@ -57,12 +69,18 @@
 </script>
 
 <div class="request-categories">
-  {#each categories as category, i}
-    {#if i != 0}
-      <div class="req-cat-gap" />
-    {/if}
-    <RequestCategory open={true} {category} />
-  {/each}
+  {#await generateOperations()}
+    Loading categories...
+  {:then x}
+    {#each x as category, i}
+      {#if i != 0}
+        <div class="req-cat-gap" />
+      {/if}
+      <RequestCategory open={true} {category} />
+    {/each}
+  {:catch err}
+    <div>{err}</div>
+  {/await}
 </div>
 
 <style>

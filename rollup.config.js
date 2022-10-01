@@ -8,7 +8,7 @@ import replace from "@rollup/plugin-replace";
 import includeEnv from "svelte-environment-variables";
 import autoPreprocess from "svelte-preprocess";
 import typescript from "@rollup/plugin-typescript";
-
+import builtins from "rollup-plugin-polyfill-node";
 const production = !process.env.ROLLUP_WATCH;
 
 function serve() {
@@ -41,6 +41,7 @@ export default {
     file: "public/build/bundle.js",
   },
   plugins: [
+    builtins(),
     replace({
       preventAssignment: true,
       values: {

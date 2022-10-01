@@ -3,7 +3,7 @@
   import Schemas from "./Schemas.svelte";
   import Selector from "../components/Selector.svelte";
   import RequestCategories from "./RequestCategories.svelte";
-  import OpenApiObject from "../utils/oapi/objects/OpenApiObject";
+  import { OpenApiObject } from "../utils/oapi/objects/OpenApiObject";
 
   export let spec: OpenApiObject;
 
@@ -12,20 +12,14 @@
 
 <div id="openapi-document">
   <Title {spec} />
-  {#if spec.servers.hasError()}
-    <div id="servers">
-      <h4>Servers</h4>
-      <p>{spec.servers.errorReason()}</p>
-    </div>
-    <div class="doc-gap" />
-  {:else if spec.servers.isFull()}
+  {#if spec.servers !== undefined}
     <div class="bubble-block">
       <h4>Servers</h4>
       <Selector bind:value={serverUrl}>
-        {#each spec.servers.get() as server}
+        {#each spec.servers as server}
           <option value={server.url}>
-            {#if server.description.isFull()}
-              {server.url} - {server.description.get()}
+            {#if server.description !== undefined}
+              {server.url} - {server.description}
             {:else}
               {server.url}
             {/if}
@@ -36,15 +30,9 @@
     <div class="doc-gap" />
   {/if}
   <RequestCategories tags={spec.tags} paths={spec.paths} components={spec.components} />
-  {#if spec.components.hasError()}
+  {#if spec.components !== undefined && spec.components.schemas !== undefined}
     <div class="doc-gap" />
-    <div class="bubble-block">
-      <h4>Schemas</h4>
-      <p>{spec.components.errorReason()}</p>
-    </div>
-  {:else if spec.components.isFull() && spec.components.get().schemas.isFull()}
-    <div class="doc-gap" />
-    <Schemas schemas={spec.components.get().schemas.get()} />
+    <Schemas schemas={spec.components.schemas} />
   {/if}
 </div>
 

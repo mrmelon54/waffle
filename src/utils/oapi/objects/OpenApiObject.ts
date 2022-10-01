@@ -1,4 +1,6 @@
 import semver from "semver";
+import { checkInstanceOf } from "../utils/ObjectUtils";
+import Ref from "../utils/Ref";
 import { ComponentsObject } from "./ComponentsObject";
 import { ExternalDocumentationObject } from "./ExternalDocumentationObject";
 import { InfoObject } from "./InfoObject";
@@ -19,4 +21,8 @@ export interface OpenApiObject {
   security?: SecurityRequirementObject[];
   tags?: TagObject[];
   externalDocs?: ExternalDocumentationObject;
+}
+
+export function instanceOfOpenApiObject(v: object) {
+  return checkInstanceOf(v, ["openapi", "info"]);
 }

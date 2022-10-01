@@ -1,8 +1,5 @@
-import MultipleFileSpec from "../../MultipleFileSpec";
-import Optional from "../../Optional";
-import StaticOptional from "../../StaticOptional";
-import OpenApiObject from "../objects/OpenApiObject";
-import { scanForRefs } from "./ObjectUtils";
+import MultipleFileSpec from "./MultipleFileSpec";
+import { instanceOfOpenApiObject, OpenApiObject } from "../objects/OpenApiObject";
 
 export default class OpenApiContext {
   mainFile?: OpenApiObject;
@@ -21,18 +18,15 @@ export default class OpenApiContext {
     return new OpenApiContext();
   }
 
-  static async generate(manager: MultipleFileSpec, url: string): Promise<Optional<OpenApiContext>> {
+  static async generate(manager: MultipleFileSpec, url: string): Promise<OpenApiContext> {
     let o = new OpenApiContext(manager);
-    let f = await o.loadFile(url);
-    if (f.isEmpty() || f.hasError()) return StaticOptional.emptyWithError(`Failed to parse OpenApiObject: ${f.errorReason() ?? "No reason"}`);
-    o.mainFile = f.get();
     try {
-      await o.loadExternal();
+      let z = await o.loadFile(url);
+      o.mainFile = z;
     } catch (err) {
-      console.error("Error loading external resources:", err);
-      return StaticOptional.emptyWithError("Error loading external resources");
+      return Promise.reject(`Failed to parse OpenApiObject: ${err ?? "No reason"}`);
     }
-    return StaticOptional.full(o);
+    return o;
   }
 
   get(): OpenApiObject {
@@ -44,23 +38,26 @@ export default class OpenApiContext {
     let file = ref.slice(0, hashIdx);
     let tree = ref.slice(hashIdx + 1);
     let f = await this.loadFile(file);
-    if (f.isEmpty()) return Promise.reject(f.errorReason() ?? "No reason");
     console.info("Context lookup", f, tree.split("/").slice(1));
-    return f.get().lookup(tree.split("/").slice(1));
+    return this.nestedLookup(f, tree.split("/").slice(1));
   }
 
-  async loadFile(url: string): Promise<Optional<OpenApiObject>> {
-    if (url == "") return StaticOptional.full(this.mainFile!);
-    if (this.files.has(url)) return StaticOptional.full(this.files.get(url));
+  private async nestedLookup(v: any, ref: string[]): Promise<any> {
+    for (let i of ref) {
+      if (v.__proto__ === Map.prototype) v = v.get(i);
+      else if (typeof v === "object") v = v[i];
+    }
+  }
+
+  async loadFile(url: string): Promise<OpenApiObject> {
+    if (url == "") return this.mainFile!;
+    if (this.files.has(url)) return this.files.get(url)!;
     let file = await this.manager!.fetchAndParse(url);
 
-    await this.loadFromRefs(scanForRefs(file));
-
-    let o = OpenApiObject.parse(this, file);
-    if (o.isEmpty() || o.hasError()) return StaticOptional.emptyWithError(`OpenApi parsing error: ${o.errorReason() ?? "No reason"}`);
-    let g = o.get();
-    this.files.set(url, g);
-    return StaticOptional.full(g);
+    if (!instanceOfOpenApiObject(file)) return Promise.reject(`OpenApiObject doesn't match: ${JSON.stringify(file)}`);
+    let o = <OpenApiObject>file;
+    this.files.set(url, o);
+    return o;
   }
 
   async loadFromRefs(refs: string[]) {

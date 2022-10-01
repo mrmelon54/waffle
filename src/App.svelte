@@ -63,4 +63,8 @@
     background-color: #252832;
     border-radius: 0 0 16px 16px;
   }
+
+  footer {
+    padding: 16px;
+  }
 </style>

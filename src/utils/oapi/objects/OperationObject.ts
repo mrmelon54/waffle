@@ -5,8 +5,13 @@ import { RequestBodyObject } from "./RequestBodyObject";
 import { ResponsesObject } from "./ResponsesObject";
 import { SecurityRequirementObject } from "./SecurityRequirementObject";
 import { ServerObject } from "./ServerObject";
+import { Method } from "../values/Methods";
+import Ref from "../utils/Ref";
 
 export interface OperationObject {
+  $$path: string;
+  $$method: Method;
+  $$params: any[];
   tags?: string[];
   summary?: string;
   description?: string;

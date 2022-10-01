@@ -1,39 +1,43 @@
 <script lang="ts">
   import SvelteMarkdown from "svelte-markdown";
-  import OperationObject from "../../utils/oapi/objects/OperationObject";
-  import RequestBodyObject from "../../utils/oapi/objects/RequestBodyObject";
+  import { OperationObject } from "../../utils/oapi/objects/OperationObject";
+  import { RequestBodyObject } from "../../utils/oapi/objects/RequestBodyObject";
+  import { allResponses, getFromResponses } from "../../utils/oapi/objects/ResponsesObject";
+  import { getOrDefault } from "../../utils/oapi/utils/ObjectUtils";
   import Parameter from "./Parameter.svelte";
   import Response from "./Response.svelte";
   export let open = false;
   export let req: OperationObject;
+
+  let deprecated = getOrDefault(req.deprecated, false);
 
   function handleClick() {
     open = !open;
   }
 </script>
 
-<div class="request {open ? 'request-dropdown-open' : 'request-dropdown-closed'} {req.deprecated.getOrDefault(false) ? 'request-deprecated' : ''}" style={req.$$method.style()}>
+<div class="request {open ? 'request-dropdown-open' : 'request-dropdown-closed'} {deprecated ? 'request-deprecated' : ''}" style={req.$$method.style()}>
   <div class="request-summary" on:click={handleClick}>
     <div class="request-summary-inner">
       <h5>
         <span class="request-summary-method">{req.$$method.name.toUpperCase()}</span>
         <span class="request-summary-path">{req.$$path}</span>
-        {#if req.summary.isFull()}
-          <span class="request-summary-text">{req.summary.get()}</span>
+        {#if req.summary !== undefined}
+          <span class="request-summary-text">{req.summary}</span>
         {/if}
       </h5>
     </div>
   </div>
   {#if open}
     <div class="request-content">
-      {#if req.deprecated.getOrDefault(false)}
+      {#if deprecated}
         <div class="request-description">
           <p>Warning: Deprecated</p>
         </div>
       {/if}
-      {#if req.description.isFull()}
+      {#if req.description !== undefined}
         <div class="request-description">
-          <SvelteMarkdown source={req.description.get()} />
+          <SvelteMarkdown source={req.description} />
         </div>
       {/if}
 
@@ -59,14 +63,7 @@
       </div>
 
       <!-- Request Body -->
-      {#if req.requestBody.hasError()}
-        <div class="request-header">
-          <span class="request-header-tab info-required">Request Body</span>
-        </div>
-        <div class="request-description">
-          <p>{req.requestBody.errorReason()}</p>
-        </div>
-      {:else if req.requestBody.isFull()}
+      {#if req.requestBody !== undefined}
         <div class="request-header">
           <span class="request-header-tab info-required">Request Body</span>
         </div>
@@ -74,14 +71,7 @@
       {/if}
 
       <!-- Responses -->
-      {#if req.responses.hasError()}
-        <div class="request-header">
-          <span class="request-header-tab info-required">Responses</span>
-        </div>
-        <div class="request-description">
-          <p>{req.responses.errorReason()}</p>
-        </div>
-      {:else if req.responses.isFull()}
+      {#if req.responses !== undefined}
         <div class="request-header">
           <span class="request-header-tab">Responses</span>
         </div>
@@ -92,8 +82,8 @@
               <th>Description</th>
               <th>Links</th>
             </tr>
-            {#each req.responses.get().all() as resp}
-              <Response key={resp} resp={req.responses.get().get(resp).get()} />
+            {#each allResponses(req.responses) as resp}
+              <Response key={resp} resp={getFromResponses(req.responses, resp)} />
             {/each}
           </table>
         </div>

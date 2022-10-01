@@ -1,6 +1,6 @@
 <script lang="ts">
   import RequestView from "../components/request-view/RequestView.svelte";
-  import TagObject from "../utils/oapi/objects/TagObject";
+  import { TagObject } from "../utils/oapi/objects/TagObject";
 
   export let category: TagObject;
   export let open = false;
@@ -15,8 +15,8 @@
     <div class="category-summary-inner">
       <h5>
         <span class="category-summary-name">{category.name}</span>
-        {#if category.description.isFull()}
-          <span class="request-summary-text">{category.description.get()}</span>
+        {#if category.description !== undefined}
+          <span class="request-summary-text">{category.description}</span>
         {/if}
       </h5>
     </div>

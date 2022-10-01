@@ -1,49 +1,58 @@
-import Optional from "../../Optional";
-import StaticOptional from "../../StaticOptional";
 import OpenApiContext from "./OpenApiContext";
 
-type Parser<T> = (v: any) => Optional<T>;
-type CtxParser<T> = (ctx: OpenApiContext, v: any) => Optional<T>;
+export type Parser<T> = (v: any) => Promise<T>;
+export type CtxParser<T> = (ctx: OpenApiContext, v: any) => Promise<T>;
 
 let emptyContext = OpenApiContext.empty();
 
-export function parseArray<T>(v: any, parser: Parser<T>): Optional<T[]> {
+export function parseArray<T>(v: any, parser: Parser<T>): Promise<T[]> {
   return parseCtxArray(emptyContext, v, (_, x) => parser(x));
 }
 
-export function parseCtxArray<T>(ctx: OpenApiContext, v: any, parser: CtxParser<T>): Optional<T[]> {
-  if (v === null || v === undefined) return StaticOptional.empty();
-  if (!Array.isArray(v)) return StaticOptional.emptyWithError(`[ObjectUtils] Cannot convert ${typeof v} to map`);
+export async function parseCtxArray<T>(ctx: OpenApiContext, v: any, parser: CtxParser<T>): Promise<T[]> {
+  if (v === null || v === undefined) return Promise.resolve([]);
+  if (!Array.isArray(v)) return Promise.reject(`[ObjectUtils] Cannot convert ${typeof v} to map`);
   let o: T[] = [];
 
   for (let a in v) {
-    let b = parser(ctx, v[a]);
-    console.info(b.errorReason(), v[a]);
-    if (b.isEmpty()) return StaticOptional.emptyWithError(`[ObjectUtils] Array value failed to parse '${a}': ${b.errorReason() ?? "no reason"}`);
-    else o.push(b.get());
+    try {
+      let b = await parser(ctx, v[a]);
+      o.push(b);
+    } catch (err) {
+      return Promise.reject(`[ObjectUtils] Array value failed to parse '${a}': ${err ?? "no reason"}`);
+    }
   }
-  return StaticOptional.full(o);
+  return o;
 }
 
-export function parseMap<T, U>(v: any, parser: Parser<U>): Optional<Map<T, U>> {
+export function parseMap<T, U>(v: any, parser: Parser<U>): Promise<Map<T, U>> {
   return parseCtxMap(emptyContext, v, (_, x) => parser(x));
 }
 
-export function parseCtxMap<T, U>(ctx: OpenApiContext, v: any, parser: CtxParser<U>): Optional<Map<T, U>> {
-  if (v === null || v === undefined) return StaticOptional.empty();
-  if (typeof v !== "object") StaticOptional.emptyWithError(`[ObjectUtils] Cannot convert ${typeof v} to map`);
+export async function parseCtxMap<T, U>(ctx: OpenApiContext, v: any, parser: CtxParser<U>): Promise<Map<T, U>> {
+  if (v === null || v === undefined) return Promise.resolve(new Map());
+  if (typeof v !== "object") Promise.reject(`[ObjectUtils] Cannot convert ${typeof v} to map`);
   let z = new Map();
   let b = Object.keys(v);
   for (let c of b) {
-    let d: Optional<U> = parser(ctx, v[c]);
-    if (d.isEmpty()) return StaticOptional.emptyWithError(`[ObjectUtils] Map value failed to parse: ${c}: ${d.errorReason() ?? "No reason"}`);
-    z.set(c, d.get());
+    try {
+      let d = await parser(ctx, v[c]);
+      z.set(c, d);
+    } catch (err) {
+      return Promise.reject(`[ObjectUtils] Map value failed to parse: ${c}: ${err ?? "No reason"}`);
+    }
   }
-  return StaticOptional.full(z);
+  return z;
 }
 
-export function scanForRefs(v: any): string[] {
-  let z: string[] = [];
-  for (let i of Object.keys(v)) if (typeof v[i] === "object" && v[i].$ref) z.push(<string>v[i].$ref);
-  return z;
+export function checkInstanceOf(v: object, required: string[]): boolean {
+  for (let i of required) {
+    if (i in v) continue;
+    return false;
+  }
+  return true;
+}
+
+export function getOrDefault<T>(value: T | undefined, fallback: T): T {
+  return value !== undefined ? value : fallback;
 }

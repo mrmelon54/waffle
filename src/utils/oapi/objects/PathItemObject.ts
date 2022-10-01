@@ -1,7 +1,8 @@
 import { OperationObject } from "./OperationObject";
 import { ParameterObject } from "./ParameterObject";
-import { Method } from "../values/Methods";
+import { AllMethods, IsValidMethod, Method, Methods } from "../values/Methods";
 import { ServerObject } from "./ServerObject";
+import Ref from "../utils/Ref";
 
 export interface PathItemObject {
   summary?: string;
@@ -16,5 +17,10 @@ export interface PathItemObject {
   trace?: OperationObject;
   servers?: ServerObject[];
   parameters?: (ParameterObject | Ref<ParameterObject>)[];
-  opOrder?: Method[];
+}
+
+export function getPathOpOrder(pathItem: PathItemObject): Method[] {
+  return Object.keys(pathItem)
+    .map((x) => Methods[x])
+    .filter((x) => x !== undefined);
 }

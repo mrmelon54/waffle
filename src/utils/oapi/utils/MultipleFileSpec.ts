@@ -1,16 +1,14 @@
 import YAML from "js-yaml";
-import OpenApiObject from "./oapi/objects/OpenApiObject";
-import StaticOptional from "./StaticOptional";
 
 export default class MultipleFileSpec {
-  files: Map<string, OpenApiObject>;
+  files: Map<string, any>;
 
   constructor() {
     this.files = new Map();
   }
 
   async fetchAndParse(url: string): Promise<any> {
-    if (this.files.has(url)) return StaticOptional.full(this.files.get(url));
+    if (this.files.has(url)) return this.files.get(url);
     console.log(`Trying to fetch ${url}`);
     let v: any = await this.remoteFetch(url);
     return this.parseAny(v);

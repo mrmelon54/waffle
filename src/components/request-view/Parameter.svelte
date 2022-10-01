@@ -1,10 +1,9 @@
 <script lang="ts">
   import SvelteMarkdown from "svelte-markdown";
-  import ParameterObject from "../../utils/oapi/objects/ParameterObject";
-  import StaticOptional from "../../utils/StaticOptional";
+  import {ParameterObject} from "../../utils/oapi/objects/ParameterObject";
 
   export let param: ParameterObject;
-  let schema = param.schema.getOrDefault({ $$raw: {}, $ref: StaticOptional.full("") }).$$raw;
+  //let schema = param.schema.getOrDefault({ $$raw: {}, $ref: StaticOptional.full("") }).$$raw;
 </script>
 
 <tr class="param-row">
@@ -13,7 +12,7 @@
     <div class="param-info-name {param.required ? 'info-required' : ''}">
       {param.name}{#if param.required}<span>&nbsp;*</span>{/if}
     </div>
-    {#if param.schema.isFull()}
+    <!-- {#if param.schema.isFull()}
       <div class="param-info-type">
         <span>{schema.type}</span>
         {#if schema.format}
@@ -23,11 +22,11 @@
     {/if}
     {#if param.deprecated.getOrDefault(false)}
       <div class="param-info-deprecated">deprecated</div>
-    {/if}
+    {/if} -->
     <div class="param-info-in">({param.in})</div>
   </td>
   <td>
-    {#if param.description.isFull()}
+    <!-- {#if param.description.isFull()}
       <div class="param-description">
         <SvelteMarkdown source={param.description.get()} />
       </div>
@@ -37,7 +36,7 @@
     {/if}
     {#if param.example.isFull()}
       <p class="param-example">Example: {param.example.get()}</p>
-    {/if}
+    {/if} -->
   </td>
 </tr>
 

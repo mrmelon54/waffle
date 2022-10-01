@@ -46,3 +46,7 @@ export let Methods = {
 export function AllMethods() {
   return Object.values(Methods);
 }
+
+export function IsValidMethod(name: string) {
+  return Methods[name] !== undefined;
+}

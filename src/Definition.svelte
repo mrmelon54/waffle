@@ -1,16 +1,13 @@
 <script lang="ts">
-  import { get } from "svelte/store";
   import Document from "./document/Document.svelte";
-  import MultipleFileSpec from "./utils/MultipleFileSpec";
+  import MultipleFileSpec from "./utils/oapi/utils/MultipleFileSpec";
   import OpenApiContext from "./utils/oapi/utils/OpenApiContext";
-  import Optional from "./utils/Optional";
-  import StaticOptional from "./utils/StaticOptional";
 
   export let specUrl: string;
   let manager = new MultipleFileSpec();
 
-  async function fetchSpec(url: string): Promise<Optional<OpenApiContext>> {
-    if (!url) return StaticOptional.emptyWithError(`No OpenAPI spec selected`);
+  async function fetchSpec(url: string): Promise<OpenApiContext> {
+    if (!url) return Promise.reject(`No OpenAPI spec selected`);
     return await OpenApiContext.generate(manager, url);
   }
 </script>
@@ -19,15 +16,9 @@
   {#await fetchSpec(specUrl)}
     <div>Loading...</div>
   {:then x}
-    {#if x.isFull()}
-      <Document spec={x.get().get()} />
-    {:else}
-      <div id="spec-errors">
-        {x.errorReason() ?? "No reason"}
-      </div>
-    {/if}
+    <Document spec={x.get()} />
   {:catch err}
-    {console.error(err)}
-    <span>{err}</span>
+    {console.error("[Definition]", err)}
+    <div id="spec-errors">{err}</div>
   {/await}
 </div>
