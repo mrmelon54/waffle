@@ -2,12 +2,14 @@ import MultipleFileSpec from "../../MultipleFileSpec";
 import Optional from "../../Optional";
 import StaticOptional from "../../StaticOptional";
 import OpenApiObject from "../objects/OpenApiObject";
+import { scanForRefs } from "./ObjectUtils";
 
 export default class OpenApiContext {
   mainFile?: OpenApiObject;
   manager?: MultipleFileSpec;
   loading: Promise<void>[];
   files: Map<string, OpenApiObject>;
+  refs: string[];
 
   private constructor(manager?: MultipleFileSpec) {
     this.manager = manager;
@@ -52,11 +54,20 @@ export default class OpenApiContext {
     if (this.files.has(url)) return StaticOptional.full(this.files.get(url));
     let file = await this.manager!.fetchAndParse(url);
 
+    await this.loadFromRefs(scanForRefs(file));
+
     let o = OpenApiObject.parse(this, file);
     if (o.isEmpty() || o.hasError()) return StaticOptional.emptyWithError(`OpenApi parsing error: ${o.errorReason() ?? "No reason"}`);
     let g = o.get();
     this.files.set(url, g);
     return StaticOptional.full(g);
+  }
+
+  async loadFromRefs(refs: string[]) {
+    for (let i of refs) {
+      let l = await this.lookup(i);
+      console.info("l:", l);
+    }
   }
 
   waitFor(p: Promise<void>) {

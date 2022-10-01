@@ -1,0 +1,71 @@
+<div id="docs"></div>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.6.0/styles/base16/darcula.min.css">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.6.0/highlight.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.6.0/languages/typescript.min.js"></script>
+<script>
+let a =
+[
+  {"type":"directory","name":".","contents":[
+    {"type":"file","name":"CallbackObject.old_ts"},
+    {"type":"file","name":"ComponentsObject.old_ts"},
+    {"type":"file","name":"ContactObject.old_ts"},
+    {"type":"file","name":"EncodingObject.old_ts"},
+    {"type":"file","name":"ExampleObject.old_ts"},
+    {"type":"file","name":"ExternalDocumentationObject.old_ts"},
+    {"type":"file","name":"HeaderObject.old_ts"},
+    {"type":"file","name":"index.html"},
+    {"type":"file","name":"InfoObject.old_ts"},
+    {"type":"file","name":"LicenseObject.old_ts"},
+    {"type":"file","name":"LinkObject.old_ts"},
+    {"type":"file","name":"MediaTypeObject.old_ts"},
+    {"type":"file","name":"OpenApiObject.old_ts"},
+    {"type":"file","name":"OperationObject.old_ts"},
+    {"type":"file","name":"ParameterObject.old_ts"},
+    {"type":"file","name":"PathItemObject.old_ts"},
+    {"type":"file","name":"PathsObject.old_ts"},
+    {"type":"file","name":"ReferenceObject.old_ts"},
+    {"type":"file","name":"RequestBodyObject.old_ts"},
+    {"type":"file","name":"ResponseObject.old_ts"},
+    {"type":"file","name":"ResponsesObject.old_ts"},
+    {"type":"file","name":"SchemaObject.old_ts"},
+    {"type":"file","name":"SecurityRequirementObject.old_ts"},
+    {"type":"file","name":"ServerObject.old_ts"},
+    {"type":"file","name":"ServerVariableObject.old_ts"},
+    {"type":"file","name":"TagObject.old_ts"}
+  ]}
+,
+  {"type":"report","directories":0,"files":26}
+]
+;
+let wildcard='.old_ts'
+;
+async function fetchAndDecode(url) {
+  let i = await fetch(url);
+  console.log(i);
+  let j = await i.text();
+  return [url, j];
+}
+let b = a[0].contents.filter(x=>x.name.endsWith(wildcard)).map(x=>fetchAndDecode(x.name));
+Promise.all(b).then(x=>{
+  for(let i of x) {
+    let z1 = document.createElement("div");
+    let z2 = document.createElement("h3");
+    z2.textContent = i[0];
+    z1.appendChild(z2);
+    let z3 = document.createElement("button");
+    z3.textContent = "Remove File";
+    z1.appendChild(z3);
+    let z4 = document.createElement("pre");
+    z1.appendChild(z4);
+    let z5 = document.createElement("code");
+    z5.classList.add("langauge-typescript");
+    z5.textContent = i[1];
+    z4.appendChild(z5);
+    docs.appendChild(z1);
+    z3.addEventListener("click", function() {
+      z1.remove();
+    });
+  }
+  hljs.highlightAll();
+});
+</script>

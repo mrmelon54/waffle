@@ -18,7 +18,7 @@ export function parseCtxArray<T>(ctx: OpenApiContext, v: any, parser: CtxParser<
 
   for (let a in v) {
     let b = parser(ctx, v[a]);
-    console.info(b.errorReason(),v[a]);
+    console.info(b.errorReason(), v[a]);
     if (b.isEmpty()) return StaticOptional.emptyWithError(`[ObjectUtils] Array value failed to parse '${a}': ${b.errorReason() ?? "no reason"}`);
     else o.push(b.get());
   }
@@ -40,4 +40,10 @@ export function parseCtxMap<T, U>(ctx: OpenApiContext, v: any, parser: CtxParser
     z.set(c, d.get());
   }
   return StaticOptional.full(z);
+}
+
+export function scanForRefs(v: any): string[] {
+  let z: string[] = [];
+  for (let i of Object.keys(v)) if (typeof v[i] === "object" && v[i].$ref) z.push(<string>v[i].$ref);
+  return z;
 }
