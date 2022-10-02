@@ -52,7 +52,7 @@
       {/if}
       {#each propKeys as k}
         <SchemaProperty key={k[0]} required={isRequired(k[0])}>
-          <Model schema={k[1]} displayName={""} />
+          <Model {_p} {_f} schema={k[1]} displayName={""} />
         </SchemaProperty>
       {/each}
     </table>
