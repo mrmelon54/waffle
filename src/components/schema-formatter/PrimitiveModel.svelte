@@ -2,9 +2,13 @@
   import SvelteMarkdown from "svelte-markdown";
   import { SchemaObjectPrimitive } from "../../utils/oapi/objects/SchemaObject";
   import { getOrDefault } from "../../utils/oapi/utils/ObjectUtils";
+  import OpenApiFile from "../../utils/oapi/utils/OpenApiFile";
+  import OpenApiParser from "../../utils/oapi/utils/OpenApiParser";
   import EnumModel from "./EnumModel.svelte";
   import RawProperty from "./RawProperty.svelte";
 
+  export let _p: OpenApiParser;
+  export let _f: OpenApiFile;
   export let schema: SchemaObjectPrimitive;
   export let displayName: string;
 

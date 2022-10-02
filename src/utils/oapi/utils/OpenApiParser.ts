@@ -32,12 +32,15 @@ export default class OpenApiParser {
       f = await OpenApiFile.load(url);
       this.files.set(url.href, f);
     }
-    return this.nestedLookup(f, tree.split("/").slice(1));
+    if (f === undefined) return Promise.reject(`Failed to lookup reference file`);
+    return this.nestedLookup(f.value, tree.split("/").slice(1));
   }
 
   private async nestedLookup(v: any, ref: string[]): Promise<any> {
     if (v === undefined) return Promise.reject(`Failed nested lookup`);
+    console.warn("Starting nested lookup...");
     for (let i of ref) {
+      console.info("Lookup:", v, i);
       if (v.__proto__ === Map.prototype) v = v.get(i);
       else if (typeof v === "object") v = v[i];
       if (v === undefined) return Promise.reject("[NestedLookup()] Layer is undefined");

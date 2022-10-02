@@ -7,7 +7,11 @@
   import ModelWrapper from "./ModelWrapper.svelte";
   import { getOrDefault } from "../../utils/oapi/utils/ObjectUtils";
   import { SchemaObjectArray } from "../../utils/oapi/objects/SchemaObject";
+  import OpenApiParser from "../../utils/oapi/utils/OpenApiParser";
+  import OpenApiFile from "../../utils/oapi/utils/OpenApiFile";
 
+  export let _p: OpenApiParser;
+  export let _f: OpenApiFile;
   export let schema: SchemaObjectArray;
   export let displayName: string;
   export let required: boolean;

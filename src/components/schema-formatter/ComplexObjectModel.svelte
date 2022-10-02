@@ -10,14 +10,20 @@
 
   export let _p: OpenApiParser;
   export let _f: OpenApiFile;
-  export let schema: SchemaObjectObject;
+  export let schema: SchemaObjectObject[];
   export let required: boolean;
   export let displayName: string;
 
-  let title = getOrDefault(schema.title, displayName) + (required ? "*" : "");
-  let requiredProperties = getOrDefault(schema.requiredProperties, []);
-  let properties = getOrDefault(schema.properties, new Map());
-  let propKeys = sortedKeys(properties);
+  let title = displayName + (required ? "*" : "");
+  let requiredProperties = getOrDefault(
+    schema.map((x) => x.requiredProperties),
+    []
+  );
+  let properties = getOrDefault(
+    schema.map((x) => x.properties),
+    []
+  );
+  let propKeys = properties.map(sortedKeys);
 
   function sortedKeys(props: Map<string, SchemaObject>) {
     if (!props) return [];
