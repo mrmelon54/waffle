@@ -1,24 +1,31 @@
 <script lang="ts">
   import { detectType, SchemaObject } from "../../utils/oapi/objects/SchemaObject";
+  import Ctx from "../../utils/oapi/utils/Ctx";
+  import OpenApiFile from "../../utils/oapi/utils/OpenApiFile";
+  import OpenApiParser from "../../utils/oapi/utils/OpenApiParser";
   import Ref from "../../utils/oapi/utils/Ref";
   import ArrayModel from "./ArrayModel.svelte";
   import ModelWrapper from "./ModelWrapper.svelte";
   import ObjectModel from "./ObjectModel.svelte";
   import PrimitiveModel from "./PrimitiveModel.svelte";
 
+  export let _p: OpenApiParser;
+  export let _f: OpenApiFile;
   export let schema: SchemaObject | Ref<SchemaObject>;
   export let required = false;
   export let displayName: string | undefined;
   export let topLevel = false;
   if (displayName === undefined) displayName = "";
 
+  let s: Ctx<SchemaObject>;
+
   let type: string = "unknown";
 
   async function getFinalSchema(): Promise<SchemaObject> {
-    let r = await Ref.getValueOrRef(schema, {});
-    type = detectType(r);
+    let r = await Ref.getValueOrRef(_p, _f, schema, (x) => Promise.resolve(<SchemaObject>x));
+    type = detectType(r.v);
     console.info("getFinalSchema:", r);
-    return r;
+    return r.v;
   }
 </script>
 
@@ -32,7 +39,7 @@
         {#each x.allOf as i}
           <li>
             {console.error(i)}
-            <svelte:self schema={i} />
+            <svelte:self {_p} {_f} schema={i} />
           </li>
         {/each}
       </ul>
@@ -41,7 +48,7 @@
       <ul>
         {#each x.anyOf as i}
           <li>
-            <svelte:self schema={i} />
+            <svelte:self {_p} schema={i} />
           </li>
         {/each}
       </ul>
@@ -70,6 +77,7 @@
       <div>Failed to detect Model type</div>
     {/if}
   {:catch err}
+    {console.error("[Model] ERROR:", err)}
     <div>{err}</div>
   {/await}
 </ModelWrapper>

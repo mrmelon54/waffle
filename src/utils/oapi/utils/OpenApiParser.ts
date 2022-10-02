@@ -26,15 +26,21 @@ export default class OpenApiParser {
     let file = ref.slice(0, hashIdx);
     let tree = ref.slice(hashIdx + 1);
     let url = new URL(file, baseUrl);
-    let f = await OpenApiFile.load(url);
-    this.files.set(url.toString(), f);
+    let f: OpenApiFile | undefined;
+    if (this.files.has(url.href)) f = this.files.get(url.href);
+    else {
+      f = await OpenApiFile.load(url);
+      this.files.set(url.href, f);
+    }
     return this.nestedLookup(f, tree.split("/").slice(1));
   }
 
   private async nestedLookup(v: any, ref: string[]): Promise<any> {
+    if (v === undefined) return Promise.reject(`Failed nested lookup`);
     for (let i of ref) {
       if (v.__proto__ === Map.prototype) v = v.get(i);
       else if (typeof v === "object") v = v[i];
     }
+    return v;
   }
 }

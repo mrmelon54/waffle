@@ -39,7 +39,7 @@
       </Selector>
     </div>
   </header>
-  <Definition spec={new URL(specUrl, location)} />
+  <Definition spec={specUrl === undefined ? undefined : new URL(specUrl, location)} />
   <footer>
     Powered by <a href="https://github.com/MrMelon54/waffle" target="_blank">Waffle</a>
   </footer>
