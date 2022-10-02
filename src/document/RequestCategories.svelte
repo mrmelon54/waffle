@@ -6,9 +6,13 @@
   import { PathsObject } from "../utils/oapi/objects/PathsObject";
   import type { TagObject } from "../utils/oapi/objects/TagObject";
   import { getOrDefault } from "../utils/oapi/utils/ObjectUtils";
+  import OpenApiFile from "../utils/oapi/utils/OpenApiFile";
+  import OpenApiParser from "../utils/oapi/utils/OpenApiParser";
   import Ref from "../utils/oapi/utils/Ref";
   import RequestCategory from "./RequestCategory.svelte";
 
+  export let _p: OpenApiParser;
+  export let _f: OpenApiFile;
   export let tags: TagObject[];
   export let paths: PathsObject;
   export let components: ComponentsObject;
@@ -76,7 +80,7 @@
       {#if i != 0}
         <div class="req-cat-gap" />
       {/if}
-      <RequestCategory open={true} {category} />
+      <RequestCategory {_p} {_f} open={true} {category} />
     {/each}
   {:catch err}
     <div>{err}</div>

@@ -1,6 +1,6 @@
 <script lang="ts">
   import SvelteMarkdown from "svelte-markdown";
-  import { SchemaObjectPrimitive } from "../../utils/oapi/schemas/SchemaObject-Primitive";
+  import { SchemaObjectPrimitive } from "../../utils/oapi/objects/SchemaObject";
   import { getOrDefault } from "../../utils/oapi/utils/ObjectUtils";
   import EnumModel from "./EnumModel.svelte";
   import RawProperty from "./RawProperty.svelte";

@@ -1,55 +1,57 @@
-import OpenApiContext from "../utils/OpenApiContext";
-import { CtxParser } from "./ObjectUtils";
-
-// TODO: rewrite this system
+import { Parser } from "./ObjectUtils";
+import Ctx from "../utils/Ctx";
+import OpenApiParser from "./OpenApiParser";
+import OpenApiFile from "./OpenApiFile";
 
 export default class Ref<T> {
-  $$isRef: boolean;
-  private ctx: OpenApiContext;
+  private ctx: OpenApiParser;
+  private file: OpenApiFile;
   private ref: string;
   private doneLookup: boolean;
-  private value: T;
-  private parser: CtxParser<T>;
+  private v: T;
+  private parser: Parser<T>;
 
-  static isRef(v: unknown): boolean {
-    return (<any>v).$$isRef === true;
+  $ref?: string;
+
+  static isRef<T>(v: Ref<T>): boolean {
+    return v.$ref !== undefined;
   }
 
-  static generate<U>(ctx: OpenApiContext, ref: string, parser: CtxParser<U>): Ref<U> {
+  static resolve<U>(ctx: OpenApiParser, file: OpenApiFile, ref: string, parser: Parser<U>): Ref<U> {
     let o = new Ref<U>();
-    o.$$isRef = true;
     o.ctx = ctx;
+    o.file = file;
     o.ref = ref;
     o.parser = parser;
     return o;
   }
 
-  private async lookup(): Promise<T> {
-    if (this.doneLookup) return Promise.resolve(this.value);
-    let v: any = await this.ctx.lookup(this.ref);
+  private async lookup(): Promise<Ctx<T>> {
+    if (this.doneLookup) return Ctx.make(this.ctx, this.file, this.v);
+    let v: Ctx<any> = await this.ctx.lookup(this.file.url, this.ref);
     try {
-      let z = await this.parser(this.ctx, v);
-      this.value = z;
-      return z;
+      let z = await this.parser(v);
+      this.v = z;
+      return Ctx.make(this.ctx, this.file, z);
     } catch (err) {
       return Promise.reject(`[Ref] Failed to parse referenced value: ${err ?? "No reason"}`);
     }
   }
 
-  async get(): Promise<T> {
+  async get(): Promise<Ctx<T>> {
     return await this.lookup();
   }
 
-  async getOrDefault(value: T): Promise<T> {
+  async getOrDefault(value: T): Promise<Ctx<T>> {
     try {
       return await this.lookup();
     } catch (err) {
-      return value;
+      return Ctx.make(this.ctx, this.file, value);
     }
   }
 
-  static async getValueOrRef<U>(value: U | Ref<U>, fallback: U): Promise<U> {
-    if (this.isRef(value)) return await (<Ref<U>>value).get();
-    return <U>value;
+  static async getValueOrRef<U>(ctx: OpenApiParser, file: OpenApiFile, value: U | Ref<U>, parser: Parser<U>): Promise<Ctx<U>> {
+    if (this.isRef(<Ref<U>>value)) return Ref.resolve<U>(ctx, file, (<any>value).$ref, parser).get();
+    return Ctx.make(ctx, file, <U>value);
   }
 }

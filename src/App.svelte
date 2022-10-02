@@ -12,7 +12,7 @@
     const config = await fetchConfig();
     name = config.name;
     specUrls = config.specs;
-    for (const [key, item] of specUrls.entries()) {
+    for (const item of Object.values(specUrls)) {
       if (item.name == config.primary) {
         specUrl = item.url;
         break;
@@ -39,7 +39,7 @@
       </Selector>
     </div>
   </header>
-  <Definition {specUrl} />
+  <Definition spec={new URL(specUrl, location)} />
   <footer>
     Powered by <a href="https://github.com/MrMelon54/waffle" target="_blank">Waffle</a>
   </footer>

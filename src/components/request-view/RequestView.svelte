@@ -1,11 +1,15 @@
 <script lang="ts">
   import SvelteMarkdown from "svelte-markdown";
   import { OperationObject } from "../../utils/oapi/objects/OperationObject";
-  import { RequestBodyObject } from "../../utils/oapi/objects/RequestBodyObject";
   import { allResponses, getFromResponses } from "../../utils/oapi/objects/ResponsesObject";
   import { getOrDefault } from "../../utils/oapi/utils/ObjectUtils";
+  import OpenApiFile from "../../utils/oapi/utils/OpenApiFile";
+  import OpenApiParser from "../../utils/oapi/utils/OpenApiParser";
   import Parameter from "./Parameter.svelte";
   import Response from "./Response.svelte";
+
+  export let _p: OpenApiParser;
+  export let _f: OpenApiFile;
   export let open = false;
   export let req: OperationObject;
 
@@ -86,7 +90,7 @@
               {#await getFromResponses(req.responses, resp)}
                 <span>Loading...</span>
               {:then x}
-                <Response key={resp} resp={x} />
+                <Response {_p} {_f} key={resp} resp={x} />
               {/await}
             {/each}
           </table>

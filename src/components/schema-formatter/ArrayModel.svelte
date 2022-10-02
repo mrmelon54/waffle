@@ -3,10 +3,10 @@
   import SchemaCollapse from "./SchemaCollapse.svelte";
   import RawProperty from "./RawProperty.svelte";
   import SchemaProperty from "./SchemaProperty.svelte";
-  import { SchemaObjectArray } from "../../utils/oapi/schemas/SchemaObject-Array";
   import PrimitiveModel from "./PrimitiveModel.svelte";
   import ModelWrapper from "./ModelWrapper.svelte";
   import { getOrDefault } from "../../utils/oapi/utils/ObjectUtils";
+  import { SchemaObjectArray } from "../../utils/oapi/objects/SchemaObject";
 
   export let schema: SchemaObjectArray;
   export let displayName: string;

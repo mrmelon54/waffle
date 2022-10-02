@@ -1,22 +1,20 @@
 <script lang="ts">
   import Document from "./document/Document.svelte";
-  import MultipleFileSpec from "./utils/oapi/utils/MultipleFileSpec";
-  import OpenApiContext from "./utils/oapi/utils/OpenApiContext";
+  import OpenApiParser from "./utils/oapi/utils/OpenApiParser";
 
-  export let specUrl: string;
-  let manager = new MultipleFileSpec();
+  export let spec: URL;
 
-  async function fetchSpec(url: string): Promise<OpenApiContext> {
+  async function fetchSpec(url: URL): Promise<OpenApiParser> {
     if (!url) return Promise.reject(`No OpenAPI spec selected`);
-    return await OpenApiContext.generate(manager, url);
+    return await OpenApiParser.create(url);
   }
 </script>
 
 <div id="openapi-definition">
-  {#await fetchSpec(specUrl)}
+  {#await fetchSpec(spec)}
     <div>Loading...</div>
   {:then x}
-    <Document spec={x.get()} />
+    <Document _p={x} _f={x.mainFile} spec={x.mainFile.value} />
   {:catch err}
     {console.error("[Definition]", err)}
     <div id="spec-errors">{err}</div>

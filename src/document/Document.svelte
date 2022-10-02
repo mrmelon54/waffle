@@ -4,7 +4,11 @@
   import Selector from "../components/Selector.svelte";
   import RequestCategories from "./RequestCategories.svelte";
   import { OpenApiObject } from "../utils/oapi/objects/OpenApiObject";
+  import OpenApiParser from "../utils/oapi/utils/OpenApiParser";
+  import OpenApiFile from "../utils/oapi/utils/OpenApiFile";
 
+  export let _p: OpenApiParser;
+  export let _f: OpenApiFile;
   export let spec: OpenApiObject;
 
   let serverUrl: string;
@@ -29,10 +33,10 @@
     </div>
     <div class="doc-gap" />
   {/if}
-  <RequestCategories tags={spec.tags} paths={spec.paths} components={spec.components} />
+  <RequestCategories {_p} {_f} tags={spec.tags} paths={spec.paths} components={spec.components} />
   {#if spec.components !== undefined && spec.components.schemas !== undefined}
     <div class="doc-gap" />
-    <Schemas schemas={spec.components.schemas} />
+    <Schemas {_p} {_f} schemas={spec.components.schemas} />
   {/if}
 </div>
 
