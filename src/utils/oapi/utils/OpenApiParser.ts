@@ -40,6 +40,7 @@ export default class OpenApiParser {
     for (let i of ref) {
       if (v.__proto__ === Map.prototype) v = v.get(i);
       else if (typeof v === "object") v = v[i];
+      if (v === undefined) return Promise.reject("[NestedLookup()] Layer is undefined");
     }
     return v;
   }
