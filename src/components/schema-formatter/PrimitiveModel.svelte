@@ -1,13 +1,14 @@
 <script lang="ts">
   import SvelteMarkdown from "svelte-markdown";
-  import SchemaObjectPrimitive from "../../utils/oapi/schemas/SchemaObject-Primitive";
+  import { SchemaObjectPrimitive } from "../../utils/oapi/schemas/SchemaObject-Primitive";
+  import { getOrDefault } from "../../utils/oapi/utils/ObjectUtils";
   import EnumModel from "./EnumModel.svelte";
   import RawProperty from "./RawProperty.svelte";
 
   export let schema: SchemaObjectPrimitive;
   export let displayName: string;
 
-  let title = schema.title.getOrDefault(displayName);
+  let title = getOrDefault(schema.title, displayName);
 
   let rawProps = [];
   addRawProps("default", "readOnly", "writeOnly", "minLength", "maxLength", "pattern", "example");
@@ -26,31 +27,31 @@
       <span class="prop-title">{title}</span>
     {/if}
     <span class="prop-type">{schema.type}</span>
-    {#if schema.format !== undefined && schema.format.isFull()}
-      <span class="prop-format">(${schema.format.get()})</span>
+    {#if schema.format !== undefined}
+      <span class="prop-format">(${schema.format})</span>
     {/if}
   </h5>
   <table>
     {#each rawProps as prop}
       <RawProperty propKey={prop.key} propVal={prop.value} isRequired={false} />
     {/each}
-    {#if schema.description.isFull()}
+    {#if schema.description !== undefined}
       <tr>
         <td colspan="2" class="schema-description">
-          <SvelteMarkdown source={schema.description.get()} />
+          <SvelteMarkdown source={schema.description} />
         </td>
       </tr>
     {/if}
-    {#if schema.externalDocs.isFull()}
+    {#if schema.externalDocs !== undefined}
       <tr>
         <td colspan="2" class="external-docs">
-          <a target="_blank" href={schema.externalDocs.get().url}>{schema.externalDocs.get().description.getOrDefault(schema.externalDocs.get().url)}</a>
+          <a target="_blank" href={schema.externalDocs.url}>{getOrDefault(schema.externalDocs.description, schema.externalDocs.url)}</a>
         </td>
       </tr>
     {/if}
   </table>
-  {#if schema.enumValues.isFull()}
-    <EnumModel value={schema.enumValues.get()} />
+  {#if schema.enumValues !== undefined}
+    <EnumModel value={schema.enumValues} />
   {/if}
 </span>
 

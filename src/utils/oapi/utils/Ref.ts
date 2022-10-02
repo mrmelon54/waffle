@@ -1,6 +1,8 @@
 import OpenApiContext from "../utils/OpenApiContext";
 import { CtxParser } from "./ObjectUtils";
 
+// TODO: rewrite this system
+
 export default class Ref<T> {
   $$isRef: boolean;
   private ctx: OpenApiContext;

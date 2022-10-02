@@ -3,16 +3,16 @@
   import SchemaCollapse from "./SchemaCollapse.svelte";
   import RawProperty from "./RawProperty.svelte";
   import SchemaProperty from "./SchemaProperty.svelte";
-  import SchemaObjectArray from "../../utils/oapi/schemas/SchemaObject-Array";
+  import { SchemaObjectArray } from "../../utils/oapi/schemas/SchemaObject-Array";
   import PrimitiveModel from "./PrimitiveModel.svelte";
   import ModelWrapper from "./ModelWrapper.svelte";
-  import { get } from "svelte/store";
+  import { getOrDefault } from "../../utils/oapi/utils/ObjectUtils";
 
   export let schema: SchemaObjectArray;
   export let displayName: string;
   export let required: boolean;
 
-  let title = schema.title.getOrDefault(displayName) + (required ? "*" : "");
+  let title = getOrDefault(schema.title, displayName) + (required ? "*" : "");
 
   let rawProps = [];
   addRawProps("readOnly", "writeOnly", "minItems", "maxItems", "minLength", "maxLength");
@@ -39,24 +39,24 @@
       {#each rawProps as prop}
         <RawProperty propKey={prop.key} propVal={prop.value} isRequired={false} />
       {/each}
-      {#if schema.description.isFull()}
+      {#if schema.description !== undefined}
         <tr>
           <td colspan="2" class="schema-description">
-            <SvelteMarkdown source={schema.description.get()} />
+            <SvelteMarkdown source={schema.description} />
           </td>
         </tr>
       {/if}
-      {#if schema.externalDocs.isFull()}
+      {#if schema.externalDocs !== undefined}
         <tr>
           <td colspan="2" class="external-docs">
-            <a target="_blank" href={schema.externalDocs.get().url}>{schema.externalDocs.get().description.getOrDefault(schema.externalDocs.get().url)}</a>
+            <a target="_blank" href={schema.externalDocs.url}>{getOrDefault(schema.externalDocs.description, schema.externalDocs.url)}</a>
           </td>
         </tr>
       {/if}
-      {#if schema.items.isFull()}
+      {#if schema.items !== undefined}
         <SchemaProperty key={"items"} open={true}>
           <ModelWrapper topLevel={false}>
-            <PrimitiveModel schema={schema.items.get()} displayName={schema.items.get().toString()} required={false} />
+            <PrimitiveModel schema={schema.items} displayName={schema.items.toString()} required={false} />
           </ModelWrapper>
         </SchemaProperty>
       {/if}

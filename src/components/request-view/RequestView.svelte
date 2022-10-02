@@ -35,7 +35,7 @@
           <p>Warning: Deprecated</p>
         </div>
       {/if}
-      {#if req.description !== undefined}
+      {#if req.description !== undefined && req.description !== ""}
         <div class="request-description">
           <SvelteMarkdown source={req.description} />
         </div>
@@ -83,7 +83,11 @@
               <th>Links</th>
             </tr>
             {#each allResponses(req.responses) as resp}
-              <Response key={resp} resp={getFromResponses(req.responses, resp)} />
+              {#await getFromResponses(req.responses, resp)}
+                <span>Loading...</span>
+              {:then x}
+                <Response key={resp} resp={x} />
+              {/await}
             {/each}
           </table>
         </div>

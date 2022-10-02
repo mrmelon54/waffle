@@ -18,7 +18,9 @@
     <td>
       <SvelteMarkdown source={x.description} />
     </td>
-    <td />
+    <td>
+      <p>No links</p>
+    </td>
   {/await}
 </tr>
 

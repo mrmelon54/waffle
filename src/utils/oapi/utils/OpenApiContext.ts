@@ -38,7 +38,6 @@ export default class OpenApiContext {
     let file = ref.slice(0, hashIdx);
     let tree = ref.slice(hashIdx + 1);
     let f = await this.loadFile(file);
-    console.info("Context lookup", f, tree.split("/").slice(1));
     return this.nestedLookup(f, tree.split("/").slice(1));
   }
 

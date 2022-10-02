@@ -2,6 +2,7 @@ import { Style } from "../values/Styles";
 import { ExampleObject } from "./ExampleObject";
 import { MediaTypeObject } from "./MediaTypeObject";
 import { SchemaObject } from "./SchemaObject";
+import Ref from "../utils/Ref";
 
 export interface ParameterObject {
   name: string;

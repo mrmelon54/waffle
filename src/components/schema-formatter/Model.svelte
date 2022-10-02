@@ -1,75 +1,75 @@
 <script lang="ts">
-  import SchemaObject from "../../utils/oapi/objects/SchemaObject";
+  import { detectType, SchemaObject } from "../../utils/oapi/objects/SchemaObject";
+  import Ref from "../../utils/oapi/utils/Ref";
   import ArrayModel from "./ArrayModel.svelte";
   import ModelWrapper from "./ModelWrapper.svelte";
   import ObjectModel from "./ObjectModel.svelte";
   import PrimitiveModel from "./PrimitiveModel.svelte";
 
-  export let schema: SchemaObject;
+  export let schema: SchemaObject | Ref<SchemaObject>;
   export let required = false;
   export let displayName: string | undefined;
   export let topLevel = false;
   if (displayName === undefined) displayName = "";
 
-  let type = schema.type;
-  let rawObj = schema.asObject();
-  let rawArr = schema.asArray();
-  let rawPrim = schema.asPrimitive();
-  let isRaw = type in ["object", "array", "string", "integer", "number", "boolean"] && (rawObj.isFull() || rawArr.isFull() || rawPrim.isFull());
-  console.log("[Model]", schema, type, isRaw);
+  let type: string = "unknown";
 
-  let allOf = schema.allOf.getOrDefault([]);
-  let anyOf = schema.anyOf.getOrDefault([]);
-  let oneOf = schema.oneOf.getOrDefault([]);
+  async function getFinalSchema(): Promise<SchemaObject> {
+    let r = await Ref.getValueOrRef(schema, {});
+    type = detectType(r);
+    console.info("getFinalSchema:", r);
+    return r;
+  }
 </script>
 
 <ModelWrapper {topLevel}>
-  {#if isRaw}
-    {#if type == "object"}
-      {#if rawObj.isFull()}
-        <ObjectModel schema={rawObj.get()} {displayName} {required} />
-      {:else}
-        <div>Failed to render ObjectModel</div>
-      {/if}
+  {#await getFinalSchema()}
+    <div>Loading...</div>
+  {:then x}
+    {#if type == "allOf"}
+      <h5>All of:</h5>
+      <ul>
+        {#each x.allOf as i}
+          <li>
+            {console.error(i)}
+            <svelte:self schema={i} />
+          </li>
+        {/each}
+      </ul>
+    {:else if type == "anyOf"}
+      <h5>Any of:</h5>
+      <ul>
+        {#each x.anyOf as i}
+          <li>
+            <svelte:self schema={i} />
+          </li>
+        {/each}
+      </ul>
+    {:else if type == "oneOf"}
+      <h5>All of:</h5>
+      <ul>
+        {#each x.oneOf as i}
+          <li>
+            <svelte:self schema={i} />
+          </li>
+        {/each}
+      </ul>
+    {:else if type == "object"}
+      <ObjectModel schema={x} {displayName} {required} />
     {:else if type == "array"}
-      {#if rawArr.isFull()}
-        <ArrayModel schema={rawArr.get()} {displayName} {required} />
-      {:else}
-        <div>Failed to render ArrayModel</div>
-      {/if}
-    {:else if rawPrim.isFull()}
-      <PrimitiveModel schema={rawPrim.get()} {displayName} />
+      <ArrayModel schema={x} {displayName} {required} />
+    {:else if type == "string"}
+      <PrimitiveModel schema={x} {displayName} />
+    {:else if type == "number"}
+      <PrimitiveModel schema={x} {displayName} />
+    {:else if type == "integer"}
+      <PrimitiveModel schema={x} {displayName} />
+    {:else if type == "boolean"}
+      <PrimitiveModel schema={x} {displayName} />
     {:else}
-      <div>Failed to render model</div>
+      <div>Failed to detect Model type</div>
     {/if}
-  {:else if schema.allOf.isFull()}
-    <h5>All of:</h5>
-    <ul>
-      {#each allOf as schema}
-        <li>
-          <svelte:self {schema} />
-        </li>
-      {/each}
-    </ul>
-  {:else if schema.anyOf.isFull() || schema.anyOf.hasError()}
-    <h5>Any of:</h5>
-    <ul>
-      {#each anyOf as schema}
-        <li>
-          <svelte:self {schema} />
-        </li>
-      {/each}
-    </ul>
-  {:else if schema.oneOf.isFull() || schema.oneOf.hasError()}
-    <h5>One of:</h5>
-    <ul>
-      {#each oneOf as schema}
-        <li>
-          <svelte:self {schema} />
-        </li>
-      {/each}
-    </ul>
-  {:else}
-    <div>Failed to detect Model type</div>
-  {/if}
+  {:catch err}
+    <div>{err}</div>
+  {/await}
 </ModelWrapper>

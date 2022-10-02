@@ -13,7 +13,7 @@
 <div id="openapi-document">
   <Title {spec} />
   {#if spec.servers !== undefined}
-    <div class="bubble-block">
+    <div id="servers" class="bubble-block">
       <h4>Servers</h4>
       <Selector bind:value={serverUrl}>
         {#each spec.servers as server}
