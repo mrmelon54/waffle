@@ -21,6 +21,7 @@
   export let required = false;
   export let displayName: string | undefined;
   export let topLevel = false;
+  export let openTopLevel = false;
   if (displayName === undefined) displayName = "";
 
   let type: string = "unknown";
@@ -37,9 +38,9 @@
     <div>Loading...</div>
   {:then x}
     {#if Array.isArray(x.v)}
-      <ComplexObjectModel {_p} {_f} parent={x.v} schema={x.v} {displayName} {required} />
+      <ComplexObjectModel {_p} {_f} parent={x.v} schema={x.v} {displayName} {required} open={openTopLevel} />
     {:else if type == "allOf"}
-      <ComplexObjectModel {_p} {_f} parent={x.v} schema={x.v.allOf} {displayName} {required} />
+      <ComplexObjectModel {_p} {_f} parent={x.v} schema={x.v.allOf} {displayName} {required} open={openTopLevel} />
     {:else if type == "anyOf"}
       <h5>Any of:</h5>
       <ul>
@@ -59,9 +60,9 @@
         {/each}
       </ul>
     {:else if type == "object"}
-      <ObjectModel _p={x.$$parser} _f={x.$$file} schema={x.v} {displayName} {required} />
+      <ObjectModel _p={x.$$parser} _f={x.$$file} schema={x.v} {displayName} {required} open={openTopLevel} />
     {:else if type == "array"}
-      <ArrayModel _p={x.$$parser} _f={x.$$file} schema={x.v} {displayName} {required} />
+      <ArrayModel _p={x.$$parser} _f={x.$$file} schema={x.v} {displayName} {required} open={openTopLevel} />
     {:else if type == "string"}
       <PrimitiveModel _p={x.$$parser} _f={x.$$file} schema={x.v} {displayName} />
     {:else if type == "number"}

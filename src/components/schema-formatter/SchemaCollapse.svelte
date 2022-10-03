@@ -3,7 +3,7 @@
   export let beforeText;
   export let afterText;
   export let collapseText;
-  let open;
+  export let open = false;
 
   function handleClick() {
     open = !open;

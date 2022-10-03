@@ -1,7 +1,7 @@
 <script lang="ts">
   import SvelteMarkdown from "svelte-markdown";
-  import { SchemaObject, SchemaObjectObject } from "../../utils/oapi/objects/SchemaObject";
-  import { getOrDefault } from "../../utils/oapi/utils/ObjectUtils";
+  import {SchemaObject, SchemaObjectObject} from "../../utils/oapi/objects/SchemaObject";
+  import {getOrDefault} from "../../utils/oapi/utils/ObjectUtils";
   import OpenApiFile from "../../utils/oapi/utils/OpenApiFile";
   import OpenApiParser from "../../utils/oapi/utils/OpenApiParser";
   import Model from "./Model.svelte";
@@ -13,6 +13,7 @@
   export let schema: SchemaObjectObject;
   export let required: boolean;
   export let displayName: string;
+  export let open = false;
 
   let title = getOrDefault(schema.title, displayName) + (required ? "*" : "");
   let requiredProperties = getOrDefault(schema.requiredProperties, []);
@@ -32,7 +33,7 @@
 </script>
 
 <div>
-  <SchemaCollapse {title} collapseText={"{...}"} beforeText={"{"} afterText={"}"}>
+  <SchemaCollapse {title} collapseText={"{...}"} beforeText={"{"} afterText={"}"} {open}>
     <table class="inner-object">
       {#if schema.description !== undefined}
         <tr>

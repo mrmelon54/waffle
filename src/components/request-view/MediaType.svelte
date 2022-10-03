@@ -19,16 +19,32 @@
   }
 </script>
 
-<div>
-  <div>
-    <MediaTypeTab m={2} i={0} {tab} f={handleTabClick}>Example</MediaTypeTab>
-    <MediaTypeTab m={2} i={1} {tab} f={handleTabClick}>Schema</MediaTypeTab>
+<div class="media-type">
+  <div class="media-type-tabs">
+    <MediaTypeTab i={0} {tab} f={handleTabClick}>Example</MediaTypeTab>
+    <span class="media-type-gap" />
+    <MediaTypeTab i={1} {tab} f={handleTabClick}>Schema</MediaTypeTab>
   </div>
   <div>
     {#if tab === 0}
       <JsonFormatter content={media} />
     {:else if tab === 1}
-      <Model {_p} {_f} schema={media.schema} displayName={undefined} topLevel={true} />
+      <Model {_p} {_f} schema={media.schema} displayName={undefined} topLevel={true} openTopLevel={true} />
     {/if}
   </div>
 </div>
+
+<style>
+  .media-type-tabs {
+    display: flex;
+    align-items: center;
+  }
+
+  .media-type-gap {
+    display: block;
+    height: 28px;
+    width: 2px;
+    background: #ffffff;
+    margin: 0 12px;
+  }
+</style>

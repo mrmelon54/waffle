@@ -5,8 +5,8 @@
   import SchemaProperty from "./SchemaProperty.svelte";
   import PrimitiveModel from "./PrimitiveModel.svelte";
   import ModelWrapper from "./ModelWrapper.svelte";
-  import { getOrDefault } from "../../utils/oapi/utils/ObjectUtils";
-  import { SchemaObjectArray } from "../../utils/oapi/objects/SchemaObject";
+  import {getOrDefault} from "../../utils/oapi/utils/ObjectUtils";
+  import {SchemaObjectArray} from "../../utils/oapi/objects/SchemaObject";
   import OpenApiParser from "../../utils/oapi/utils/OpenApiParser";
   import OpenApiFile from "../../utils/oapi/utils/OpenApiFile";
   import Model from "./Model.svelte";
@@ -16,6 +16,7 @@
   export let schema: SchemaObjectArray;
   export let displayName: string;
   export let required: boolean;
+  export let open = false;
 
   let title = getOrDefault(schema.title, displayName) + (required ? "*" : "");
 
@@ -26,20 +27,20 @@
   function addRawProps(...keys: string[]) {
     for (let x of keys) {
       let z = schema[x];
-      if (z !== undefined) rawProps.push({ key: x, value: String(z) });
+      if (z !== undefined) rawProps.push({key: x, value: String(z)});
     }
   }
 
   function addJsonProps(...keys: string[]) {
     for (let x of keys) {
       let z = schema[x];
-      if (z !== undefined) rawProps.push({ key: x, value: JSON.stringify(z) });
+      if (z !== undefined) rawProps.push({key: x, value: JSON.stringify(z)});
     }
   }
 </script>
 
 <span class="model">
-  <SchemaCollapse {title} collapseText="[...]" beforeText="[" afterText="]">
+  <SchemaCollapse {title} collapseText="[...]" beforeText="[" afterText="]" {open}>
     <table class="inner-table">
       {#each rawProps as prop}
         <RawProperty propKey={prop.key} propVal={prop.value} isRequired={false} />
