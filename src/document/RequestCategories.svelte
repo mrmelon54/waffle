@@ -1,11 +1,11 @@
 <script lang="ts">
-  import { ComponentsObject } from "../utils/oapi/objects/ComponentsObject";
-  import { OperationObject } from "../utils/oapi/objects/OperationObject";
+  import {ComponentsObject} from "../utils/oapi/objects/ComponentsObject";
+  import {OperationObject} from "../utils/oapi/objects/OperationObject";
 
-  import { getPathOpOrder, PathItemObject } from "../utils/oapi/objects/PathItemObject";
-  import { PathsObject } from "../utils/oapi/objects/PathsObject";
-  import type { TagObject } from "../utils/oapi/objects/TagObject";
-  import { getOrDefault } from "../utils/oapi/utils/ObjectUtils";
+  import {getPathOpOrder, PathItemObject} from "../utils/oapi/objects/PathItemObject";
+  import {PathsObject} from "../utils/oapi/objects/PathsObject";
+  import type {TagObject} from "../utils/oapi/objects/TagObject";
+  import {getOrDefault} from "../utils/oapi/utils/ObjectUtils";
   import OpenApiFile from "../utils/oapi/utils/OpenApiFile";
   import OpenApiParser from "../utils/oapi/utils/OpenApiParser";
   import Ref from "../utils/oapi/utils/Ref";
@@ -17,10 +17,10 @@
   export let paths: PathsObject;
   export let components: ComponentsObject;
 
-  let defaultCategory: TagObject = { name: "default", $$requests: [] };
+  let defaultCategory: TagObject = {name: "default", $$requests: []};
   let rawTags =
     tags !== undefined
-      ? tags.map((x) => {
+      ? tags.map(x => {
           x.$$requests = [];
           return x;
         })
@@ -31,15 +31,15 @@
     let rawPaths: PathsObject = getOrDefault(paths, {});
 
     for (let [pathKey, rawPathItem] of Object.entries(rawPaths)) {
-      let pathItem = await Ref.getValueOrRef(rawPathItem, {});
-      for (let met of getPathOpOrder(pathItem)) {
-        let opz: OperationObject | undefined = pathItem[met.name];
+      let pathItem = await Ref.getValueOrRef(_p, _f, rawPathItem, async x => x);
+      for (let met of getPathOpOrder(pathItem.v)) {
+        let opz: OperationObject | undefined = pathItem.v[met.name];
         if (opz === undefined) continue;
         let op = opz!;
         op.$$path = pathKey;
         op.$$method = met;
         if (op.parameters !== undefined) op.$$params = op.parameters!;
-        else if (pathItem.parameters !== undefined) op.$$params = pathItem.parameters!;
+        else if (pathItem.v.parameters !== undefined) op.$$params = pathItem.v.parameters!;
         else op.$$params = [];
         putInCategory(categories, op);
       }
@@ -56,7 +56,7 @@
       let cat = findCategory(categories, tag);
       if (cat !== undefined) cat.$$requests.push(req);
       else {
-        let o: TagObject = { name: tag, $$requests: [req] };
+        let o: TagObject = {name: tag, $$requests: [req]};
         categories.push(o);
       }
       return;

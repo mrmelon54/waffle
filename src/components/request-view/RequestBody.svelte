@@ -1,0 +1,52 @@
+<script lang="ts">
+  import SvelteMarkdown from "svelte-markdown";
+  import {RequestBodyObject} from "../../utils/oapi/objects/RequestBodyObject";
+  import Ctx from "../../utils/oapi/utils/Ctx";
+  import OpenApiFile from "../../utils/oapi/utils/OpenApiFile";
+  import OpenApiParser from "../../utils/oapi/utils/OpenApiParser";
+  import Ref from "../../utils/oapi/utils/Ref";
+  import JsonFormatter from "../JsonFormatter.svelte";
+  import Selector from "../Selector.svelte";
+  import RequestInfoHeader from "./bubble/RequestInfoHeader.svelte";
+  import RequestInfoContent from "./bubble/RequestInfoContent.svelte";
+  import MediaType from "./MediaType.svelte";
+
+  export let _p: OpenApiParser;
+  export let _f: OpenApiFile;
+  export let requestBody: RequestBodyObject | Ref<RequestBodyObject>;
+
+  function getRequestBody(): Promise<Ctx<RequestBodyObject>> {
+    return Ref.getValueOrRef(_p, _f, requestBody, async x => <RequestBodyObject>x);
+  }
+
+  let contentType: string | undefined;
+</script>
+
+<div class="request-description">
+  {#await getRequestBody()}
+    <RequestInfoHeader title="Request Body" required={true} />
+    <RequestInfoContent>
+      <span>Loading...</span>
+    </RequestInfoContent>
+  {:then x}
+    <RequestInfoHeader title="Request Body" required={true}>
+      <Selector bind:value={contentType}>
+        {#each Object.keys(x.v.content) as t}
+          <option value={t}>{t}</option>
+        {/each}
+      </Selector>
+    </RequestInfoHeader>
+    <RequestInfoContent>
+      {#if x.v.description !== undefined}
+        <SvelteMarkdown source={x.v.description} />
+      {:else}
+        <p />
+      {/if}
+      {#if contentType !== undefined}
+        <MediaType {_p} {_f} media={x.v.content[contentType]} />
+      {:else}
+        <div>Missing content type</div>
+      {/if}
+    </RequestInfoContent>
+  {/await}
+</div>

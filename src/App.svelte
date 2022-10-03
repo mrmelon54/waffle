@@ -1,5 +1,5 @@
 <script>
-  import { onMount } from "svelte";
+  import {onMount} from "svelte";
   import Definition from "./Definition.svelte";
   import Selector from "./components/Selector.svelte";
   import "svelte-highlight/styles/github.css";
@@ -33,9 +33,7 @@
       <span>Select a definition</span>
       <Selector bind:value={specUrl}>
         {#each specUrls as spec}
-          <option value={spec.url}>
-            {spec.name}
-          </option>
+          <option value={spec.url}>{spec.name}</option>
         {/each}
       </Selector>
     </div>

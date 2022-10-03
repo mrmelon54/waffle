@@ -1,5 +1,5 @@
 <script lang="ts">
-  import { detectType, SchemaObject } from "../../utils/oapi/objects/SchemaObject";
+  import {detectType, SchemaObject} from "../../utils/oapi/objects/SchemaObject";
   import Ctx from "../../utils/oapi/utils/Ctx";
   import OpenApiFile from "../../utils/oapi/utils/OpenApiFile";
   import OpenApiParser from "../../utils/oapi/utils/OpenApiParser";
@@ -11,8 +11,9 @@
   import PrimitiveModel from "./PrimitiveModel.svelte";
 
   // Highlight
-  import { Highlight } from "svelte-highlight";
+  import {Highlight} from "svelte-highlight";
   import highlightJson from "svelte-highlight/languages/json";
+  import JsonFormatter from "../JsonFormatter.svelte";
 
   export let _p: OpenApiParser;
   export let _f: OpenApiFile;
@@ -25,7 +26,7 @@
   let type: string = "unknown";
 
   async function getFinalSchema(): Promise<Ctx<SchemaObject>> {
-    let r = await Ref.getValueOrRef(_p, _f, schema, (x) => Promise.resolve(<SchemaObject>x));
+    let r = await Ref.getValueOrRef(_p, _f, schema, x => Promise.resolve(<SchemaObject>x));
     type = detectType(r.v);
     return r;
   }
@@ -71,9 +72,7 @@
       <PrimitiveModel _p={x.$$parser} _f={x.$$file} schema={x.v} {displayName} />
     {:else}
       <div>Failed to detect Model type:</div>
-      <div>
-        <Highlight language={highlightJson} code={JSON.stringify(x.v, null, 2)} />
-      </div>
+      <JsonFormatter content={x.v} />
     {/if}
   {:catch err}
     {console.error("[Model] ERROR:", err)}

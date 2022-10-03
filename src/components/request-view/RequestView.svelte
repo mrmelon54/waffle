@@ -1,12 +1,15 @@
 <script lang="ts">
   import SvelteMarkdown from "svelte-markdown";
-  import { OperationObject } from "../../utils/oapi/objects/OperationObject";
-  import { allResponses, getFromResponses } from "../../utils/oapi/objects/ResponsesObject";
-  import { getOrDefault } from "../../utils/oapi/utils/ObjectUtils";
+  import {OperationObject} from "../../utils/oapi/objects/OperationObject";
+  import {allResponses, getFromResponses} from "../../utils/oapi/objects/ResponsesObject";
+  import {getOrDefault} from "../../utils/oapi/utils/ObjectUtils";
   import OpenApiFile from "../../utils/oapi/utils/OpenApiFile";
   import OpenApiParser from "../../utils/oapi/utils/OpenApiParser";
   import Parameter from "./Parameter.svelte";
   import Response from "./Response.svelte";
+  import RequestBody from "./RequestBody.svelte";
+  import RequestInfoHeader from "./bubble/RequestInfoHeader.svelte";
+  import RequestInfoContent from "./bubble/RequestInfoContent.svelte";
 
   export let _p: OpenApiParser;
   export let _f: OpenApiFile;
@@ -40,16 +43,14 @@
         </div>
       {/if}
       {#if req.description !== undefined && req.description !== ""}
-        <div class="request-description">
+        <RequestInfoContent>
           <SvelteMarkdown source={req.description} />
-        </div>
+        </RequestInfoContent>
       {/if}
 
       <!-- Parameters -->
-      <div class="request-header">
-        <span class="request-header-tab">Parameters</span>
-      </div>
-      <div class="request-description">
+      <RequestInfoHeader title="Parameters" />
+      <RequestInfoContent>
         {#if req.$$params.length > 0}
           <table class="param-table">
             <tr>
@@ -64,22 +65,17 @@
         {:else}
           No parameters
         {/if}
-      </div>
+      </RequestInfoContent>
 
       <!-- Request Body -->
       {#if req.requestBody !== undefined}
-        <div class="request-header">
-          <span class="request-header-tab info-required">Request Body</span>
-        </div>
-        <div class="request-description">Work In Progress</div>
+        <RequestBody {_p} {_f} requestBody={req.requestBody} />
       {/if}
 
       <!-- Responses -->
       {#if req.responses !== undefined}
-        <div class="request-header">
-          <span class="request-header-tab">Responses</span>
-        </div>
-        <div class="request-description">
+        <RequestInfoHeader title="Responses" />
+        <RequestInfoContent>
           <table class="resp-table">
             <tr>
               <th>Code</th>
@@ -94,7 +90,7 @@
               {/await}
             {/each}
           </table>
-        </div>
+        </RequestInfoContent>
       {/if}
     </div>
   {/if}
@@ -168,31 +164,6 @@
   .request > .request-summary > .request-summary-inner > h5 > .request-summary-text {
     font-size: 13px;
     color: #959595;
-  }
-
-  .request > .request-content > .request-description {
-    padding: 15px 20px;
-  }
-
-  .request > .request-content > .request-header {
-    padding: 15px 20px;
-    background-color: #252832;
-  }
-
-  .request > .request-content > .request-header > .request-header-tab {
-    position: relative;
-  }
-
-  .request > .request-content > .request-header > .request-header-tab::after {
-    content: " ";
-    background-color: var(--method-high-color);
-    display: block;
-    width: 120%;
-    height: 4px;
-    position: absolute;
-    bottom: -16px;
-    left: 50%;
-    transform: translateX(-50%);
   }
 
   .request.request-deprecated {
