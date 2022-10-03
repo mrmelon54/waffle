@@ -9,6 +9,7 @@
   import { SchemaObjectArray } from "../../utils/oapi/objects/SchemaObject";
   import OpenApiParser from "../../utils/oapi/utils/OpenApiParser";
   import OpenApiFile from "../../utils/oapi/utils/OpenApiFile";
+  import Model from "./Model.svelte";
 
   export let _p: OpenApiParser;
   export let _f: OpenApiFile;
@@ -38,7 +39,7 @@
 </script>
 
 <span class="model">
-  <SchemaCollapse {title} collapseText="[...]" beforeText="" afterText="">
+  <SchemaCollapse {title} collapseText="[...]" beforeText="[" afterText="]">
     <table class="inner-table">
       {#each rawProps as prop}
         <RawProperty propKey={prop.key} propVal={prop.value} isRequired={false} />
@@ -58,10 +59,8 @@
         </tr>
       {/if}
       {#if schema.items !== undefined}
-        <SchemaProperty key={"items"} open={true}>
-          <ModelWrapper topLevel={false}>
-            <PrimitiveModel schema={schema.items} displayName={schema.items.toString()} required={false} />
-          </ModelWrapper>
+        <SchemaProperty key={"items"} {required}>
+          <Model {_p} {_f} schema={schema.items} displayName={undefined} />
         </SchemaProperty>
       {/if}
     </table>

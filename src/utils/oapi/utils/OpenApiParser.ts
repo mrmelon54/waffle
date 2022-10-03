@@ -24,7 +24,7 @@ export default class OpenApiParser {
   async lookup(baseUrl: URL, ref: string): Promise<any> {
     let hashIdx = ref.indexOf("#");
     let file = ref.slice(0, hashIdx);
-    let tree = ref.slice(hashIdx + 1);
+    let tree = ref.slice(hashIdx + 2).split("/");
     let url = new URL(file, baseUrl);
     let f: OpenApiFile | undefined;
     if (this.files.has(url.href)) f = this.files.get(url.href);
@@ -33,14 +33,14 @@ export default class OpenApiParser {
       this.files.set(url.href, f);
     }
     if (f === undefined) return Promise.reject(`Failed to lookup reference file`);
-    return this.nestedLookup(f.value, tree.split("/").slice(1));
+    let n = await this.nestedLookup(f.value, tree);
+    n.title = tree[tree.length - 1];
+    return n;
   }
 
   private async nestedLookup(v: any, ref: string[]): Promise<any> {
     if (v === undefined) return Promise.reject(`Failed nested lookup`);
-    console.warn("Starting nested lookup...");
     for (let i of ref) {
-      console.info("Lookup:", v, i);
       if (v.__proto__ === Map.prototype) v = v.get(i);
       else if (typeof v === "object") v = v[i];
       if (v === undefined) return Promise.reject("[NestedLookup()] Layer is undefined");

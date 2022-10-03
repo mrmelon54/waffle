@@ -20,7 +20,7 @@ export interface SchemaObjectObject extends SchemaObject {
 }
 
 export interface SchemaObjectArray extends SchemaObject {
-  items?: SchemaObjectPrimitive;
+  items?: SchemaObject | Ref<SchemaObject>;
 }
 
 export interface SchemaObjectPrimitive extends SchemaObject {

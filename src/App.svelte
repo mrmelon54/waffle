@@ -2,6 +2,7 @@
   import { onMount } from "svelte";
   import Definition from "./Definition.svelte";
   import Selector from "./components/Selector.svelte";
+  import "svelte-highlight/styles/github.css";
 
   async function fetchConfig() {
     const resp = await fetch(window.CONFIG_URL || "config.json");

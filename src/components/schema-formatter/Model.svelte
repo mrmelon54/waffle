@@ -5,9 +5,14 @@
   import OpenApiParser from "../../utils/oapi/utils/OpenApiParser";
   import Ref from "../../utils/oapi/utils/Ref";
   import ArrayModel from "./ArrayModel.svelte";
+  import ComplexObjectModel from "./ComplexObjectModel.svelte";
   import ModelWrapper from "./ModelWrapper.svelte";
   import ObjectModel from "./ObjectModel.svelte";
   import PrimitiveModel from "./PrimitiveModel.svelte";
+
+  // Highlight
+  import { Highlight } from "svelte-highlight";
+  import highlightJson from "svelte-highlight/languages/json";
 
   export let _p: OpenApiParser;
   export let _f: OpenApiFile;
@@ -22,7 +27,6 @@
   async function getFinalSchema(): Promise<Ctx<SchemaObject>> {
     let r = await Ref.getValueOrRef(_p, _f, schema, (x) => Promise.resolve(<SchemaObject>x));
     type = detectType(r.v);
-    console.info("getFinalSchema:", r);
     return r;
   }
 </script>
@@ -31,16 +35,10 @@
   {#await getFinalSchema()}
     <div>Loading...</div>
   {:then x}
-    {#if type == "allOf"}
-      <h5>All of:</h5>
-      <ul>
-        {#each x.v.allOf as i}
-          <li>
-            {console.error(i)}
-            <svelte:self _p={x.$$parser} _f={x.$$file} schema={i} />
-          </li>
-        {/each}
-      </ul>
+    {#if Array.isArray(x.v)}
+      <ComplexObjectModel {_p} {_f} parent={x.v} schema={x.v} {displayName} {required} />
+    {:else if type == "allOf"}
+      <ComplexObjectModel {_p} {_f} parent={x.v} schema={x.v.allOf} {displayName} {required} />
     {:else if type == "anyOf"}
       <h5>Any of:</h5>
       <ul>
@@ -51,7 +49,7 @@
         {/each}
       </ul>
     {:else if type == "oneOf"}
-      <h5>All of:</h5>
+      <h5>One of:</h5>
       <ul>
         {#each x.v.oneOf as i}
           <li>
@@ -72,7 +70,10 @@
     {:else if type == "boolean"}
       <PrimitiveModel _p={x.$$parser} _f={x.$$file} schema={x.v} {displayName} />
     {:else}
-      <div>Failed to detect Model type</div>
+      <div>Failed to detect Model type:</div>
+      <div>
+        <Highlight language={highlightJson} code={JSON.stringify(x.v, null, 2)} />
+      </div>
     {/if}
   {:catch err}
     {console.error("[Model] ERROR:", err)}
