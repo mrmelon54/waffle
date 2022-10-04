@@ -22,7 +22,7 @@
   });
 
   let specUrls = [];
-  let specUrl;
+  let specUrl = "";
   let name;
 </script>
 
@@ -38,7 +38,11 @@
       </Selector>
     </div>
   </header>
-  <Definition spec={specUrl === undefined ? undefined : new URL(specUrl, location)} />
+  {#if specUrl === "" || specUrl === undefined}
+    <div>No OpenAPI spec selected</div>
+  {:else}
+    <Definition spec={new URL(specUrl, location)} />
+  {/if}
   <footer>
     Powered by <a href="https://github.com/MrMelon54/waffle" target="_blank">Waffle</a>
   </footer>

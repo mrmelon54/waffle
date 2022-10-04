@@ -1,18 +1,25 @@
 <script lang="ts">
+  import {PickGen} from "../../utils/oapi/gen/_PickGen";
   import {MediaTypeObject} from "../../utils/oapi/objects/MediaTypeObject";
   import OpenApiFile from "../../utils/oapi/utils/OpenApiFile";
   import OpenApiParser from "../../utils/oapi/utils/OpenApiParser";
   import JsonFormatter from "../JsonFormatter.svelte";
   import Model from "../schema-formatter/Model.svelte";
   import MediaTypeTab from "./MediaTypeTab.svelte";
-  import ExampleGenerator from "../../utils/oapi/utils/ExampleGenerator";
 
   export let _p: OpenApiParser;
   export let _f: OpenApiFile;
   export let media: MediaTypeObject;
+  export let mimeType: string;
 
   let tab: number = 0;
-  let gen = new ExampleGenerator(_p, _f);
+
+  async function generateExample(mime: string): Promise<any> {
+    let z = PickGen(mime);
+    if (z === undefined) return {$error: `Unknown mine type: ${mime}`};
+    let y = z.generate(_p, _f, media.schema);
+    return y;
+  }
 
   function handleTabClick(a: number): () => void {
     return function () {
@@ -29,11 +36,12 @@
   </div>
   <div>
     {#if tab === 0}
-      {#await gen.generate(media.schema)}
+      {#await generateExample(mimeType)}
         <div>Loading example...</div>
       {:then x}
         <JsonFormatter content={x} />
       {:catch err}
+        {console.error(err)}
         <div>Error: {err}</div>
       {/await}
     {:else if tab === 1}
@@ -52,7 +60,7 @@
     display: block;
     height: 28px;
     width: 2px;
-    background: #ffffff;
+    background: #c7c2bb;
     margin: 0 8px;
   }
 </style>

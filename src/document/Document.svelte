@@ -3,7 +3,7 @@
   import Schemas from "./Schemas.svelte";
   import Selector from "../components/Selector.svelte";
   import RequestCategories from "./RequestCategories.svelte";
-  import { OpenApiObject } from "../utils/oapi/objects/OpenApiObject";
+  import {OpenApiObject} from "../utils/oapi/objects/OpenApiObject";
   import OpenApiParser from "../utils/oapi/utils/OpenApiParser";
   import OpenApiFile from "../utils/oapi/utils/OpenApiFile";
 
@@ -11,7 +11,7 @@
   export let _f: OpenApiFile;
   export let spec: OpenApiObject;
 
-  let serverUrl: string;
+  let serverUrl: string = "";
 </script>
 
 <div id="openapi-document">

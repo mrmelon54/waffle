@@ -5,7 +5,6 @@
   import OpenApiFile from "../../utils/oapi/utils/OpenApiFile";
   import OpenApiParser from "../../utils/oapi/utils/OpenApiParser";
   import Ref from "../../utils/oapi/utils/Ref";
-  import JsonFormatter from "../JsonFormatter.svelte";
   import Selector from "../Selector.svelte";
   import RequestInfoHeader from "./bubble/RequestInfoHeader.svelte";
   import RequestInfoContent from "./bubble/RequestInfoContent.svelte";
@@ -19,7 +18,7 @@
     return Ref.getValueOrRef(_p, _f, requestBody, async x => <RequestBodyObject>x);
   }
 
-  let contentType: string | undefined;
+  let contentType: string = "";
 </script>
 
 <div class="request-description">
@@ -43,10 +42,15 @@
         <p />
       {/if}
       {#if contentType !== undefined}
-        <MediaType {_p} {_f} media={x.v.content[contentType]} />
+        {#key contentType}
+          <MediaType {_p} {_f} media={x.v.content[contentType]} mimeType={contentType} />
+        {/key}
       {:else}
         <div>Missing content type</div>
       {/if}
     </RequestInfoContent>
+  {:catch err}
+    {console.error(err)}
+    <div>Request Body Error: {err}</div>
   {/await}
 </div>

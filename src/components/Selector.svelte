@@ -1,9 +1,10 @@
 <script>
   export let value;
+  if (value === "") value = undefined;
 </script>
 
-<select id="selector" bind:value={value}>
-  <slot/>
+<select id="selector" bind:value>
+  <slot />
 </select>
 
 <style>
