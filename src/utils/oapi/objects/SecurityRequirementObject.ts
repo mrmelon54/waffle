@@ -1,3 +1,3 @@
 export interface SecurityRequirementObject {
-  fields: Map<string, string[]>;
+  fields: {[key: string]: string[]};
 }

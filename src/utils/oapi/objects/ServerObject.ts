@@ -1,7 +1,7 @@
-import { ServerVariableObject } from "./ServerVariableObject";
+import {ServerVariableObject} from "./ServerVariableObject";
 
 export interface ServerObject {
   url: string;
   description?: string;
-  variables?: Map<string, ServerVariableObject>;
+  variables?: {[key: string]: ServerVariableObject};
 }

@@ -18,8 +18,8 @@ export interface ParameterObject {
   allowReserved?: boolean;
   schema?: SchemaObject;
   example?: any;
-  examples?: Map<string, ExampleObject | Ref<ExampleObject>>;
+  examples?: {[key:string]: ExampleObject | Ref<ExampleObject>};
 
   // Complex scenarios
-  content?: Map<string, MediaTypeObject>;
+  content?: {[key:string]: MediaTypeObject};
 }

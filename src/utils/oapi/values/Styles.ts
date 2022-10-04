@@ -1,5 +1,3 @@
-import StaticOptional from "../../StaticOptional";
-
 export const enum StyleTypes {
   primitive,
   array,
@@ -39,9 +37,9 @@ export function AllStyles() {
   return Object.values(Styles);
 }
 
-export function parseStyle(v: any): Optional<Style> {
-  if (v === null || v === undefined) return StaticOptional.empty();
-  if (typeof v !== "string") return StaticOptional.emptyWithError("Style name must be a string");
-  if (Styles[v]) return StaticOptional.full(Styles[v]);
-  return StaticOptional.emptyWithError(`Invalid style name: '${v}'`);
+export function parseStyle(v: any): Style | undefined {
+  if (v === null || v === undefined) return undefined;
+  if (typeof v !== "string") return undefined;
+  if (Styles[v]) return Styles[v];
+  return undefined;
 }

@@ -1,4 +1,4 @@
-import { ExternalDocumentationObject } from "./ExternalDocumentationObject";
+import {ExternalDocumentationObject} from "./ExternalDocumentationObject";
 import Ref from "../utils/Ref";
 
 export interface SchemaObject {
@@ -14,8 +14,8 @@ export interface SchemaObject {
 }
 
 export interface SchemaObjectObject extends SchemaObject {
-  properties?: Map<string, SchemaObject>;
-  additionalProperties?: Map<string, any>;
+  properties?: {[key: string]: SchemaObject};
+  additionalProperties?: {[key: string]: any};
   requiredProperties?: string[];
 }
 

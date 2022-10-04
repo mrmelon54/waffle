@@ -1,11 +1,11 @@
-import { CallbackObject } from "./CallbackObject";
-import { ExternalDocumentationObject } from "./ExternalDocumentationObject";
-import { ParameterObject } from "./ParameterObject";
-import { RequestBodyObject } from "./RequestBodyObject";
-import { ResponsesObject } from "./ResponsesObject";
-import { SecurityRequirementObject } from "./SecurityRequirementObject";
-import { ServerObject } from "./ServerObject";
-import { Method } from "../values/Methods";
+import {CallbackObject} from "./CallbackObject";
+import {ExternalDocumentationObject} from "./ExternalDocumentationObject";
+import {ParameterObject} from "./ParameterObject";
+import {RequestBodyObject} from "./RequestBodyObject";
+import {ResponsesObject} from "./ResponsesObject";
+import {SecurityRequirementObject} from "./SecurityRequirementObject";
+import {ServerObject} from "./ServerObject";
+import {Method} from "../values/Methods";
 import Ref from "../utils/Ref";
 
 export interface OperationObject {
@@ -20,7 +20,7 @@ export interface OperationObject {
   parameters?: (ParameterObject | Ref<ParameterObject>)[];
   requestBody?: RequestBodyObject | Ref<RequestBodyObject>;
   responses?: ResponsesObject;
-  callbacks?: Map<string, CallbackObject | Ref<CallbackObject>>;
+  callbacks?: {[key: string]: CallbackObject | Ref<CallbackObject>};
   deprecated?: boolean;
   security?: SecurityRequirementObject[];
   servers?: ServerObject[];

@@ -11,3 +11,10 @@
     <span><slot /></span>
   {/if}
 </div>
+
+<style>
+  .media-type-tab {
+    cursor: pointer;
+    padding: 8px;
+  }
+</style>

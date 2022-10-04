@@ -1,12 +1,13 @@
-import { CallbackObject } from "./CallbackObject";
-import { ExampleObject } from "./ExampleObject";
-import { HeaderObject } from "./HeaderObject";
-import { LinkObject } from "./LinkObject";
-import { ParameterObject } from "./ParameterObject";
-import { PathItemObject } from "./PathItemObject";
-import { RequestBodyObject } from "./RequestBodyObject";
-import { ResponseObject } from "./ResponseObject";
-import { SchemaObject } from "./SchemaObject";
+import Ref from "../utils/Ref";
+import {CallbackObject} from "./CallbackObject";
+import {ExampleObject} from "./ExampleObject";
+import {HeaderObject} from "./HeaderObject";
+import {LinkObject} from "./LinkObject";
+import {ParameterObject} from "./ParameterObject";
+import {PathItemObject} from "./PathItemObject";
+import {RequestBodyObject} from "./RequestBodyObject";
+import {ResponseObject} from "./ResponseObject";
+import {SchemaObject} from "./SchemaObject";
 
 export interface ComponentsObject {
   schemas?: Map<string, SchemaObject>;

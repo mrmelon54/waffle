@@ -1,10 +1,11 @@
-import { HeaderObject } from "./HeaderObject";
-import { LinkObject } from "./LinkObject";
-import { MediaTypeObject } from "./MediaTypeObject";
+import Ref from "../utils/Ref";
+import {HeaderObject} from "./HeaderObject";
+import {LinkObject} from "./LinkObject";
+import {MediaTypeObject} from "./MediaTypeObject";
 
 export interface ResponseObject {
   description: string;
-  headers?: Map<string, HeaderObject | Ref<HeaderObject>>;
-  content?: Map<string, MediaTypeObject>;
-  links?: Map<string, LinkObject | Ref<LinkObject>>;
+  headers?: {[key: string]: HeaderObject | Ref<HeaderObject>};
+  content?: {[key: string]: MediaTypeObject};
+  links?: {[key: string]: LinkObject | Ref<LinkObject>};
 }

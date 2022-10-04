@@ -1,14 +1,14 @@
 import semver from "semver";
-import { checkInstanceOf } from "../utils/ObjectUtils";
+import {checkInstanceOf} from "../utils/ObjectUtils";
 import Ref from "../utils/Ref";
-import { ComponentsObject } from "./ComponentsObject";
-import { ExternalDocumentationObject } from "./ExternalDocumentationObject";
-import { InfoObject } from "./InfoObject";
-import { PathItemObject } from "./PathItemObject";
-import { PathsObject } from "./PathsObject";
-import { SecurityRequirementObject } from "./SecurityRequirementObject";
-import { ServerObject } from "./ServerObject";
-import { TagObject } from "./TagObject";
+import {ComponentsObject} from "./ComponentsObject";
+import {ExternalDocumentationObject} from "./ExternalDocumentationObject";
+import {InfoObject} from "./InfoObject";
+import {PathItemObject} from "./PathItemObject";
+import {PathsObject} from "./PathsObject";
+import {SecurityRequirementObject} from "./SecurityRequirementObject";
+import {ServerObject} from "./ServerObject";
+import {TagObject} from "./TagObject";
 
 export interface OpenApiObject {
   openapi: semver.SemVer;
@@ -16,7 +16,7 @@ export interface OpenApiObject {
   jsonSchemaDialect?: string;
   servers?: ServerObject[];
   paths?: PathsObject;
-  webhooks?: Map<string, PathItemObject | Ref<PathItemObject>>;
+  webhooks?: {[key: string]: PathItemObject | Ref<PathItemObject>};
   components?: ComponentsObject;
   security?: SecurityRequirementObject[];
   tags?: TagObject[];

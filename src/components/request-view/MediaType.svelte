@@ -5,12 +5,14 @@
   import JsonFormatter from "../JsonFormatter.svelte";
   import Model from "../schema-formatter/Model.svelte";
   import MediaTypeTab from "./MediaTypeTab.svelte";
+  import ExampleGenerator from "../../utils/oapi/utils/ExampleGenerator";
 
   export let _p: OpenApiParser;
   export let _f: OpenApiFile;
   export let media: MediaTypeObject;
 
   let tab: number = 0;
+  let gen = new ExampleGenerator(_p, _f);
 
   function handleTabClick(a: number): () => void {
     return function () {
@@ -27,7 +29,13 @@
   </div>
   <div>
     {#if tab === 0}
-      <JsonFormatter content={media} />
+      {#await gen.generate(media.schema)}
+        <div>Loading example...</div>
+      {:then x}
+        <JsonFormatter content={x} />
+      {:catch err}
+        <div>Error: {err}</div>
+      {/await}
     {:else if tab === 1}
       <Model {_p} {_f} schema={media.schema} displayName={undefined} topLevel={true} openTopLevel={true} />
     {/if}
@@ -45,6 +53,6 @@
     height: 28px;
     width: 2px;
     background: #ffffff;
-    margin: 0 12px;
+    margin: 0 8px;
   }
 </style>
