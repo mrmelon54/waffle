@@ -3,7 +3,7 @@
   import {MediaTypeObject} from "../../utils/oapi/objects/MediaTypeObject";
   import OpenApiFile from "../../utils/oapi/utils/OpenApiFile";
   import OpenApiParser from "../../utils/oapi/utils/OpenApiParser";
-  import JsonFormatter from "../JsonFormatter.svelte";
+  import Auto from "../format/_Auto.svelte";
   import Model from "../schema-formatter/Model.svelte";
   import MediaTypeTab from "./MediaTypeTab.svelte";
 
@@ -39,7 +39,7 @@
       {#await generateExample(mimeType)}
         <div>Loading example...</div>
       {:then x}
-        <JsonFormatter content={x} />
+        <Auto mime={mimeType} content={x} />
       {:catch err}
         {console.error(err)}
         <div>Error: {err}</div>

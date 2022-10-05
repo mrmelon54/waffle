@@ -9,11 +9,7 @@
   import ModelWrapper from "./ModelWrapper.svelte";
   import ObjectModel from "./ObjectModel.svelte";
   import PrimitiveModel from "./PrimitiveModel.svelte";
-
-  // Highlight
-  import {Highlight} from "svelte-highlight";
-  import highlightJson from "svelte-highlight/languages/json";
-  import JsonFormatter from "../JsonFormatter.svelte";
+  import JsonFormatter from "../format/Json.svelte";
 
   export let _p: OpenApiParser;
   export let _f: OpenApiFile;

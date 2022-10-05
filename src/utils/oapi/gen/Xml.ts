@@ -1,3 +1,4 @@
+import {buildFromJson} from "steady-xml";
 import {SchemaObject, SchemaObjectArray, SchemaObjectObject} from "../objects/SchemaObject";
 import OpenApiFile from "../utils/OpenApiFile";
 import OpenApiParser from "../utils/OpenApiParser";
@@ -36,11 +37,12 @@ export default class XmlExample {
     let z = await this.genUnknown(0, _p, _f, a, []);
     z._declaration = {
       _attributes: {
-        version: "1.0",
+        version: "2.0",
         encoding: "utf-8",
       },
     };
-    return z;
+    console.info(z);
+    return buildFromJson(z).toXmlString();
   }
 
   private genUnknown(n: number, _p: OpenApiParser, _f: OpenApiFile, a: SchemaObject | Ref<SchemaObject>, parents: string[]): Promise<any> {
@@ -60,31 +62,26 @@ export default class XmlExample {
 
   async genAllOf(n: number, _p: OpenApiParser, _f: OpenApiFile, a: (SchemaObject | Ref<SchemaObject>)[], parents: string[]): Promise<any> {
     let z = await this._genAllOf(n, _p, _f, a, parents);
-    console.error(z);
     return z;
   }
 
   async genAnyOf(n: number, _p: OpenApiParser, _f: OpenApiFile, a: (SchemaObject | Ref<SchemaObject>)[], parents: string[]): Promise<any> {
     let z = await this._genAnyOf(n, _p, _f, a, parents);
-    console.error(z);
     return z;
   }
 
   async genOneOf(n: number, _p: OpenApiParser, _f: OpenApiFile, a: (SchemaObject | Ref<SchemaObject>)[], parents: string[]): Promise<any> {
     let z = await this._genOneOf(n, _p, _f, a, parents);
-    console.info(z);
     return z;
   }
 
   async genObject(n: number, _p: OpenApiParser, _f: OpenApiFile, a: SchemaObjectObject, parents: string[]): Promise<any> {
     let z = await this._genObject(n, _p, _f, a, parents);
-    console.info(z);
     return z;
   }
 
   async genArray(n: number, _p: OpenApiParser, _f: OpenApiFile, a: SchemaObjectArray, parents: string[]): Promise<any> {
     let z = await this._genArray(n, _p, _f, a, parents);
-    console.info(z);
     return z;
   }
 }

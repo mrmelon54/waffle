@@ -16,6 +16,7 @@
     "@types/rollup-plugin-css-only": "^3.1.0",
     "@types/semver": "^7.3.12",
     "@types/validator": "^13.7.6",
+    "@types/xml2json": "^0.11.4",
     "dotenv": "^16.0.0",
     "rollup": "^2.79.0",
     "rollup-plugin-css-only": "^3.1.0",
@@ -33,12 +34,13 @@
     "js-yaml": "^4.1.0",
     "semver": "^7.3.7",
     "sirv-cli": "^1.0.0",
+    "steady-xml": "^0.1.0",
     "svelte-environment-variables": "^1.0.4",
     "svelte-highlight": "^6.2.1",
     "svelte-markdown": "^0.2.3",
     "svelte-routing": "^1.6.0",
     "ts.data.json": "^2.2.0",
     "validator": "^13.7.0",
-    "xml-js": "^1.6.11"
+    "xml-formatter": "^2.6.1"
   }
 }
