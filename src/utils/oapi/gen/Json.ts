@@ -12,9 +12,6 @@ export default class JsonExample {
   genOneOf: MultiRefCallback;
   genObject: ObjectCallback;
   genArray: ArrayCallback;
-  genString: PrimitiveCallback;
-  genNumber: NumberCallback;
-  genBoolean: PrimitiveCallback;
 
   constructor() {
     this.genAllOf = setupGenAllOf((...a) => this.genUnknown(...a));
@@ -22,9 +19,6 @@ export default class JsonExample {
     this.genOneOf = setupGenOneOf((...a) => this.genUnknown(...a));
     this.genObject = setupGenObject((...a) => this.genUnknown(...a));
     this.genArray = setupGenArray((...a) => this.genUnknown(...a));
-    this.genString = autoString;
-    this.genNumber = autoNumber;
-    this.genBoolean = autoBoolean;
   }
 
   async generate(_p: OpenApiParser, _f: OpenApiFile, a: SchemaObject): Promise<any> {
@@ -32,7 +26,7 @@ export default class JsonExample {
   }
 
   private genUnknown(n: number, _p: OpenApiParser, _f: OpenApiFile, a: SchemaObject | Ref<SchemaObject>, parents: string[]) {
-    if (this._z === undefined) this._z = setupGenUnknown(this.genAllOf, this.genAnyOf, this.genOneOf, this.genObject, this.genArray, this.genString, this.genNumber, this.genBoolean);
+    if (this._z === undefined) this._z = setupGenUnknown(this.genAllOf, this.genAnyOf, this.genOneOf, this.genObject, this.genArray, autoString, autoNumber, autoBoolean);
     return this._z(n, _p, _f, a, parents);
   }
 }
