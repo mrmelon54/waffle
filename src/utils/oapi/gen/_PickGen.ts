@@ -7,6 +7,7 @@ import XmlExample from "./Xml";
 const internalPicker = {
   "application/json": JsonExample,
   "application/xml": XmlExample,
+  "application/x-www-form-urlencoded": null,
 };
 
 export function PickGen(mimeType: string): GenInterface | undefined {

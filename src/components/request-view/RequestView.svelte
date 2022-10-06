@@ -80,6 +80,8 @@
         <RequestInfoHeader title="Responses" />
         <RequestInfoContent>
           <table class="resp-table">
+            <col colspan="1" width="auto" />
+            <col colspan="1" width="100%" />
             <tr>
               <th>Code</th>
               <th>Description</th>
@@ -199,6 +201,7 @@
 
   table.resp-table {
     border-collapse: collapse;
+    width: 100%;
   }
 
   table.resp-table > tr > th {

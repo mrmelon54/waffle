@@ -18,6 +18,11 @@
     if (mime === undefined) return {$error: `Unknown mime type: ${mime}`};
     let z = PickGen(mime);
     if (z === undefined) return {$error: `Unknown mime type: ${mime}`};
+    if (z == null) {
+      tab = 1;
+      hasScEx = false;
+      return null;
+    }
     let y = z.generate(_p, _f, media.schema);
     return y;
   }
@@ -31,14 +36,19 @@
   let hasEx: boolean = media.example !== undefined;
   let hasExArr: boolean = media.example !== undefined;
   let hasSc: boolean = media.schema !== undefined;
+  let hasScEx: boolean = true;
 </script>
 
 <div class="media-type">
   {#if hasEx || hasExArr || hasSc}
     <div class="media-type-tabs">
-      <MediaTypeTab i={0} {tab} f={handleTabClick}>Example</MediaTypeTab>
+      {#if hasEx || hasExArr || hasScEx}
+        <MediaTypeTab i={0} {tab} f={handleTabClick}>Example</MediaTypeTab>
+      {/if}
       {#if hasSc}
-        <span class="media-type-gap" />
+        {#if hasScEx}
+          <span class="media-type-gap" />
+        {/if}
         <MediaTypeTab i={1} {tab} f={handleTabClick}>Schema</MediaTypeTab>
       {/if}
     </div>
@@ -50,7 +60,9 @@
           {#await generateExample(mimeType)}
             <div>Loading example...</div>
           {:then x}
-            <Auto mime={mimeType} content={x} />
+            {#if x !== null}
+              <Auto mime={mimeType} content={x} />
+            {/if}
           {:catch err}
             {console.error(err)}
             <div>Error: {err}</div>
