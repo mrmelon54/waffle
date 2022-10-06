@@ -56,8 +56,8 @@
 </tr>
 
 <style>
-  tr.resp-row:nth-child(n + 3) {
-    border-top: 2px solid #c7c2bb;
+  tr.resp-row:nth-of-type(n + 3) {
+    border-top: 2px solid #8e8880;
   }
 
   tr.resp-row > td {

@@ -2,25 +2,28 @@ import {SchemaObjectPrimitive} from "../objects/SchemaObject";
 
 export function autoString(a: SchemaObjectPrimitive): any {
   if (a.enumValues !== undefined) return a.enumValues[0];
+  if (a.example !== undefined) return a.example;
   switch (a.format) {
     case "date":
-      return "2003-08-28";
+      return "1970-01-01";
     case "date-time":
-      return "2003-08-28T17:32:05Z";
+      return "1970-01-01T05:45:05Z";
     case "byte":
       return "RXhhbXBsZQ==";
     case "email":
-      return "hello@mrmelon54.com";
+      return "john.smith@example.com";
     case "uuid":
       return "b354dde7-bb70-451f-858b-f8602d7b9c2d";
     case "uri":
-      return "https://mrmelon54.com";
+      return "https://example.com";
     case "hostname":
-      return "mrmelon54.com";
+      return "example.com";
     case "ipv4":
       return "192.168.1.1";
     case "ipv6":
       return "::1";
+    case "phone":
+      return "+1-202-555-0192";
   }
   return "hello";
 }

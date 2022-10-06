@@ -91,6 +91,9 @@
                 <span>Loading...</span>
               {:then x}
                 <Response {_p} {_f} key={resp} resp={x} />
+              {:catch err}
+                <td>{resp}</td>
+                <td>Error: {err}</td>
               {/await}
             {/each}
           </table>
@@ -116,7 +119,8 @@
   }
 
   .request > .request-summary > .request-summary-inner {
-    margin: 4px;
+    padding: 4px;
+    cursor: pointer;
   }
 
   .request > .request-content {
@@ -135,7 +139,7 @@
       right 10px center no-repeat;
     background-size: 40px;
     width: 60px;
-    height: 60px;
+    height: 100%;
     top: 50%;
     right: 0;
     transform: translateY(-50%);

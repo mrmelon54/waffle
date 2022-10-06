@@ -87,7 +87,7 @@
     display: block;
     height: 28px;
     width: 2px;
-    background: #c7c2bb;
+    background: #8e8880;
     margin: 0 8px;
   }
 </style>

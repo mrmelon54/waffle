@@ -8,6 +8,7 @@ export interface SchemaObject {
   title?: string;
   deprecated?: boolean;
   externalDocs?: ExternalDocumentationObject;
+  example?: any;
   allOf?: (SchemaObject | Ref<SchemaObject>)[];
   anyOf?: (SchemaObject | Ref<SchemaObject>)[];
   oneOf?: (SchemaObject | Ref<SchemaObject>)[];
