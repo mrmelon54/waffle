@@ -9,6 +9,7 @@ export interface SchemaObject {
   deprecated?: boolean;
   externalDocs?: ExternalDocumentationObject;
   example?: any;
+  xml?: SchemaXml;
   allOf?: (SchemaObject | Ref<SchemaObject>)[];
   anyOf?: (SchemaObject | Ref<SchemaObject>)[];
   oneOf?: (SchemaObject | Ref<SchemaObject>)[];
@@ -27,6 +28,14 @@ export interface SchemaObjectArray extends SchemaObject {
 export interface SchemaObjectPrimitive extends SchemaObject {
   format?: string;
   enumValues?: any[];
+}
+
+export interface SchemaXml {
+  name?: string;
+  wrapped?: boolean;
+  attribute?: boolean;
+  prefix?: string;
+  namespace?: string;
 }
 
 export function detectType(v: SchemaObject): string {
