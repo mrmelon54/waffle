@@ -1,10 +1,10 @@
-<script>
+<script lang="ts">
   import Highlight from "svelte-highlight";
   import json from "svelte-highlight/languages/json";
 
   import "svelte-highlight/styles/github-dark-dimmed.css";
 
-  export let content;
+  export let content: any;
 </script>
 
 <div class="json-formatter">

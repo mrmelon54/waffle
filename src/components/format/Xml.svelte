@@ -7,7 +7,7 @@
 
   export let content: string;
 
-  function format(a: string): string {
+  async function format(a: string): Promise<string> {
     return formatXml(a, {
       indentation: "  ",
       collapseContent: true,
@@ -17,7 +17,13 @@
 </script>
 
 <div class="xml-formatter">
-  <Highlight language={xml} code={format(content)} />
+  {#await format(content)}
+    <div>Loading...</div>
+  {:then x}
+    <Highlight language={xml} code={x} />
+  {:catch err}
+    <div>Xml Rendering Error: {err}</div>
+  {/await}
 </div>
 
 <style>

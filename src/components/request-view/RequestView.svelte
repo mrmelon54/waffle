@@ -23,7 +23,10 @@
   }
 </script>
 
-<div class="request {open ? 'request-dropdown-open' : 'request-dropdown-closed'} {deprecated ? 'request-deprecated' : ''}" style={req.$$method.style()}>
+<div
+  class="request {open ? 'request-dropdown-open' : 'request-dropdown-closed'} {deprecated ? 'request-deprecated' : ''}"
+  style={req.$$method.style()}
+>
   <div class="request-summary" on:click={handleClick}>
     <div class="request-summary-inner">
       <h5>
@@ -80,7 +83,6 @@
             <tr>
               <th>Code</th>
               <th>Description</th>
-              <th>Links</th>
             </tr>
             {#each allResponses(req.responses) as resp}
               {#await getFromResponses(req.responses, resp)}
@@ -126,7 +128,9 @@
   .request > .request-summary > .request-summary-inner::after {
     content: "";
     position: absolute;
-    background: transparent url('data:image/svg+xml;charset=utf-8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20"><path fill="%23c7c2bb" d="M13.418 7.859a.695.695 0 0 1 .978 0 .68.68 0 0 1 0 .969l-3.908 3.83a.697.697 0 0 1-.979 0l-3.908-3.83a.68.68 0 0 1 0-.969.695.695 0 0 1 .978 0L10 11l3.418-3.141z"/></svg>') right 10px center no-repeat;
+    background: transparent
+      url('data:image/svg+xml;charset=utf-8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20"><path fill="%23c7c2bb" d="M13.418 7.859a.695.695 0 0 1 .978 0 .68.68 0 0 1 0 .969l-3.908 3.83a.697.697 0 0 1-.979 0l-3.908-3.83a.68.68 0 0 1 0-.969.695.695 0 0 1 .978 0L10 11l3.418-3.141z"/></svg>')
+      right 10px center no-repeat;
     background-size: 40px;
     width: 60px;
     height: 60px;
@@ -191,6 +195,10 @@
 
   table.param-table > tr > th:first-child {
     padding-left: 0;
+  }
+
+  table.resp-table {
+    border-collapse: collapse;
   }
 
   table.resp-table > tr > th {

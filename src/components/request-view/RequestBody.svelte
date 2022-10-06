@@ -41,7 +41,7 @@
       {:else}
         <p />
       {/if}
-      {#if contentType !== undefined}
+      {#if contentType !== undefined && contentType !== ""}
         {#key contentType}
           <MediaType {_p} {_f} media={x.v.content[contentType]} mimeType={contentType} />
         {/key}

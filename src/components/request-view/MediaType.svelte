@@ -15,8 +15,9 @@
   let tab: number = 0;
 
   async function generateExample(mime: string): Promise<any> {
+    if (mime === undefined) return {$error: `Unknown mime type: ${mime}`};
     let z = PickGen(mime);
-    if (z === undefined) return {$error: `Unknown mine type: ${mime}`};
+    if (z === undefined) return {$error: `Unknown mime type: ${mime}`};
     let y = z.generate(_p, _f, media.schema);
     return y;
   }
@@ -26,28 +27,42 @@
       tab = a;
     };
   }
+
+  let hasEx: boolean = media.example !== undefined;
+  let hasExArr: boolean = media.example !== undefined;
+  let hasSc: boolean = media.schema !== undefined;
 </script>
 
 <div class="media-type">
-  <div class="media-type-tabs">
-    <MediaTypeTab i={0} {tab} f={handleTabClick}>Example</MediaTypeTab>
-    <span class="media-type-gap" />
-    <MediaTypeTab i={1} {tab} f={handleTabClick}>Schema</MediaTypeTab>
-  </div>
-  <div>
-    {#if tab === 0}
-      {#await generateExample(mimeType)}
-        <div>Loading example...</div>
-      {:then x}
-        <Auto mime={mimeType} content={x} />
-      {:catch err}
-        {console.error(err)}
-        <div>Error: {err}</div>
-      {/await}
-    {:else if tab === 1}
-      <Model {_p} {_f} schema={media.schema} displayName={undefined} topLevel={true} openTopLevel={true} />
-    {/if}
-  </div>
+  {#if hasEx || hasExArr || hasSc}
+    <div class="media-type-tabs">
+      <MediaTypeTab i={0} {tab} f={handleTabClick}>Example</MediaTypeTab>
+      {#if hasSc}
+        <span class="media-type-gap" />
+        <MediaTypeTab i={1} {tab} f={handleTabClick}>Schema</MediaTypeTab>
+      {/if}
+    </div>
+    <div>
+      {#if tab === 0}
+        {#if hasEx}
+          <Auto mime={mimeType} content={media.example} />
+        {:else if hasSc}
+          {#await generateExample(mimeType)}
+            <div>Loading example...</div>
+          {:then x}
+            <Auto mime={mimeType} content={x} />
+          {:catch err}
+            {console.error(err)}
+            <div>Error: {err}</div>
+          {/await}
+        {/if}
+      {:else if tab === 1}
+        {#if hasSc}
+          <Model {_p} {_f} schema={media.schema} displayName={undefined} topLevel={true} openTopLevel={true} />
+        {/if}
+      {/if}
+    </div>
+  {/if}
 </div>
 
 <style>
