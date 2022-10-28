@@ -1,8 +1,8 @@
-import semver from "semver";
-import { ContactObject } from "./ContactObject";
-import { LicenseObject } from "./LicenseObject";
+import type semver from "semver";
+import type { ContactObject } from "./ContactObject";
+import type { LicenseObject } from "./LicenseObject";
 
-export interface InfoObject {
+interface InfoObject {
   title: string;
   summary?: string;
   description?: string;
@@ -11,3 +11,5 @@ export interface InfoObject {
   license?: LicenseObject;
   version: semver.SemVer;
 }
+
+export type { InfoObject };

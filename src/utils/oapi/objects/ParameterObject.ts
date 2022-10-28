@@ -1,10 +1,10 @@
-import { Style } from "../values/Styles";
-import { ExampleObject } from "./ExampleObject";
-import { MediaTypeObject } from "./MediaTypeObject";
-import { SchemaObject } from "./SchemaObject";
-import Ref from "../utils/Ref";
+import type { Style } from "../values/Styles";
+import type { ExampleObject } from "./ExampleObject";
+import type { MediaTypeObject } from "./MediaTypeObject";
+import type { SchemaObject } from "./SchemaObject";
+import type Ref from "../utils/Ref";
 
-export interface ParameterObject {
+interface ParameterObject {
   name: string;
   in: string;
   description?: string;
@@ -18,8 +18,10 @@ export interface ParameterObject {
   allowReserved?: boolean;
   schema?: SchemaObject;
   example?: any;
-  examples?: {[key:string]: ExampleObject | Ref<ExampleObject>};
+  examples?: { [key: string]: ExampleObject | Ref<ExampleObject> };
 
   // Complex scenarios
-  content?: {[key:string]: MediaTypeObject};
+  content?: { [key: string]: MediaTypeObject };
 }
+
+export type { ParameterObject };

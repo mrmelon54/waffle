@@ -1,6 +1,6 @@
 <script lang="ts">
   import SvelteMarkdown from "svelte-markdown";
-  import { OpenApiObject } from "../utils/oapi/objects/OpenApiObject";
+  import type { OpenApiObject } from "../utils/oapi/objects/OpenApiObject";
   import { getOrDefault } from "../utils/oapi/utils/ObjectUtils";
 
   export let spec: OpenApiObject;

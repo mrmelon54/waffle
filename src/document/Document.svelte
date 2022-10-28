@@ -3,9 +3,9 @@
   import Schemas from "./Schemas.svelte";
   import Selector from "../components/Selector.svelte";
   import RequestCategories from "./RequestCategories.svelte";
-  import {OpenApiObject} from "../utils/oapi/objects/OpenApiObject";
-  import OpenApiParser from "../utils/oapi/utils/OpenApiParser";
-  import OpenApiFile from "../utils/oapi/utils/OpenApiFile";
+  import type { OpenApiObject } from "../utils/oapi/objects/OpenApiObject";
+  import type OpenApiParser from "../utils/oapi/utils/OpenApiParser";
+  import type OpenApiFile from "../utils/oapi/utils/OpenApiFile";
 
   export let _p: OpenApiParser;
   export let _f: OpenApiFile;

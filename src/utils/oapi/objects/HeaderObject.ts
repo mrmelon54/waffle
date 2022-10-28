@@ -1,7 +1,9 @@
-import { ExternalDocumentationObject } from "./ExternalDocumentationObject";
+import type { ExternalDocumentationObject } from "./ExternalDocumentationObject";
 
-export interface HeaderObject {
+interface HeaderObject {
   name: string;
   description?: string;
   externalDocs?: ExternalDocumentationObject;
 }
+
+export type { HeaderObject };

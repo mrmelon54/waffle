@@ -1,15 +1,17 @@
-import Ref from "../utils/Ref";
-import {CallbackObject} from "./CallbackObject";
-import {ExampleObject} from "./ExampleObject";
-import {HeaderObject} from "./HeaderObject";
-import {LinkObject} from "./LinkObject";
-import {ParameterObject} from "./ParameterObject";
-import {PathItemObject} from "./PathItemObject";
-import {RequestBodyObject} from "./RequestBodyObject";
-import {ResponseObject} from "./ResponseObject";
-import {SchemaObject} from "./SchemaObject";
+import type Ref from "../utils/Ref";
+import type { CallbackObject } from "./CallbackObject";
+import type { ExampleObject } from "./ExampleObject";
+import type { HeaderObject } from "./HeaderObject";
+import type { LinkObject } from "./LinkObject";
+import type { ParameterObject } from "./ParameterObject";
+import type { PathItemObject } from "./PathItemObject";
+import type { RequestBodyObject } from "./RequestBodyObject";
+import type { ResponseObject } from "./ResponseObject";
+import type { SchemaObject } from "./SchemaObject";
 
-export interface ComponentsObject {
+interface SecuritySchemeObject {}
+
+interface ComponentsObject {
   schemas?: Map<string, SchemaObject>;
   responses?: Map<string, ResponseObject | Ref<ResponseObject>>;
   parameters?: Map<string, ParameterObject | Ref<ParameterObject>>;
@@ -21,3 +23,5 @@ export interface ComponentsObject {
   callbacks?: Map<string, CallbackObject | Ref<CallbackObject>>;
   pathItems?: Map<string, PathItemObject | Ref<PathItemObject>>;
 }
+
+export type { ComponentsObject };

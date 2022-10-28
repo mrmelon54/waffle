@@ -1,10 +1,12 @@
-import {ServerObject} from "./ServerObject";
+import type { ServerObject } from "./ServerObject";
 
-export interface LinkObject {
+interface LinkObject {
   operationRef?: string;
   operationId?: string;
-  parameters?: {[key: string]: any};
+  parameters?: { [key: string]: any };
   requestBody?: any;
   description?: string;
   server?: ServerObject;
 }
+
+export type { LinkObject };

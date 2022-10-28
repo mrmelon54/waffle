@@ -1,4 +1,4 @@
-import { instanceOfOpenApiObject, OpenApiObject } from "../objects/OpenApiObject";
+import { instanceOfOpenApiObject, type OpenApiObject } from "../objects/OpenApiObject";
 import YAML from "js-yaml";
 
 export default class OpenApiFile {

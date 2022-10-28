@@ -1,9 +1,9 @@
 <script lang="ts">
   import SvelteMarkdown from "svelte-markdown";
-  import {RequestBodyObject} from "../../utils/oapi/objects/RequestBodyObject";
-  import Ctx from "../../utils/oapi/utils/Ctx";
-  import OpenApiFile from "../../utils/oapi/utils/OpenApiFile";
-  import OpenApiParser from "../../utils/oapi/utils/OpenApiParser";
+  import type { RequestBodyObject } from "../../utils/oapi/objects/RequestBodyObject";
+  import type Ctx from "../../utils/oapi/utils/Ctx";
+  import type OpenApiFile from "../../utils/oapi/utils/OpenApiFile";
+  import type OpenApiParser from "../../utils/oapi/utils/OpenApiParser";
   import Ref from "../../utils/oapi/utils/Ref";
   import Selector from "../Selector.svelte";
   import RequestInfoHeader from "./bubble/RequestInfoHeader.svelte";
@@ -15,7 +15,7 @@
   export let requestBody: RequestBodyObject | Ref<RequestBodyObject>;
 
   function getRequestBody(): Promise<Ctx<RequestBodyObject>> {
-    return Ref.getValueOrRef(_p, _f, requestBody, async x => <RequestBodyObject>x);
+    return Ref.getValueOrRef(_p, _f, requestBody, async (x) => <RequestBodyObject>x);
   }
 
   let contentType: string = "";

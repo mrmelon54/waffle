@@ -1,14 +1,14 @@
-import {CallbackObject} from "./CallbackObject";
-import {ExternalDocumentationObject} from "./ExternalDocumentationObject";
-import {ParameterObject} from "./ParameterObject";
-import {RequestBodyObject} from "./RequestBodyObject";
-import {ResponsesObject} from "./ResponsesObject";
-import {SecurityRequirementObject} from "./SecurityRequirementObject";
-import {ServerObject} from "./ServerObject";
-import {Method} from "../values/Methods";
-import Ref from "../utils/Ref";
+import type { CallbackObject } from "./CallbackObject";
+import type { ExternalDocumentationObject } from "./ExternalDocumentationObject";
+import type { ParameterObject } from "./ParameterObject";
+import type { RequestBodyObject } from "./RequestBodyObject";
+import type { ResponsesObject } from "./ResponsesObject";
+import type { SecurityRequirementObject } from "./SecurityRequirementObject";
+import type { ServerObject } from "./ServerObject";
+import type { Method } from "../values/Methods";
+import type Ref from "../utils/Ref";
 
-export interface OperationObject {
+interface OperationObject {
   $$path: string;
   $$method: Method;
   $$params: any[];
@@ -20,8 +20,10 @@ export interface OperationObject {
   parameters?: (ParameterObject | Ref<ParameterObject>)[];
   requestBody?: RequestBodyObject | Ref<RequestBodyObject>;
   responses?: ResponsesObject;
-  callbacks?: {[key: string]: CallbackObject | Ref<CallbackObject>};
+  callbacks?: { [key: string]: CallbackObject | Ref<CallbackObject> };
   deprecated?: boolean;
   security?: SecurityRequirementObject[];
   servers?: ServerObject[];
 }
+
+export type { OperationObject };

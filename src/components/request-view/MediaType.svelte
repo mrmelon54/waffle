@@ -1,8 +1,8 @@
 <script lang="ts">
-  import {PickGen} from "../../utils/oapi/gen/_PickGen";
-  import {MediaTypeObject} from "../../utils/oapi/objects/MediaTypeObject";
-  import OpenApiFile from "../../utils/oapi/utils/OpenApiFile";
-  import OpenApiParser from "../../utils/oapi/utils/OpenApiParser";
+  import { PickGen } from "../../utils/oapi/gen/_PickGen";
+  import type { MediaTypeObject } from "../../utils/oapi/objects/MediaTypeObject";
+  import type OpenApiFile from "../../utils/oapi/utils/OpenApiFile";
+  import type OpenApiParser from "../../utils/oapi/utils/OpenApiParser";
   import Auto from "../format/_Auto.svelte";
   import Model from "../schema-formatter/Model.svelte";
   import MediaTypeTab from "./MediaTypeTab.svelte";
@@ -15,9 +15,9 @@
   let tab: number = 0;
 
   async function generateExample(mime: string): Promise<any> {
-    if (mime === undefined) return {$error: `Unknown mime type: ${mime}`};
+    if (mime === undefined) return { $error: `Unknown mime type: ${mime}` };
     let z = PickGen(mime);
-    if (z === undefined) return {$error: `Unknown mime type: ${mime}`};
+    if (z === undefined) return { $error: `Unknown mime type: ${mime}` };
     if (z == null) {
       tab = 1;
       hasScEx = false;

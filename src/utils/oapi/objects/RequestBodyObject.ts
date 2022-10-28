@@ -1,7 +1,9 @@
-import {MediaTypeObject} from "./MediaTypeObject";
+import type { MediaTypeObject } from "./MediaTypeObject";
 
-export interface RequestBodyObject {
+interface RequestBodyObject {
   description?: string;
-  content: {[key: string]: MediaTypeObject};
+  content: { [key: string]: MediaTypeObject };
   required?: boolean;
 }
+
+export type { RequestBodyObject };

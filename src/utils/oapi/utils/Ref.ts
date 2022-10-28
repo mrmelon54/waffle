@@ -1,7 +1,7 @@
-import { Parser } from "./ObjectUtils";
+import type { Parser } from "./ObjectUtils";
 import Ctx from "../utils/Ctx";
-import OpenApiParser from "./OpenApiParser";
-import OpenApiFile from "./OpenApiFile";
+import type OpenApiParser from "./OpenApiParser";
+import type OpenApiFile from "./OpenApiFile";
 
 export default class Ref<T> {
   private ctx: OpenApiParser;

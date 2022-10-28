@@ -1,9 +1,11 @@
-import { ExternalDocumentationObject } from "./ExternalDocumentationObject";
-import { OperationObject } from "./OperationObject";
+import type { ExternalDocumentationObject } from "./ExternalDocumentationObject";
+import type { OperationObject } from "./OperationObject";
 
-export interface TagObject {
+interface TagObject {
   $$requests?: OperationObject[];
   name: string;
   description?: string;
   externalDocs?: ExternalDocumentationObject;
 }
+
+export type { TagObject };

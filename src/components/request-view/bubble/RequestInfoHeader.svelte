@@ -10,33 +10,33 @@
   </span>
 </div>
 
-<style>
+<style lang="scss">
   .request-info-header {
     padding: 15px 20px;
     background-color: #252832;
     position: relative;
-  }
 
-  .request-info-header > .request-info-header-tab {
-    position: relative;
-  }
+    > .request-info-header-tab {
+      position: relative;
+    }
 
-  .request-info-header > .request-info-header-tab::after {
-    content: " ";
-    background-color: var(--method-high-color);
-    display: block;
-    width: 120%;
-    height: 4px;
-    position: absolute;
-    bottom: -16px;
-    left: 50%;
-    transform: translateX(-50%);
-  }
+    > .request-info-header-tab::after {
+      content: " ";
+      background-color: var(--method-high-color);
+      display: block;
+      width: 120%;
+      height: 4px;
+      position: absolute;
+      bottom: -16px;
+      left: 50%;
+      transform: translateX(-50%);
+    }
 
-  .request-info-extra {
-    position: absolute;
-    top: 50%;
-    right: 10px;
-    transform: translateY(-50%);
+    > .request-info-extra {
+      position: absolute;
+      top: 50%;
+      right: 10px;
+      transform: translateY(-50%);
+    }
   }
 </style>

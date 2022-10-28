@@ -1,10 +1,10 @@
-import { OperationObject } from "./OperationObject";
-import { ParameterObject } from "./ParameterObject";
-import { AllMethods, IsValidMethod, Method, Methods } from "../values/Methods";
-import { ServerObject } from "./ServerObject";
-import Ref from "../utils/Ref";
+import type { OperationObject } from "./OperationObject";
+import type { ParameterObject } from "./ParameterObject";
+import { Method, Methods } from "../values/Methods";
+import type { ServerObject } from "./ServerObject";
+import type Ref from "../utils/Ref";
 
-export interface PathItemObject {
+interface PathItemObject {
   summary?: string;
   description?: string;
   get?: OperationObject;
@@ -24,3 +24,5 @@ export function getPathOpOrder(pathItem: PathItemObject): Method[] {
     .map((x) => Methods[x])
     .filter((x) => x !== undefined);
 }
+
+export type { PathItemObject };

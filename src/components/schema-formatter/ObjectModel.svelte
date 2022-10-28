@@ -1,9 +1,9 @@
 <script lang="ts">
   import SvelteMarkdown from "svelte-markdown";
-  import {SchemaObject, SchemaObjectObject} from "../../utils/oapi/objects/SchemaObject";
-  import {getOrDefault} from "../../utils/oapi/utils/ObjectUtils";
-  import OpenApiFile from "../../utils/oapi/utils/OpenApiFile";
-  import OpenApiParser from "../../utils/oapi/utils/OpenApiParser";
+  import type { SchemaObject, SchemaObjectObject } from "../../utils/oapi/objects/SchemaObject";
+  import { getOrDefault } from "../../utils/oapi/utils/ObjectUtils";
+  import type OpenApiFile from "../../utils/oapi/utils/OpenApiFile";
+  import type OpenApiParser from "../../utils/oapi/utils/OpenApiParser";
   import Model from "./Model.svelte";
   import SchemaCollapse from "./SchemaCollapse.svelte";
   import SchemaProperty from "./SchemaProperty.svelte";

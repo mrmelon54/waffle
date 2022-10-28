@@ -1,10 +1,10 @@
 <script lang="ts">
   import SvelteMarkdown from "svelte-markdown";
-  import { SchemaObjectPrimitive } from "../../utils/oapi/objects/SchemaObject";
-  import Ctx from "../../utils/oapi/utils/Ctx";
+  import type { SchemaObjectPrimitive } from "../../utils/oapi/objects/SchemaObject";
+  import type Ctx from "../../utils/oapi/utils/Ctx";
   import { getOrDefault } from "../../utils/oapi/utils/ObjectUtils";
-  import OpenApiFile from "../../utils/oapi/utils/OpenApiFile";
-  import OpenApiParser from "../../utils/oapi/utils/OpenApiParser";
+  import type OpenApiFile from "../../utils/oapi/utils/OpenApiFile";
+  import type OpenApiParser from "../../utils/oapi/utils/OpenApiParser";
   import Ref from "../../utils/oapi/utils/Ref";
   import EnumModel from "./EnumModel.svelte";
   import RawProperty from "./RawProperty.svelte";

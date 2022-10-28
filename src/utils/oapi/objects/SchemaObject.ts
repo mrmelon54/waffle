@@ -1,7 +1,7 @@
-import {ExternalDocumentationObject} from "./ExternalDocumentationObject";
-import Ref from "../utils/Ref";
+import type { ExternalDocumentationObject } from "./ExternalDocumentationObject";
+import type Ref from "../utils/Ref";
 
-export interface SchemaObject {
+interface SchemaObject {
   type?: string;
   default?: any;
   description?: string;
@@ -15,22 +15,22 @@ export interface SchemaObject {
   oneOf?: (SchemaObject | Ref<SchemaObject>)[];
 }
 
-export interface SchemaObjectObject extends SchemaObject {
-  properties?: {[key: string]: SchemaObject};
-  additionalProperties?: {[key: string]: any};
+interface SchemaObjectObject extends SchemaObject {
+  properties?: { [key: string]: SchemaObject };
+  additionalProperties?: { [key: string]: any };
   requiredProperties?: string[];
 }
 
-export interface SchemaObjectArray extends SchemaObject {
+interface SchemaObjectArray extends SchemaObject {
   items?: SchemaObject | Ref<SchemaObject>;
 }
 
-export interface SchemaObjectPrimitive extends SchemaObject {
+interface SchemaObjectPrimitive extends SchemaObject {
   format?: string;
   enumValues?: any[];
 }
 
-export interface SchemaXml {
+interface SchemaXml {
   name?: string;
   wrapped?: boolean;
   attribute?: boolean;
@@ -51,3 +51,5 @@ export function detectType(v: SchemaObject): string {
 export function isPrimitive(v: SchemaObject) {
   return ["string", "number", "integer", "boolean"].indexOf(detectType(v)) !== -1;
 }
+
+export type { SchemaObject, SchemaObjectObject, SchemaObjectArray, SchemaObjectPrimitive, SchemaXml };

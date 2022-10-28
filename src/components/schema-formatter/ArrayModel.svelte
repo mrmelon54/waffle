@@ -3,12 +3,10 @@
   import SchemaCollapse from "./SchemaCollapse.svelte";
   import RawProperty from "./RawProperty.svelte";
   import SchemaProperty from "./SchemaProperty.svelte";
-  import PrimitiveModel from "./PrimitiveModel.svelte";
-  import ModelWrapper from "./ModelWrapper.svelte";
-  import {getOrDefault} from "../../utils/oapi/utils/ObjectUtils";
-  import {SchemaObjectArray} from "../../utils/oapi/objects/SchemaObject";
-  import OpenApiParser from "../../utils/oapi/utils/OpenApiParser";
-  import OpenApiFile from "../../utils/oapi/utils/OpenApiFile";
+  import { getOrDefault } from "../../utils/oapi/utils/ObjectUtils";
+  import type { SchemaObjectArray } from "../../utils/oapi/objects/SchemaObject";
+  import type OpenApiParser from "../../utils/oapi/utils/OpenApiParser";
+  import type OpenApiFile from "../../utils/oapi/utils/OpenApiFile";
   import Model from "./Model.svelte";
 
   export let _p: OpenApiParser;
@@ -27,14 +25,14 @@
   function addRawProps(...keys: string[]) {
     for (let x of keys) {
       let z = schema[x];
-      if (z !== undefined) rawProps.push({key: x, value: String(z)});
+      if (z !== undefined) rawProps.push({ key: x, value: String(z) });
     }
   }
 
   function addJsonProps(...keys: string[]) {
     for (let x of keys) {
       let z = schema[x];
-      if (z !== undefined) rawProps.push({key: x, value: JSON.stringify(z)});
+      if (z !== undefined) rawProps.push({ key: x, value: JSON.stringify(z) });
     }
   }
 </script>

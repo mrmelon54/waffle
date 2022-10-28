@@ -1,22 +1,22 @@
-import semver from "semver";
-import {checkInstanceOf} from "../utils/ObjectUtils";
-import Ref from "../utils/Ref";
-import {ComponentsObject} from "./ComponentsObject";
-import {ExternalDocumentationObject} from "./ExternalDocumentationObject";
-import {InfoObject} from "./InfoObject";
-import {PathItemObject} from "./PathItemObject";
-import {PathsObject} from "./PathsObject";
-import {SecurityRequirementObject} from "./SecurityRequirementObject";
-import {ServerObject} from "./ServerObject";
-import {TagObject} from "./TagObject";
+import type semver from "semver";
+import { checkInstanceOf } from "../utils/ObjectUtils";
+import type Ref from "../utils/Ref";
+import type { ComponentsObject } from "./ComponentsObject";
+import type { ExternalDocumentationObject } from "./ExternalDocumentationObject";
+import type { InfoObject } from "./InfoObject";
+import type { PathItemObject } from "./PathItemObject";
+import type { PathsObject } from "./PathsObject";
+import type { SecurityRequirementObject } from "./SecurityRequirementObject";
+import type { ServerObject } from "./ServerObject";
+import type { TagObject } from "./TagObject";
 
-export interface OpenApiObject {
+interface OpenApiObject {
   openapi: semver.SemVer;
   info: InfoObject;
   jsonSchemaDialect?: string;
   servers?: ServerObject[];
   paths?: PathsObject;
-  webhooks?: {[key: string]: PathItemObject | Ref<PathItemObject>};
+  webhooks?: { [key: string]: PathItemObject | Ref<PathItemObject> };
   components?: ComponentsObject;
   security?: SecurityRequirementObject[];
   tags?: TagObject[];
@@ -26,3 +26,5 @@ export interface OpenApiObject {
 export function instanceOfOpenApiObject(v: object) {
   return checkInstanceOf(v, ["openapi", "info"]);
 }
+
+export type { OpenApiObject };

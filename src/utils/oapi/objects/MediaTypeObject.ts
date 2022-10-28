@@ -1,11 +1,13 @@
-import Ref from "../utils/Ref";
-import {EncodingObject} from "./EncodingObject";
-import {ExampleObject} from "./ExampleObject";
-import {SchemaObject} from "./SchemaObject";
+import type Ref from "../utils/Ref";
+import type { EncodingObject } from "./EncodingObject";
+import type { ExampleObject } from "./ExampleObject";
+import type { SchemaObject } from "./SchemaObject";
 
-export interface MediaTypeObject {
+interface MediaTypeObject {
   schema?: SchemaObject;
   example?: any;
-  examples?: {[key: string]: ExampleObject | Ref<ExampleObject>};
-  encoding?: {[key: string]: EncodingObject};
+  examples?: { [key: string]: ExampleObject | Ref<ExampleObject> };
+  encoding?: { [key: string]: EncodingObject };
 }
+
+export type { MediaTypeObject };

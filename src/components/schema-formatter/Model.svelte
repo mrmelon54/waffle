@@ -1,8 +1,8 @@
 <script lang="ts">
-  import {detectType, SchemaObject} from "../../utils/oapi/objects/SchemaObject";
-  import Ctx from "../../utils/oapi/utils/Ctx";
-  import OpenApiFile from "../../utils/oapi/utils/OpenApiFile";
-  import OpenApiParser from "../../utils/oapi/utils/OpenApiParser";
+  import { detectType, type SchemaObject } from "../../utils/oapi/objects/SchemaObject";
+  import type Ctx from "../../utils/oapi/utils/Ctx";
+  import type OpenApiFile from "../../utils/oapi/utils/OpenApiFile";
+  import type OpenApiParser from "../../utils/oapi/utils/OpenApiParser";
   import Ref from "../../utils/oapi/utils/Ref";
   import ArrayModel from "./ArrayModel.svelte";
   import ComplexObjectModel from "./ComplexObjectModel.svelte";
@@ -23,7 +23,7 @@
   let type: string = "unknown";
 
   async function getFinalSchema(): Promise<Ctx<SchemaObject>> {
-    let r = await Ref.getValueOrRef(_p, _f, schema, x => Promise.resolve(<SchemaObject>x));
+    let r = await Ref.getValueOrRef(_p, _f, schema, (x) => Promise.resolve(<SchemaObject>x));
     type = detectType(r.v);
     return r;
   }

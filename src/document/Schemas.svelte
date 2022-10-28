@@ -1,9 +1,9 @@
 <script lang="ts">
   import Dropdown from "../components/Dropdown.svelte";
   import Model from "../components/schema-formatter/Model.svelte";
-  import { SchemaObject } from "../utils/oapi/objects/SchemaObject";
-  import OpenApiFile from "../utils/oapi/utils/OpenApiFile";
-  import OpenApiParser from "../utils/oapi/utils/OpenApiParser";
+  import type { SchemaObject } from "../utils/oapi/objects/SchemaObject";
+  import type OpenApiFile from "../utils/oapi/utils/OpenApiFile";
+  import type OpenApiParser from "../utils/oapi/utils/OpenApiParser";
 
   export let _p: OpenApiParser;
   export let _f: OpenApiFile;

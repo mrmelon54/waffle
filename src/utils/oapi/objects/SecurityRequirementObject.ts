@@ -1,3 +1,5 @@
-export interface SecurityRequirementObject {
-  fields: {[key: string]: string[]};
+interface SecurityRequirementObject {
+  fields: { [key: string]: string[] };
 }
+
+export type { SecurityRequirementObject };

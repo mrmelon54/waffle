@@ -1,6 +1,8 @@
-import Ref from "../utils/Ref";
-import { PathItemObject } from "./PathItemObject";
+import type Ref from "../utils/Ref";
+import type { PathItemObject } from "./PathItemObject";
 
-export interface PathsObject {
+interface PathsObject {
   [key: string]: PathItemObject | Ref<PathItemObject>;
 }
+
+export type { PathsObject };

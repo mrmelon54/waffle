@@ -1,7 +1,7 @@
-import {ResponseObject} from "./ResponseObject";
-import Ref from "../utils/Ref";
+import type { ResponseObject } from "./ResponseObject";
+import type Ref from "../utils/Ref";
 
-export interface ResponsesObject {
+interface ResponsesObject {
   [key: string]: ResponseObject | Ref<ResponseObject>;
   "1XX": ResponseObject | Ref<ResponseObject>;
   "2XX": ResponseObject | Ref<ResponseObject>;
@@ -44,3 +44,5 @@ export function allResponses(resp: ResponsesObject): string[] {
   console.info("allResponses():", z);
   return z;
 }
+
+export type { ResponsesObject };

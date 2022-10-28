@@ -1,7 +1,9 @@
-import {ServerVariableObject} from "./ServerVariableObject";
+import type { ServerVariableObject } from "./ServerVariableObject";
 
-export interface ServerObject {
+interface ServerObject {
   url: string;
   description?: string;
-  variables?: {[key: string]: ServerVariableObject};
+  variables?: { [key: string]: ServerVariableObject };
 }
+
+export type { ServerObject };

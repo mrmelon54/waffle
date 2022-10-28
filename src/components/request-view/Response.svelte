@@ -1,13 +1,12 @@
 <script lang="ts">
   import SvelteMarkdown from "svelte-markdown";
-  import {ResponseObject} from "../../utils/oapi/objects/ResponseObject";
-  import OpenApiFile from "../../utils/oapi/utils/OpenApiFile";
-  import OpenApiParser from "../../utils/oapi/utils/OpenApiParser";
+  import type { ResponseObject } from "../../utils/oapi/objects/ResponseObject";
+  import type OpenApiFile from "../../utils/oapi/utils/OpenApiFile";
+  import type OpenApiParser from "../../utils/oapi/utils/OpenApiParser";
   import Ref from "../../utils/oapi/utils/Ref";
   import MediaType from "./MediaType.svelte";
   import Selector from "../Selector.svelte";
-  import Ctx from "../../utils/oapi/utils/Ctx";
-  import ArrayModel from "../schema-formatter/ArrayModel.svelte";
+  import type Ctx from "../../utils/oapi/utils/Ctx";
 
   export let _p: OpenApiParser;
   export let _f: OpenApiFile;
@@ -15,7 +14,7 @@
   export let resp: ResponseObject | Ref<ResponseObject>;
 
   function getResponse(): Promise<Ctx<ResponseObject>> {
-    return Ref.getValueOrRef(_p, _f, resp, async x => <ResponseObject>x);
+    return Ref.getValueOrRef(_p, _f, resp, async (x) => <ResponseObject>x);
   }
 
   let contentType: string = "";
@@ -55,19 +54,21 @@
   {/await}
 </tr>
 
-<style>
+<style lang="scss">
   tr.resp-row:nth-of-type(n + 3) {
     border-top: 2px solid #8e8880;
   }
 
-  tr.resp-row > td {
-    vertical-align: top;
-    text-align: left;
-    padding-left: 0.76em;
-  }
+  tr.resp-row {
+    > td {
+      vertical-align: top;
+      text-align: left;
+      padding-left: 0.76em;
+    }
 
-  tr.resp-row > td:first-child {
-    padding-left: 0;
+    > td:first-child {
+      padding-left: 0;
+    }
   }
 
   .response-accept-header {

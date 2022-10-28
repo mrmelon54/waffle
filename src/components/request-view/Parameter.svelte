@@ -1,7 +1,7 @@
 <script lang="ts">
   import SvelteMarkdown from "svelte-markdown";
-  import { ParameterObject } from "../../utils/oapi/objects/ParameterObject";
-  import { SchemaObjectPrimitive } from "../../utils/oapi/objects/SchemaObject";
+  import type { ParameterObject } from "../../utils/oapi/objects/ParameterObject";
+  import type { SchemaObjectPrimitive } from "../../utils/oapi/objects/SchemaObject";
   import { getOrDefault } from "../../utils/oapi/utils/ObjectUtils";
 
   export let param: ParameterObject;
@@ -43,29 +43,31 @@
   </td>
 </tr>
 
-<style>
+<style lang="scss">
   tr.param-row > td {
     vertical-align: top;
     text-align: left;
     padding-left: 0.76em;
+
+    :first-child {
+      padding-left: 0;
+    }
   }
 
-  tr.param-row > td:first-child {
-    padding-left: 0;
-  }
+  .info-required {
+    ::after {
+      content: "required";
+      color: #ff1a1a99;
+      font-size: 10px;
+      padding: 5px;
+      position: relative;
+      top: -6px;
+      font-weight: 700;
+    }
 
-  .info-required > span {
-    color: #ff1a1a;
-  }
-
-  .info-required::after {
-    content: "required";
-    color: #ff1a1a99;
-    font-size: 10px;
-    padding: 5px;
-    position: relative;
-    top: -6px;
-    font-weight: 700;
+    > span {
+      color: #ff1a1a;
+    }
   }
 
   .param-info-type {
