@@ -3,8 +3,6 @@
   import xml from "svelte-highlight/languages/xml";
   import formatXml from "xml-formatter";
 
-  import "svelte-highlight/styles/github-dark-dimmed.css";
-
   export let content: string;
 
   async function format(a: string): Promise<string> {

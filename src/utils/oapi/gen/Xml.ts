@@ -1,10 +1,10 @@
-import {buildFromJson} from "steady-xml";
-import {SchemaObject, SchemaObjectArray, SchemaObjectObject, SchemaObjectPrimitive} from "../objects/SchemaObject";
-import {getOrDefault} from "../utils/ObjectUtils";
-import OpenApiFile from "../utils/OpenApiFile";
-import OpenApiParser from "../utils/OpenApiParser";
-import Ref from "../utils/Ref";
-import {GenericGen} from "./_GenericGen";
+import { buildFromJson } from "steady-xml";
+import type { SchemaObject, SchemaObjectArray, SchemaObjectObject, SchemaObjectPrimitive } from "../objects/SchemaObject";
+import { getOrDefault } from "../utils/ObjectUtils";
+import type OpenApiFile from "../utils/OpenApiFile";
+import type OpenApiParser from "../utils/OpenApiParser";
+import type Ref from "../utils/Ref";
+import { GenericGen } from "./_GenericGen";
 
 export default class XmlExample extends GenericGen {
   async generate(_p: OpenApiParser, _f: OpenApiFile, a: SchemaObject): Promise<any> {
@@ -14,7 +14,7 @@ export default class XmlExample extends GenericGen {
       children: [
         {
           type: "Declaration",
-          attributes: {version: 1, encoding: "UTF-8"},
+          attributes: { version: 1, encoding: "UTF-8" },
         },
       ],
     };
@@ -46,7 +46,7 @@ export default class XmlExample extends GenericGen {
       name: getOrDefault(a.xml === undefined ? undefined : a.xml.name, a.title),
       type: "Element",
       children: Object.entries(z).map((x: [string, any]) => {
-        let w = {...x[1]};
+        let w = { ...x[1] };
         if (w.name === undefined) w.name = x[0];
         if (w.type === undefined) w.type = "Element";
         return w;
@@ -61,7 +61,7 @@ export default class XmlExample extends GenericGen {
       name: getOrDefault(a.xml?.name, a.title),
       type: "Element",
       children: Object.entries(z).map((x: [string, any]) => {
-        let w = {...x[1]};
+        let w = { ...x[1] };
         if (w.name === undefined) w.name = x[0];
         if (w.type === undefined) w.type = "Element";
         return w;
@@ -71,14 +71,14 @@ export default class XmlExample extends GenericGen {
   }
 
   genString(a: SchemaObjectPrimitive): any {
-    return {children: [{name: a.xml?.name, type: "Text", value: super.genString(a)}]};
+    return { children: [{ name: a.xml?.name, type: "Text", value: super.genString(a) }] };
   }
 
   genNumber(a: SchemaObjectPrimitive, decimal: boolean): any {
-    return {children: [{type: "Text", value: super.genNumber(a, decimal)}]};
+    return { children: [{ type: "Text", value: super.genNumber(a, decimal) }] };
   }
 
   genBoolean(a: SchemaObjectPrimitive): any {
-    return {children: [{type: "Text", value: super.genBoolean(a)}]};
+    return { children: [{ type: "Text", value: super.genBoolean(a) }] };
   }
 }

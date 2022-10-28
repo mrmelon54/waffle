@@ -1,6 +1,6 @@
-import {SchemaObject} from "../objects/SchemaObject";
-import OpenApiFile from "../utils/OpenApiFile";
-import OpenApiParser from "../utils/OpenApiParser";
+import type { SchemaObject } from "../objects/SchemaObject";
+import type OpenApiFile from "../utils/OpenApiFile";
+import type OpenApiParser from "../utils/OpenApiParser";
 import JsonExample from "./Json";
 import XmlExample from "./Xml";
 

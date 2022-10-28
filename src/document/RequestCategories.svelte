@@ -1,13 +1,13 @@
 <script lang="ts">
-  import {ComponentsObject} from "../utils/oapi/objects/ComponentsObject";
-  import {OperationObject} from "../utils/oapi/objects/OperationObject";
+  import type { ComponentsObject } from "../utils/oapi/objects/ComponentsObject";
+  import type { OperationObject } from "../utils/oapi/objects/OperationObject";
 
-  import {getPathOpOrder, PathItemObject} from "../utils/oapi/objects/PathItemObject";
-  import {PathsObject} from "../utils/oapi/objects/PathsObject";
-  import type {TagObject} from "../utils/oapi/objects/TagObject";
-  import {getOrDefault} from "../utils/oapi/utils/ObjectUtils";
-  import OpenApiFile from "../utils/oapi/utils/OpenApiFile";
-  import OpenApiParser from "../utils/oapi/utils/OpenApiParser";
+  import { getPathOpOrder } from "../utils/oapi/objects/PathItemObject";
+  import type { PathsObject } from "../utils/oapi/objects/PathsObject";
+  import type { TagObject } from "../utils/oapi/objects/TagObject";
+  import { getOrDefault } from "../utils/oapi/utils/ObjectUtils";
+  import type OpenApiFile from "../utils/oapi/utils/OpenApiFile";
+  import type OpenApiParser from "../utils/oapi/utils/OpenApiParser";
   import Ref from "../utils/oapi/utils/Ref";
   import RequestCategory from "./RequestCategory.svelte";
 
@@ -17,10 +17,10 @@
   export let paths: PathsObject;
   export let components: ComponentsObject;
 
-  let defaultCategory: TagObject = {name: "default", $$requests: []};
+  let defaultCategory: TagObject = { name: "default", $$requests: [] };
   let rawTags =
     tags !== undefined
-      ? tags.map(x => {
+      ? tags.map((x) => {
           x.$$requests = [];
           return x;
         })
@@ -31,7 +31,7 @@
     let rawPaths: PathsObject = getOrDefault(paths, {});
 
     for (let [pathKey, rawPathItem] of Object.entries(rawPaths)) {
-      let pathItem = await Ref.getValueOrRef(_p, _f, rawPathItem, async x => x);
+      let pathItem = await Ref.getValueOrRef(_p, _f, rawPathItem, async (x) => x);
       for (let met of getPathOpOrder(pathItem.v)) {
         let opz: OperationObject | undefined = pathItem.v[met.name];
         if (opz === undefined) continue;
@@ -56,7 +56,7 @@
       let cat = findCategory(categories, tag);
       if (cat !== undefined) cat.$$requests.push(req);
       else {
-        let o: TagObject = {name: tag, $$requests: [req]};
+        let o: TagObject = { name: tag, $$requests: [req] };
         categories.push(o);
       }
       return;

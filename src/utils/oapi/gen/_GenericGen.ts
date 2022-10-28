@@ -1,18 +1,18 @@
-import {detectType, SchemaObject, SchemaObjectArray, SchemaObjectObject, SchemaObjectPrimitive} from "../objects/SchemaObject";
-import OpenApiFile from "../utils/OpenApiFile";
-import OpenApiParser from "../utils/OpenApiParser";
+import { detectType, type SchemaObject, type SchemaObjectArray, type SchemaObjectObject, type SchemaObjectPrimitive } from "../objects/SchemaObject";
+import type OpenApiFile from "../utils/OpenApiFile";
+import type OpenApiParser from "../utils/OpenApiParser";
 import Ref from "../utils/Ref";
-import {autoBoolean, autoNumber, autoString} from "./_AutoGen";
+import { autoBoolean, autoNumber, autoString } from "./_AutoGen";
 
 export abstract class GenericGen {
   async genUnknown(n: number, _p: OpenApiParser, _f: OpenApiFile, a: SchemaObject | Ref<SchemaObject>, parents: string[]): Promise<any> {
     let $ref = (<Ref<SchemaObject>>a).$ref;
     if ($ref !== undefined) {
-      if (parents.filter(x => x === $ref).length > 0) return {$ref};
+      if (parents.filter((x) => x === $ref).length > 0) return { $ref };
       parents = [...parents, $ref!];
     }
-    let z = await Ref.getValueOrRef(_p, _f, a, x => x);
-    if (n > 100) return {$error: "Possible infinite loop"};
+    let z = await Ref.getValueOrRef(_p, _f, a, (x) => x);
+    if (n > 100) return { $error: "Possible infinite loop" };
     n++;
     switch (detectType(z.v)) {
       case "allOf":
@@ -38,7 +38,7 @@ export abstract class GenericGen {
   }
 
   async genAllOf(n: number, _p: OpenApiParser, _f: OpenApiFile, a: (SchemaObject | Ref<SchemaObject>)[], parents: string[]): Promise<any> {
-    let y = await Promise.all(a.map(x => this.genUnknown(n, _p, _f, x, parents)));
+    let y = await Promise.all(a.map((x) => this.genUnknown(n, _p, _f, x, parents)));
     let z = {};
     for (let x of y) {
       if (x === undefined || x === null) continue;

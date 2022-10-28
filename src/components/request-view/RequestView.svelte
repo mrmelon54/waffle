@@ -24,7 +24,8 @@
 </script>
 
 <div class="request {open ? 'request-dropdown-open' : 'request-dropdown-closed'} {deprecated ? 'request-deprecated' : ''}" style={req.$$method.style()}>
-  <a href="?request={req.$$path}&method={req.$$method.name.toUpperCase()}" class="request-summary" on:click={handleClick}>
+  <!-- svelte-ignore a11y-click-events-have-key-events -->
+  <div class="request-summary" on:click={handleClick}>
     <div class="request-summary-inner">
       <h5>
         <span class="request-summary-method">{req.$$method.name.toUpperCase()}</span>
@@ -34,7 +35,7 @@
         {/if}
       </h5>
     </div>
-  </a>
+  </div>
   {#if open}
     <div class="request-content">
       {#if deprecated}
@@ -121,7 +122,7 @@
 
     > .request-summary {
       > .request-summary-inner {
-        ::after {
+        &::after {
           content: "";
           position: absolute;
           background: transparent url('data:image/svg+xml;charset=utf-8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20"><path fill="%23c7c2bb" d="M13.418 7.859a.695.695 0 0 1 .978 0 .68.68 0 0 1 0 .969l-3.908 3.83a.697.697 0 0 1-.979 0l-3.908-3.83a.68.68 0 0 1 0-.969.695.695 0 0 1 .978 0L10 11l3.418-3.141z"/></svg>') right 10px center no-repeat;
@@ -161,10 +162,8 @@
         }
       }
     }
-  }
 
-  .request.request-dropdown-open {
-    > .request-summary {
+    &.request-dropdown-open > .request-summary {
       border-bottom: solid 2px var(--method-high-color);
 
       > .request-summary-inner::after {

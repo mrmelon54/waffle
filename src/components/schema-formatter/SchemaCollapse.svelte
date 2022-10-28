@@ -11,6 +11,7 @@
 </script>
 
 <div class="schema-view {open ? 'schema-open' : 'schema-closed'}" data-bracket-after={afterText}>
+  <!-- svelte-ignore a11y-click-events-have-key-events -->
   <h5 data-bracket-before={beforeText} on:click={handleClick}>{title}</h5>
   {#if open}
     <div class="schema-content">
@@ -56,7 +57,7 @@
   .schema-view.schema-open {
     margin-bottom: 32px;
 
-    ::after {
+    &::after {
       content: attr(data-bracket-after);
       position: absolute;
     }

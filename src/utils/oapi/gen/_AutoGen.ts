@@ -1,4 +1,4 @@
-import {SchemaObjectPrimitive} from "../objects/SchemaObject";
+import type { SchemaObjectPrimitive } from "../objects/SchemaObject";
 
 export function autoString(a: SchemaObjectPrimitive): any {
   if (a.enumValues !== undefined) return a.enumValues[0];
