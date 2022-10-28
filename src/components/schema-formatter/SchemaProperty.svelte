@@ -10,13 +10,15 @@
   </td>
 </tr>
 
-<style>
-  .schema-property-row .schema-inner-key {
-    text-align: left;
-    vertical-align: top;
-  }
+<style lang="scss">
+  .schema-property-row {
+    > .schema-inner-key {
+      text-align: left;
+      vertical-align: top;
+    }
 
-  .schema-property-row td:first-child {
-    padding-right: 16px;
+    > td:first-child {
+      padding-right: 16px;
+    }
   }
 </style>

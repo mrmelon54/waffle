@@ -49,13 +49,13 @@
     text-align: left;
     padding-left: 0.76em;
 
-    :first-child {
+    &:first-child {
       padding-left: 0;
     }
   }
 
   .info-required {
-    ::after {
+    &::after {
       content: "required";
       color: #ff1a1a99;
       font-size: 10px;

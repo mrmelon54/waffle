@@ -110,18 +110,16 @@
     margin: 8px 0;
     background-color: var(--method-bg-color);
 
-    > .request-summary > .request-summary-inner {
-      padding: 4px;
-      cursor: pointer;
-      position: relative;
-    }
-
     > .request-content {
       border-radius: 0 0 8px 8px;
     }
 
     > .request-summary {
       > .request-summary-inner {
+        padding: 4px;
+        cursor: pointer;
+        position: relative;
+
         &::after {
           content: "";
           position: absolute;
@@ -170,23 +168,23 @@
         transform: translateY(-50%) rotate(180deg);
       }
     }
-  }
 
-  .request.request-deprecated {
-    --method-color: #232628 !important;
-    --method-high-color: #363a3c !important;
-    --method-bg-color: #565a5c1a !important;
-    color: #bcb6ad;
+    &.request-deprecated {
+      --method-color: #232628 !important;
+      --method-high-color: #363a3c !important;
+      --method-bg-color: #565a5c1a !important;
+      color: #bcb6ad;
 
-    > .request-summary > .request-summary-inner > h5 {
-      > .request-summary-path {
-        text-decoration: line-through;
-        text-decoration-color: currentColor;
-        color: #bcb6ad;
-      }
+      > .request-summary > .request-summary-inner > h5 {
+        > .request-summary-path {
+          text-decoration: line-through;
+          text-decoration-color: currentColor;
+          color: #bcb6ad;
+        }
 
-      > .request-summary-text {
-        color: #a19c93;
+        > .request-summary-text {
+          color: #a19c93;
+        }
       }
     }
   }
@@ -196,7 +194,7 @@
     text-align: left;
     padding-left: 0.76em;
 
-    :first-child {
+    &:first-child {
       padding-left: 0;
     }
   }
@@ -210,7 +208,7 @@
       text-align: left;
       padding-left: 0.76em;
 
-      :first-child {
+      &:first-child {
         padding-left: 0;
       }
     }

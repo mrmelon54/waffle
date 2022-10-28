@@ -55,19 +55,19 @@
 </tr>
 
 <style lang="scss">
-  tr.resp-row:nth-of-type(n + 3) {
-    border-top: 2px solid #8e8880;
-  }
-
   tr.resp-row {
+    &:nth-of-type(n + 3) {
+      border-top: 2px solid #8e8880;
+    }
+
     > td {
       vertical-align: top;
       text-align: left;
       padding-left: 0.76em;
-    }
 
-    > td:first-child {
-      padding-left: 0;
+      &:first-child {
+        padding-left: 0;
+      }
     }
   }
 

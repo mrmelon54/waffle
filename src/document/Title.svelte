@@ -56,25 +56,29 @@
   {/if}
 </div>
 
-<style>
+<style lang="scss">
   .main {
     padding: 16px 30px;
     font-size: 30px;
+
+    > h2 {
+      margin: 0;
+    }
   }
-  .main h2 {
-    margin: 0;
-  }
+
   .description {
     background: #252832;
     padding: 8px 16px;
     border-radius: 16px;
   }
+
   .info-wrapper {
     padding: 16px;
     border-radius: 16px;
     display: inline-block;
-  }
-  .info-wrapper .info {
-    padding: 8px;
+
+    > .info {
+      padding: 8px;
+    }
   }
 </style>

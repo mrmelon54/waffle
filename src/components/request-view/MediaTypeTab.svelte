@@ -4,6 +4,7 @@
   export let f: (a: number) => () => void;
 </script>
 
+<!-- svelte-ignore a11y-click-events-have-key-events -->
 <div class="media-type-tab" on:click={f(i)}>
   {#if tab === i}
     <b style="color: #25a05c;"><slot /></b>

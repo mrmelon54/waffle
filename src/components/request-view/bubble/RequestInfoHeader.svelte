@@ -18,18 +18,18 @@
 
     > .request-info-header-tab {
       position: relative;
-    }
 
-    > .request-info-header-tab::after {
-      content: " ";
-      background-color: var(--method-high-color);
-      display: block;
-      width: 120%;
-      height: 4px;
-      position: absolute;
-      bottom: -16px;
-      left: 50%;
-      transform: translateX(-50%);
+      &::after {
+        content: " ";
+        background-color: var(--method-high-color);
+        display: block;
+        width: 120%;
+        height: 4px;
+        position: absolute;
+        bottom: -16px;
+        left: 50%;
+        transform: translateX(-50%);
+      }
     }
 
     > .request-info-extra {
