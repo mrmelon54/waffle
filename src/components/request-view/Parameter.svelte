@@ -34,8 +34,10 @@
         <SvelteMarkdown source={param.description} />
       </div>
     {/if}
-    {#if param.schema.default !== undefined}
-      <p class="param-default">Default value: {param.schema.default}</p>
+    {#if param.schema !== undefined}
+      {#if param.schema.default !== undefined}
+        <p class="param-default">Default value: {param.schema.default}</p>
+      {/if}
     {/if}
     {#if param.example !== undefined}
       <p class="param-example">Example: {param.example}</p>

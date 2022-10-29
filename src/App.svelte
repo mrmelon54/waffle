@@ -4,7 +4,8 @@
   import Selector from "./components/Selector.svelte";
 
   async function fetchConfig() {
-    const resp = await fetch(window.CONFIG_URL || "config.json");
+    // @ts-ignore
+    const resp = await fetch(window.CONFIG_URL ?? "config.json");
     return await resp.json();
   }
 
@@ -23,6 +24,11 @@
   let specUrls = [];
   let specUrl = "";
   let name;
+
+  // @ts-ignore
+  let poweredName = `Waffle${BUILD_REF ? ` ${BUILD_REF}` : ""}`;
+  // @ts-ignore
+  let poweredUrl = `https://github.com/MrMelon54/waffle${BUILD_REF ? `/releases/tag/${BUILD_REF}` : ""}`;
 </script>
 
 <div id="app">
@@ -43,7 +49,7 @@
     <Definition spec={new URL(specUrl, window.location.href)} />
   {/if}
   <footer>
-    Powered by <a href="https://github.com/MrMelon54/waffle" target="_blank">Waffle</a>
+    Powered by <a href={poweredUrl} target="_blank">{poweredName}</a>
   </footer>
 </div>
 

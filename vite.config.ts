@@ -25,4 +25,7 @@ export default defineConfig({
       "~": pathResolve(__dirname, "src"),
     },
   },
+  define: {
+    "BUILD_REF": `\"${process.env.GITHUB_REF_NAME}\"`
+  }
 });
