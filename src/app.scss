@@ -7,10 +7,11 @@ body {
 }
 
 a {
-  color: #60A8E5;
-}
+  color: #60a8e5;
+  text-decoration: none;
 
-/* .json-formatter .hljs {
-  background: #1a1e24;
-  border-radius: 8px;
-} */
+  &:hover {
+    color: #80b9ea;
+    font-weight: bold;
+  }
+}

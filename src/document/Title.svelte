@@ -1,5 +1,5 @@
 <script lang="ts">
-  import SvelteMarkdown from "svelte-markdown";
+  import Markdown from "../components/markdown/Markdown.svelte";
   import type { OpenApiObject } from "../utils/oapi/objects/OpenApiObject";
   import { getOrDefault } from "../utils/oapi/utils/ObjectUtils";
 
@@ -16,7 +16,7 @@
   </div>
   {#if spec.info.description !== undefined}
     <div class="description markdown">
-      <SvelteMarkdown source={spec.info.description} />
+      <Markdown source={spec.info.description} />
     </div>
   {/if}
   {#if infoSize > 0}
@@ -57,11 +57,17 @@
 </div>
 
 <style lang="scss">
+  @import "../platform.scss";
+
   .main {
     padding: 16px 30px;
     font-size: 30px;
 
-    > h2 {
+    @include mobile {
+      font-size: 24px;
+    }
+    
+  > h2 {
       margin: 0;
     }
   }

@@ -1,5 +1,5 @@
 <script lang="ts">
-  import SvelteMarkdown from "svelte-markdown";
+  import Markdown from "~/components/markdown/Markdown.svelte";
   import type { ParameterObject } from "../../utils/oapi/objects/ParameterObject";
   import type { SchemaObjectPrimitive } from "../../utils/oapi/objects/SchemaObject";
   import { getOrDefault } from "../../utils/oapi/utils/ObjectUtils";
@@ -31,7 +31,7 @@
   <td>
     {#if param.description !== undefined}
       <div class="param-description">
-        <SvelteMarkdown source={param.description} />
+        <Markdown source={param.description} />
       </div>
     {/if}
     {#if param.schema !== undefined}

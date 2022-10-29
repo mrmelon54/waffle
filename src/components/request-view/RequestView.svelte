@@ -1,5 +1,5 @@
 <script lang="ts">
-  import SvelteMarkdown from "svelte-markdown";
+  import Markdown from "~/components/markdown/Markdown.svelte";
   import type { OperationObject } from "../../utils/oapi/objects/OperationObject";
   import { allResponses, getFromResponses } from "../../utils/oapi/objects/ResponsesObject";
   import { getOrDefault } from "../../utils/oapi/utils/ObjectUtils";
@@ -39,13 +39,13 @@
   {#if open}
     <div class="request-content">
       {#if deprecated}
-        <div class="request-description">
-          <p>Warning: Deprecated</p>
-        </div>
+        <RequestInfoContent>
+          <div class="request-warning">Warning: Deprecated</div>
+        </RequestInfoContent>
       {/if}
       {#if req.description !== undefined && req.description !== ""}
         <RequestInfoContent>
-          <SvelteMarkdown source={req.description} />
+          <Markdown source={req.description} />
         </RequestInfoContent>
       {/if}
 
@@ -77,24 +77,26 @@
       {#if req.responses !== undefined}
         <RequestInfoHeader title="Responses" />
         <RequestInfoContent>
-          <table class="resp-table">
-            <col colspan="1" width="auto" />
-            <col colspan="1" width="100%" />
-            <tr>
-              <th>Code</th>
-              <th>Description</th>
-            </tr>
-            {#each allResponses(req.responses) as resp}
-              {#await getFromResponses(req.responses, resp)}
-                <span>Loading...</span>
-              {:then x}
-                <Response {_p} {_f} key={resp} resp={x} />
-              {:catch err}
-                <td>{resp}</td>
-                <td>Error: {err}</td>
-              {/await}
-            {/each}
-          </table>
+          <div class="table-scroll-wrapper">
+            <table class="resp-table">
+              <col colspan="1" width="auto" />
+              <col colspan="1" width="100%" />
+              <tr>
+                <th>Code</th>
+                <th>Description</th>
+              </tr>
+              {#each allResponses(req.responses) as resp}
+                {#await getFromResponses(req.responses, resp)}
+                  <span>Loading...</span>
+                {:then x}
+                  <Response {_p} {_f} key={resp} resp={x} />
+                {:catch err}
+                  <td>{resp}</td>
+                  <td>Error: {err}</td>
+                {/await}
+              {/each}
+            </table>
+          </div>
         </RequestInfoContent>
       {/if}
     </div>
@@ -135,12 +137,14 @@
 
         > h5 {
           margin: 0;
+          padding-right: 50px;
 
           > .request-summary-method {
             background: var(--method-color);
             border-radius: 4px;
             min-width: 80px;
-            padding: 6px 0;
+            min-height: 30px;
+            line-height: 30px;
             display: inline-block;
             text-align: center;
             font-family: sans-serif;
@@ -151,11 +155,17 @@
           > .request-summary-path {
             font-size: 16px;
             color: #eaeaea;
+            display: inline-block;
+            width: fit-content;
+            padding: 5px 6px;
           }
 
           > .request-summary-text {
             font-size: 13px;
             color: #959595;
+            display: inline-block;
+            width: fit-content;
+            padding: 6px 6px;
           }
         }
       }
@@ -170,9 +180,9 @@
     }
 
     &.request-deprecated {
-      --method-color: #232628 !important;
+      --method-color: #373c41 !important;
       --method-high-color: #363a3c !important;
-      --method-bg-color: #565a5c1a !important;
+      //--method-bg-color: #8a89891a !important;
       color: #bcb6ad;
 
       > .request-summary > .request-summary-inner > h5 {
@@ -187,6 +197,17 @@
         }
       }
     }
+  }
+
+  .request-warning {
+    font-size: 120%;
+    color: #e64b4b;
+    text-align: center;
+  }
+
+  .table-scroll-wrapper {
+    width: 100%;
+    overflow-x: auto;
   }
 
   table.param-table > tr > th {

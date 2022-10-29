@@ -1,5 +1,5 @@
 <script lang="ts">
-  import SvelteMarkdown from "svelte-markdown";
+  import Markdown from "~/components/markdown/Markdown.svelte";
   import type { ResponseObject } from "../../utils/oapi/objects/ResponseObject";
   import type OpenApiFile from "../../utils/oapi/utils/OpenApiFile";
   import type OpenApiParser from "../../utils/oapi/utils/OpenApiParser";
@@ -29,7 +29,7 @@
   {:then x}
     <td>
       {#if x.v.description !== undefined}
-        <SvelteMarkdown source={x.v.description} />
+        <Markdown source={x.v.description} />
       {:else}
         <p />
       {/if}

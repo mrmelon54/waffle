@@ -13,5 +13,7 @@
 <style>
   .model-wrapper {
     margin: 16px 0;
+    overflow-x: auto;
+    width: inherit;
   }
 </style>

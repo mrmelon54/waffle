@@ -1,5 +1,5 @@
 <script lang="ts">
-  import SvelteMarkdown from "svelte-markdown";
+  import Markdown from "~/components/markdown/Markdown.svelte";
   import type { RequestBodyObject } from "../../utils/oapi/objects/RequestBodyObject";
   import type Ctx from "../../utils/oapi/utils/Ctx";
   import type OpenApiFile from "../../utils/oapi/utils/OpenApiFile";
@@ -23,12 +23,12 @@
 
 <div class="request-description">
   {#await getRequestBody()}
-    <RequestInfoHeader title="Request Body" required={true} />
+    <RequestInfoHeader title="Request&nbsp;Body" required={true} />
     <RequestInfoContent>
       <span>Loading...</span>
     </RequestInfoContent>
   {:then x}
-    <RequestInfoHeader title="Request Body" required={true}>
+    <RequestInfoHeader title="Request&nbsp;Body" required={true}>
       <Selector bind:value={contentType}>
         {#each Object.keys(x.v.content) as t}
           <option value={t}>{t}</option>
@@ -37,7 +37,7 @@
     </RequestInfoHeader>
     <RequestInfoContent>
       {#if x.v.description !== undefined}
-        <SvelteMarkdown source={x.v.description} />
+        <Markdown source={x.v.description} />
       {:else}
         <p />
       {/if}

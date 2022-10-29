@@ -1,5 +1,5 @@
 <script lang="ts">
-  import SvelteMarkdown from "svelte-markdown";
+  import Markdown from "~/components/markdown/Markdown.svelte";
   import type { SchemaObject, SchemaObjectObject } from "../../utils/oapi/objects/SchemaObject";
   import { getOrDefault } from "../../utils/oapi/utils/ObjectUtils";
   import type OpenApiFile from "../../utils/oapi/utils/OpenApiFile";
@@ -38,7 +38,7 @@
       {#if schema.description !== undefined}
         <tr>
           <td colspan="2" class="schema-description">
-            <SvelteMarkdown source={schema.description} />
+            <Markdown source={schema.description} />
           </td>
         </tr>
       {/if}

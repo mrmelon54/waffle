@@ -33,7 +33,7 @@
 
 <div id="app">
   <header>
-    <h1>Waffle - {name}</h1>
+    <h1>{name ?? "Waffle"}</h1>
     <div>
       <span>Select a definition</span>
       <Selector bind:value={specUrl}>
@@ -54,6 +54,8 @@
 </div>
 
 <style lang="scss">
+  @import "./platform.scss";
+
   #app {
     max-width: 1000px;
     margin: auto;
@@ -69,6 +71,29 @@
       max-height: 80px;
       background-color: #252832;
       border-radius: 0 0 16px 16px;
+
+      @include mobile {
+        padding: 0 16px 16px;
+        height: auto;
+        max-height: none;
+        flex-direction: column;
+
+        > div {
+          font-size: 14px;
+          :global(select) {
+            font-size: 12px;
+          }
+        }
+      }
+
+      > h1 {
+        font-size: 32px;
+
+        @include mobile {
+          font-size: 24px;
+          margin-bottom: 16px;
+        }
+      }
     }
 
     > footer {

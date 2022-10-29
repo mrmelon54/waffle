@@ -1,5 +1,5 @@
 <script lang="ts">
-  import SvelteMarkdown from "svelte-markdown";
+  import Markdown from "~/components/markdown/Markdown.svelte";
   import SchemaCollapse from "./SchemaCollapse.svelte";
   import RawProperty from "./RawProperty.svelte";
   import SchemaProperty from "./SchemaProperty.svelte";
@@ -46,7 +46,7 @@
       {#if schema.description !== undefined}
         <tr>
           <td colspan="2" class="schema-description">
-            <SvelteMarkdown source={schema.description} />
+            <Markdown source={schema.description} />
           </td>
         </tr>
       {/if}

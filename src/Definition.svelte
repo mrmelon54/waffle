@@ -16,7 +16,20 @@
   {:then x}
     <Document _p={x} _f={x.mainFile} spec={x.mainFile.value} />
   {:catch err}
-    {console.error("[Definition]", err)}
-    <div id="spec-errors">{err}</div>
+    <div id="spec-errors">
+      <h2>Error:</h2>
+      <div>
+        <pre>{err}</pre>
+      </div>
+    </div>
   {/await}
 </div>
+
+<style>
+  #openapi-definition > #spec-errors {
+    margin-top: 32px;
+    background: #252832;
+    border-radius: 16px;
+    padding: 32px;
+  }
+</style>
