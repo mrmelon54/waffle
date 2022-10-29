@@ -26,6 +26,6 @@ export default defineConfig({
     },
   },
   define: {
-    "BUILD_REF": `\"${process.env.GITHUB_REF_NAME}\"`
-  }
+    BUILD_REF: `"${process.env.GITHUB_REF_NAME ?? ""}"`,
+  },
 });
