@@ -31,7 +31,7 @@
   let poweredUrl = `https://github.com/MrMelon54/waffle${BUILD_REF ? `/releases/tag/${BUILD_REF}` : ""}`;
 </script>
 
-<div id="app">
+<div id="app-router">
   <header>
     <h1>{name ?? "Waffle"}</h1>
     <div>
@@ -56,7 +56,7 @@
 <style lang="scss">
   @import "./platform.scss";
 
-  #app {
+  #app-router {
     max-width: 1000px;
     margin: auto;
 

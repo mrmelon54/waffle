@@ -25,11 +25,15 @@
   {/await}
 </div>
 
-<style>
+<style lang="scss">
   #openapi-definition > #spec-errors {
     margin-top: 32px;
     background: #252832;
     border-radius: 16px;
-    padding: 32px;
+    padding: 16px;
+
+    > div > pre {
+      white-space: break-spaces;
+    }
   }
 </style>
