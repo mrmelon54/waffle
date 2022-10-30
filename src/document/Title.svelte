@@ -69,6 +69,10 @@
     
   > h2 {
       margin: 0;
+
+      @include mobile {
+        font-size: 26px;
+      }
     }
   }
 
