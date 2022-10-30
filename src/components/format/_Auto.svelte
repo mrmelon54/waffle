@@ -1,6 +1,4 @@
 <script lang="ts">
-  import "~/assets/github-dark-dimmed.css";
-
   import Json from "./Json.svelte";
   import Xml from "./Xml.svelte";
 
