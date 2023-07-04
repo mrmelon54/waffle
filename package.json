@@ -29,7 +29,7 @@
   "dependencies": {
     "js-yaml": "^4.1.0",
     "sass": "^1.55.0",
-    "semver": "^7.3.8",
+    "semver": "^7.5.2",
     "steady-xml": "^0.1.0",
     "svelte-environment-variables": "^1.0.4",
     "svelte-highlight": "^6.2.1",
