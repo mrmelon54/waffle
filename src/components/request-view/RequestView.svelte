@@ -54,14 +54,18 @@
       <RequestInfoContent>
         {#if req.$$params.length > 0}
           <table class="param-table">
-            <tr>
-              <th>Name</th>
-              <th>Description</th>
-            </tr>
-            {#each req.$$params as param}
-              <Parameter {param} />
-            {/each}
-            <tr />
+            <thead>
+              <tr>
+                <th>Name</th>
+                <th>Description</th>
+              </tr>
+            </thead>
+            <tbody>
+              {#each req.$$params as param}
+                <Parameter {param} />
+              {/each}
+              <tr />
+            </tbody>
           </table>
         {:else}
           No parameters
@@ -79,22 +83,28 @@
         <RequestInfoContent>
           <div class="table-scroll-wrapper">
             <table class="resp-table">
-              <col colspan="1" width="auto" />
-              <col colspan="1" width="100%" />
-              <tr>
-                <th>Code</th>
-                <th>Description</th>
-              </tr>
-              {#each allResponses(req.responses) as resp}
-                {#await getFromResponses(req.responses, resp)}
-                  <span>Loading...</span>
-                {:then x}
-                  <Response {_p} {_f} key={resp} resp={x} />
-                {:catch err}
-                  <td>{resp}</td>
-                  <td>Error: {err}</td>
-                {/await}
-              {/each}
+              <colgroup>
+                <col colspan="1" width="auto" />
+                <col colspan="1" width="100%" />
+              </colgroup>
+              <thead>
+                <tr>
+                  <th>Code</th>
+                  <th>Description</th>
+                </tr>
+              </thead>
+              <tbody>
+                {#each allResponses(req.responses) as resp}
+                  {#await getFromResponses(req.responses, resp)}
+                    <span>Loading...</span>
+                  {:then x}
+                    <Response {_p} {_f} key={resp} resp={x} />
+                  {:catch err}
+                    <td>{resp}</td>
+                    <td>Error: {err}</td>
+                  {/await}
+                {/each}
+              </tbody>
             </table>
           </div>
         </RequestInfoContent>
