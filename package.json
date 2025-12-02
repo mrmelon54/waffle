@@ -35,7 +35,7 @@
     "svelte-highlight": "^6.2.1",
     "svelte-markdown": "^0.2.3",
     "svelte-routing": "^1.6.0",
-    "validator": "^13.15.20",
+    "validator": "^13.15.22",
     "xml-formatter": "^3.6.4"
   }
 }
