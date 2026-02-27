@@ -1,7 +1,11 @@
 <script lang="ts">
   import SchemaCollapse from "./SchemaCollapse.svelte";
 
-  export let value: any[];
+  interface Props {
+    value: any[];
+  }
+
+  let { value }: Props = $props();
 </script>
 
 <span class="prop-enum">

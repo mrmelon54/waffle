@@ -1,9 +1,21 @@
-<script>
-  export let title;
-  export let beforeText;
-  export let afterText;
-  export let collapseText;
-  export let open = false;
+<script lang="ts">
+  interface Props {
+    title: any;
+    beforeText: any;
+    afterText: any;
+    collapseText: any;
+    open?: boolean;
+    children?: import('svelte').Snippet;
+  }
+
+  let {
+    title,
+    beforeText,
+    afterText,
+    collapseText,
+    open = $bindable(false),
+    children
+  }: Props = $props();
 
   function handleClick() {
     open = !open;
@@ -11,11 +23,11 @@
 </script>
 
 <div class="schema-view {open ? 'schema-open' : 'schema-closed'}" data-bracket-after={afterText}>
-  <!-- svelte-ignore a11y-click-events-have-key-events -->
-  <h5 data-bracket-before={beforeText} on:click={handleClick}>{title}</h5>
+  <!-- svelte-ignore a11y_click_events_have_key_events -->
+  <h5 data-bracket-before={beforeText} onclick={handleClick}>{title}</h5>
   {#if open}
     <div class="schema-content">
-      <slot />
+      {@render children?.()}
     </div>
   {:else}
     <span>{collapseText}</span>

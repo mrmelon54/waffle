@@ -3,7 +3,11 @@
   import type { OpenApiObject } from "../utils/oapi/objects/OpenApiObject";
   import { getOrDefault } from "../utils/oapi/utils/ObjectUtils";
 
-  export let spec: OpenApiObject;
+  interface Props {
+    spec: OpenApiObject;
+  }
+
+  let { spec }: Props = $props();
   let contact = spec.info.contact;
   let license = spec.info.license;
   let allInfo = [spec.info.termsOfService, spec.info.contact, spec.info.license];

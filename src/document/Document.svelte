@@ -7,11 +7,15 @@
   import type OpenApiParser from "../utils/oapi/utils/OpenApiParser";
   import type OpenApiFile from "../utils/oapi/utils/OpenApiFile";
 
-  export let _p: OpenApiParser;
-  export let _f: OpenApiFile;
-  export let spec: OpenApiObject;
+  interface Props {
+    _p: OpenApiParser;
+    _f: OpenApiFile;
+    spec: OpenApiObject;
+  }
 
-  let serverUrl: string = "";
+  let { _p, _f, spec }: Props = $props();
+
+  let serverUrl: string = $state("");
 </script>
 
 <div id="openapi-document">
@@ -31,11 +35,11 @@
         {/each}
       </Selector>
     </div>
-    <div class="doc-gap" />
+    <div class="doc-gap"></div>
   {/if}
   <RequestCategories {_p} {_f} tags={spec.tags} paths={spec.paths} components={spec.components} />
   {#if spec.components !== undefined && spec.components.schemas !== undefined}
-    <div class="doc-gap" />
+    <div class="doc-gap"></div>
     <Schemas {_p} {_f} schemas={spec.components.schemas} />
   {/if}
 </div>

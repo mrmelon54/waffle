@@ -8,12 +8,23 @@
   import SchemaCollapse from "./SchemaCollapse.svelte";
   import SchemaProperty from "./SchemaProperty.svelte";
 
-  export let _p: OpenApiParser;
-  export let _f: OpenApiFile;
-  export let schema: SchemaObjectObject;
-  export let required: boolean;
-  export let displayName: string;
-  export let open = false;
+  interface Props {
+    _p: OpenApiParser;
+    _f: OpenApiFile;
+    schema: SchemaObjectObject;
+    required: boolean;
+    displayName: string;
+    open?: boolean;
+  }
+
+  let {
+    _p,
+    _f,
+    schema,
+    required,
+    displayName,
+    open = false
+  }: Props = $props();
 
   let title = getOrDefault(schema.title, displayName) + (required ? "*" : "");
   let requiredProperties = getOrDefault(schema.requiredProperties, []);

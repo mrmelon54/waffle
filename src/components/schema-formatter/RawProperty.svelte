@@ -1,7 +1,5 @@
-<script>
-  export let propKey;
-  export let propVal;
-  export let isRequired;
+<script lang="ts">
+  let { propKey, propVal, isRequired } = $props();
 </script>
 
 <tr>

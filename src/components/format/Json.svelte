@@ -2,7 +2,11 @@
   import Highlight from "svelte-highlight";
   import json from "svelte-highlight/languages/json";
 
-  export let content: any;
+  interface Props {
+    content: any;
+  }
+
+  let { content }: Props = $props();
 </script>
 
 <div class="json-formatter">

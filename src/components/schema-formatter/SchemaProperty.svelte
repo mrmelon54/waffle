@@ -1,12 +1,11 @@
-<script>
-  export let key;
-  export let required;
+<script lang="ts">
+  let { key, required, children } = $props();
 </script>
 
 <tr class="schema-property-row">
   <td class="schema-inner-key">{key}{required ? "*" : ""}</td>
   <td class="schema-inner-value">
-    <slot />
+    {@render children?.()}
   </td>
 </tr>
 

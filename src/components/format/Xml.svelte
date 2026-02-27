@@ -3,7 +3,11 @@
   import xml from "svelte-highlight/languages/xml";
   import formatXml from "xml-formatter";
 
-  export let content: string;
+  interface Props {
+    content: string;
+  }
+
+  let { content }: Props = $props();
 
   async function format(a: string): Promise<string> {
     return formatXml(a, {

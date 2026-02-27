@@ -1,10 +1,10 @@
-<script>
-  export let value;
+<script lang="ts">
+  let { value = $bindable(), children } = $props();
   if (value === "") value = undefined;
 </script>
 
 <select id="selector" bind:value>
-  <slot />
+  {@render children?.()}
 </select>
 
 <style>

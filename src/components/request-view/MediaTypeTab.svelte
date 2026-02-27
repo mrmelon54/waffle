@@ -1,15 +1,25 @@
 <script lang="ts">
-  export let i: number;
-  export let tab: number;
-  export let f: (a: number) => () => void;
+  interface Props {
+    i: number;
+    tab: number;
+    f: (a: number) => () => void;
+    children?: import('svelte').Snippet;
+  }
+
+  let {
+    i,
+    tab,
+    f,
+    children
+  }: Props = $props();
 </script>
 
-<!-- svelte-ignore a11y-click-events-have-key-events -->
-<div class="media-type-tab" on:click={f(i)}>
+<!-- svelte-ignore a11y_click_events_have_key_events -->
+<div class="media-type-tab" onclick={f(i)}>
   {#if tab === i}
-    <b style="color: #25a05c;"><slot /></b>
+    <b style="color: #25a05c;">{@render children?.()}</b>
   {:else}
-    <span><slot /></span>
+    <span>{@render children?.()}</span>
   {/if}
 </div>
 

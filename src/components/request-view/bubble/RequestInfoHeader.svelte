@@ -1,13 +1,18 @@
 <script lang="ts">
-  export let title: string;
-  export let required: boolean = false;
+  interface Props {
+    title: string;
+    required?: boolean;
+    children?: import('svelte').Snippet;
+  }
+
+  let { title, required = false, children }: Props = $props();
 </script>
 
 <div class="request-info-header">
   <span class="request-info-header-tab {required ? 'header-info-required' : ''}">{title}</span>
   <!-- <span class="request-info-gap" /> -->
   <span class="request-info-extra">
-    <slot />
+    {@render children?.()}
   </span>
 </div>
 

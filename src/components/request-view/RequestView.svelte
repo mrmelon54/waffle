@@ -11,10 +11,19 @@
   import RequestInfoHeader from "./bubble/RequestInfoHeader.svelte";
   import RequestInfoContent from "./bubble/RequestInfoContent.svelte";
 
-  export let _p: OpenApiParser;
-  export let _f: OpenApiFile;
-  export let open = false;
-  export let req: OperationObject;
+  interface Props {
+    _p: OpenApiParser;
+    _f: OpenApiFile;
+    open?: boolean;
+    req: OperationObject;
+  }
+
+  let {
+    _p,
+    _f,
+    open = $bindable(false),
+    req
+  }: Props = $props();
 
   let deprecated = getOrDefault(req.deprecated, false);
 
@@ -24,8 +33,8 @@
 </script>
 
 <div class="request {open ? 'request-dropdown-open' : 'request-dropdown-closed'} {deprecated ? 'request-deprecated' : ''}" style={req.$$method.style()}>
-  <!-- svelte-ignore a11y-click-events-have-key-events -->
-  <div class="request-summary" on:click={handleClick}>
+  <!-- svelte-ignore a11y_click_events_have_key_events -->
+  <div class="request-summary" onclick={handleClick}>
     <div class="request-summary-inner">
       <h5>
         <span class="request-summary-method">{req.$$method.name.toUpperCase()}</span>
@@ -64,7 +73,7 @@
               {#each req.$$params as param}
                 <Parameter {param} />
               {/each}
-              <tr />
+              <tr></tr>
             </tbody>
           </table>
         {:else}

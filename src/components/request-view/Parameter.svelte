@@ -4,14 +4,18 @@
   import type { SchemaObjectPrimitive } from "../../utils/oapi/objects/SchemaObject";
   import { getOrDefault } from "../../utils/oapi/utils/ObjectUtils";
 
-  export let param: ParameterObject;
+  interface Props {
+    param: ParameterObject;
+  }
+
+  let { param }: Props = $props();
 
   let schema = <SchemaObjectPrimitive>param.schema;
 </script>
 
 <tr class="param-row">
   <td>
-    <p />
+    <p></p>
     <div class="param-info-name {param.required ? 'info-required' : ''}">
       {param.name}{#if param.required}<span>&nbsp;*</span>{/if}
     </div>

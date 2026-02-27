@@ -9,10 +9,19 @@
   import EnumModel from "./EnumModel.svelte";
   import RawProperty from "./RawProperty.svelte";
 
-  export let _p: OpenApiParser;
-  export let _f: OpenApiFile;
-  export let schema: SchemaObjectPrimitive;
-  export let displayName: string;
+  interface Props {
+    _p: OpenApiParser;
+    _f: OpenApiFile;
+    schema: SchemaObjectPrimitive;
+    displayName: string;
+  }
+
+  let {
+    _p,
+    _f,
+    schema,
+    displayName
+  }: Props = $props();
 
   let rawProps = [];
   addRawProps("default", "readOnly", "writeOnly", "minLength", "maxLength", "pattern", "example");

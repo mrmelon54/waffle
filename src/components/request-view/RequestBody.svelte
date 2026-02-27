@@ -10,15 +10,19 @@
   import RequestInfoContent from "./bubble/RequestInfoContent.svelte";
   import MediaType from "./MediaType.svelte";
 
-  export let _p: OpenApiParser;
-  export let _f: OpenApiFile;
-  export let requestBody: RequestBodyObject | Ref<RequestBodyObject>;
+  interface Props {
+    _p: OpenApiParser;
+    _f: OpenApiFile;
+    requestBody: RequestBodyObject | Ref<RequestBodyObject>;
+  }
+
+  let { _p, _f, requestBody }: Props = $props();
 
   function getRequestBody(): Promise<Ctx<RequestBodyObject>> {
     return Ref.getValueOrRef(_p, _f, requestBody, async (x) => <RequestBodyObject>x);
   }
 
-  let contentType: string = "";
+  let contentType: string = $state("");
 </script>
 
 <div class="request-description">
@@ -39,7 +43,7 @@
       {#if x.v.description !== undefined}
         <Markdown source={x.v.description} />
       {:else}
-        <p />
+        <p></p>
       {/if}
       {#if contentType !== undefined && contentType !== ""}
         {#key contentType}

@@ -21,9 +21,9 @@
     }
   });
 
-  let specUrls = [];
-  let specUrl = "";
-  let name;
+  let specUrls = $state([]);
+  let specUrl = $state("");
+  let name = $state();
 
   // @ts-ignore
   let poweredName = `Waffle${BUILD_REF ? ` ${BUILD_REF}` : ""}`;

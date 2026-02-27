@@ -9,12 +9,23 @@
   import type OpenApiFile from "../../utils/oapi/utils/OpenApiFile";
   import Model from "./Model.svelte";
 
-  export let _p: OpenApiParser;
-  export let _f: OpenApiFile;
-  export let schema: SchemaObjectArray;
-  export let displayName: string;
-  export let required: boolean;
-  export let open = false;
+  interface Props {
+    _p: OpenApiParser;
+    _f: OpenApiFile;
+    schema: SchemaObjectArray;
+    displayName: string;
+    required: boolean;
+    open?: boolean;
+  }
+
+  let {
+    _p,
+    _f,
+    schema,
+    displayName,
+    required,
+    open = false
+  }: Props = $props();
 
   let title = getOrDefault(schema.title, displayName) + (required ? "*" : "");
 

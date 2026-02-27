@@ -11,11 +11,21 @@
   import Ref from "../utils/oapi/utils/Ref";
   import RequestCategory from "./RequestCategory.svelte";
 
-  export let _p: OpenApiParser;
-  export let _f: OpenApiFile;
-  export let tags: TagObject[];
-  export let paths: PathsObject;
-  export let components: ComponentsObject;
+  interface Props {
+    _p: OpenApiParser;
+    _f: OpenApiFile;
+    tags: TagObject[];
+    paths: PathsObject;
+    components: ComponentsObject;
+  }
+
+  let {
+    _p,
+    _f,
+    tags,
+    paths,
+    components
+  }: Props = $props();
 
   let defaultCategory: TagObject = { name: "default", $$requests: [] };
   let rawTags =
@@ -78,7 +88,7 @@
   {:then x}
     {#each x as category, i}
       {#if i != 0}
-        <div class="req-cat-gap" />
+        <div class="req-cat-gap"></div>
       {/if}
       <RequestCategory {_p} {_f} open={true} {category} />
     {/each}

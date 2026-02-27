@@ -1,13 +1,18 @@
-<script>
-  export let topLevel = false;
+<script lang="ts">
+  interface Props {
+    topLevel?: boolean;
+    children?: import('svelte').Snippet;
+  }
+
+  let { topLevel = false, children }: Props = $props();
 </script>
 
 {#if topLevel}
   <div class="model-wrapper">
-    <slot />
+    {@render children?.()}
   </div>
 {:else}
-  <slot />
+  {@render children?.()}
 {/if}
 
 <style>

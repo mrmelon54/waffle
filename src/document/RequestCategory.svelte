@@ -1,13 +1,24 @@
 <script lang="ts">
+  import { preventDefault } from 'svelte/legacy';
+
   import RequestView from "../components/request-view/RequestView.svelte";
   import type { TagObject } from "../utils/oapi/objects/TagObject";
   import type OpenApiFile from "../utils/oapi/utils/OpenApiFile";
   import type OpenApiParser from "../utils/oapi/utils/OpenApiParser";
 
-  export let _p: OpenApiParser;
-  export let _f: OpenApiFile;
-  export let category: TagObject;
-  export let open = false;
+  interface Props {
+    _p: OpenApiParser;
+    _f: OpenApiFile;
+    category: TagObject;
+    open?: boolean;
+  }
+
+  let {
+    _p,
+    _f,
+    category,
+    open = $bindable(false)
+  }: Props = $props();
 
   function handleClick() {
     open = !open;
@@ -15,8 +26,8 @@
 </script>
 
 <div class="category {open ? 'category-dropdown-open' : 'category-dropdown-closed'}">
-  <!-- svelte-ignore a11y-click-events-have-key-events -->
-  <div class="category-summary" on:click|preventDefault={handleClick}>
+  <!-- svelte-ignore a11y_click_events_have_key_events -->
+  <div class="category-summary" onclick={preventDefault(handleClick)}>
     <div class="category-summary-inner">
       <h5>
         <span class="category-summary-name">{category.name}</span>

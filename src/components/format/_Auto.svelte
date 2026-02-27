@@ -2,11 +2,14 @@
   import Json from "./Json.svelte";
   import Xml from "./Xml.svelte";
 
-  export let mime: string;
-  export let content: string;
+  interface Props {
+    mime: string;
+    content: string;
+  }
 
-  let output: any;
-  $: output = MimeToRender[mime];
+  let { mime, content }: Props = $props();
+
+  let output: any = $derived(MimeToRender[mime]);
 
   var MimeToRender = {
     "application/json": Json,
@@ -15,5 +18,6 @@
 </script>
 
 {#if output !== undefined}
-  <svelte:component this={output} {content} />
+  {@const SvelteComponent = output}
+  <SvelteComponent {content} />
 {/if}

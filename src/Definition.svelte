@@ -2,7 +2,11 @@
   import Document from "./document/Document.svelte";
   import OpenApiParser from "./utils/oapi/utils/OpenApiParser";
 
-  export let spec: URL | undefined;
+  interface Props {
+    spec: URL | undefined;
+  }
+
+  let { spec }: Props = $props();
 
   async function fetchSpec(url: URL): Promise<OpenApiParser> {
     if (url === undefined) return Promise.reject(`No OpenAPI spec selected`);

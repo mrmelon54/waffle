@@ -5,9 +5,13 @@
   import type OpenApiFile from "../utils/oapi/utils/OpenApiFile";
   import type OpenApiParser from "../utils/oapi/utils/OpenApiParser";
 
-  export let _p: OpenApiParser;
-  export let _f: OpenApiFile;
-  export let schemas: Map<string, SchemaObject>;
+  interface Props {
+    _p: OpenApiParser;
+    _f: OpenApiFile;
+    schemas: Map<string, SchemaObject>;
+  }
+
+  let { _p, _f, schemas }: Props = $props();
 </script>
 
 <div>

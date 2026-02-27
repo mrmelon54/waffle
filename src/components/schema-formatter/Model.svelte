@@ -1,4 +1,5 @@
 <script lang="ts">
+  import Model from './Model.svelte';
   import { detectType, type SchemaObject } from "../../utils/oapi/objects/SchemaObject";
   import type Ctx from "../../utils/oapi/utils/Ctx";
   import type OpenApiFile from "../../utils/oapi/utils/OpenApiFile";
@@ -11,16 +12,28 @@
   import PrimitiveModel from "./PrimitiveModel.svelte";
   import JsonFormatter from "../format/Json.svelte";
 
-  export let _p: OpenApiParser;
-  export let _f: OpenApiFile;
-  export let schema: SchemaObject | Ref<SchemaObject>;
-  export let required = false;
-  export let displayName: string | undefined;
-  export let topLevel = false;
-  export let openTopLevel = false;
+  interface Props {
+    _p: OpenApiParser;
+    _f: OpenApiFile;
+    schema: SchemaObject | Ref<SchemaObject>;
+    required?: boolean;
+    displayName: string | undefined;
+    topLevel?: boolean;
+    openTopLevel?: boolean;
+  }
+
+  let {
+    _p,
+    _f,
+    schema,
+    required = false,
+    displayName = $bindable(),
+    topLevel = false,
+    openTopLevel = false
+  }: Props = $props();
   if (displayName === undefined) displayName = "";
 
-  let type: string = "unknown";
+  let type: string = $state("unknown");
 
   async function getFinalSchema(): Promise<Ctx<SchemaObject>> {
     let r = await Ref.getValueOrRef(_p, _f, schema, (x) => Promise.resolve(<SchemaObject>x));
@@ -42,7 +55,7 @@
       <ul>
         {#each x.v.anyOf as i}
           <li>
-            <svelte:self _p={x.$$parser} _f={x.$$file} schema={i} />
+            <Model _p={x.$$parser} _f={x.$$file} schema={i} />
           </li>
         {/each}
       </ul>
@@ -51,7 +64,7 @@
       <ul>
         {#each x.v.oneOf as i}
           <li>
-            <svelte:self _p={x.$$parser} _f={x.$$file} schema={i} />
+            <Model _p={x.$$parser} _f={x.$$file} schema={i} />
           </li>
         {/each}
       </ul>

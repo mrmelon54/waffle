@@ -1,6 +1,11 @@
-<script>
-  export let open = false;
-  export let title;
+<script lang="ts">
+  interface Props {
+    open?: boolean;
+    title: any;
+    children?: import('svelte').Snippet;
+  }
+
+  let { open = $bindable(false), title, children }: Props = $props();
 
   function handleClick() {
     open = !open;
@@ -8,13 +13,13 @@
 </script>
 
 <div class="dropdown {open ? 'dropdown-open' : 'dropdown-closed'}">
-  <!-- svelte-ignore a11y-click-events-have-key-events -->
-  <div class="dropdown-title" on:click={handleClick}>
+  <!-- svelte-ignore a11y_click_events_have_key_events -->
+  <div class="dropdown-title" onclick={handleClick}>
     <h4>{title}</h4>
   </div>
   {#if open}
     <div class="dropdown-content">
-      <slot />
+      {@render children?.()}
     </div>
   {/if}
 </div>

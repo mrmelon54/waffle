@@ -10,13 +10,25 @@
   import SchemaCollapse from "./SchemaCollapse.svelte";
   import SchemaProperty from "./SchemaProperty.svelte";
 
-  export let _p: OpenApiParser;
-  export let _f: OpenApiFile;
-  export let parent: SchemaObject;
-  export let schema: (SchemaObject | Ref<SchemaObject>)[];
-  export let required: boolean;
-  export let displayName: string;
-  export let open = false;
+  interface Props {
+    _p: OpenApiParser;
+    _f: OpenApiFile;
+    parent: SchemaObject;
+    schema: (SchemaObject | Ref<SchemaObject>)[];
+    required: boolean;
+    displayName: string;
+    open?: boolean;
+  }
+
+  let {
+    _p,
+    _f,
+    parent,
+    schema,
+    required,
+    displayName,
+    open = false
+  }: Props = $props();
 
   let title = displayName + (required ? "*" : "");
 

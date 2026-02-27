@@ -8,16 +8,25 @@
   import Selector from "../Selector.svelte";
   import type Ctx from "../../utils/oapi/utils/Ctx";
 
-  export let _p: OpenApiParser;
-  export let _f: OpenApiFile;
-  export let key: string;
-  export let resp: ResponseObject | Ref<ResponseObject>;
+  interface Props {
+    _p: OpenApiParser;
+    _f: OpenApiFile;
+    key: string;
+    resp: ResponseObject | Ref<ResponseObject>;
+  }
+
+  let {
+    _p,
+    _f,
+    key,
+    resp
+  }: Props = $props();
 
   function getResponse(): Promise<Ctx<ResponseObject>> {
     return Ref.getValueOrRef(_p, _f, resp, async (x) => <ResponseObject>x);
   }
 
-  let contentType: string = "";
+  let contentType: string = $state("");
 </script>
 
 <tr class="resp-row">
@@ -31,7 +40,7 @@
       {#if x.v.description !== undefined}
         <Markdown source={x.v.description} />
       {:else}
-        <p />
+        <p></p>
       {/if}
       {#if x.v.content !== undefined}
         <h5 class="response-accept-header">

@@ -7,12 +7,21 @@
   import Model from "../schema-formatter/Model.svelte";
   import MediaTypeTab from "./MediaTypeTab.svelte";
 
-  export let _p: OpenApiParser;
-  export let _f: OpenApiFile;
-  export let media: MediaTypeObject;
-  export let mimeType: string;
+  interface Props {
+    _p: OpenApiParser;
+    _f: OpenApiFile;
+    media: MediaTypeObject;
+    mimeType: string;
+  }
 
-  let tab: number = 0;
+  let {
+    _p,
+    _f,
+    media,
+    mimeType
+  }: Props = $props();
+
+  let tab: number = $state(0);
 
   async function generateExample(mime: string): Promise<any> {
     if (mime === undefined) return { $error: `Unknown mime type: ${mime}` };
@@ -36,7 +45,7 @@
   let hasEx: boolean = media.example !== undefined;
   let hasExArr: boolean = media.example !== undefined;
   let hasSc: boolean = media.schema !== undefined;
-  let hasScEx: boolean = true;
+  let hasScEx: boolean = $state(true);
 </script>
 
 <div class="media-type">
@@ -47,7 +56,7 @@
       {/if}
       {#if hasSc}
         {#if hasScEx}
-          <span class="media-type-gap" />
+          <span class="media-type-gap"></span>
         {/if}
         <MediaTypeTab i={1} {tab} f={handleTabClick}>Schema</MediaTypeTab>
       {/if}
