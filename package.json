@@ -27,7 +27,7 @@
     "vite": "^6.4.2"
   },
   "dependencies": {
-    "js-yaml": "^4.1.1",
+    "js-yaml": "^4.2.0",
     "sass": "^1.83.0",
     "semver": "^7.7.1",
     "steady-xml": "^0.1.0",
