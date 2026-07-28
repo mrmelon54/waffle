@@ -639,7 +639,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@sveltejs/vite-plugin-svelte@npm:^3.0.1":
+"@sveltejs/vite-plugin-svelte@npm:^3.1.2":
   version: 3.1.2
   resolution: "@sveltejs/vite-plugin-svelte@npm:3.1.2"
   dependencies:
@@ -733,17 +733,17 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@types/semver@npm:^7.5.8":
-  version: 7.7.0
-  resolution: "@types/semver@npm:7.7.0"
-  checksum: 10/ee4514c6c852b1c38f951239db02f9edeea39f5310fad9396a00b51efa2a2d96b3dfca1ae84c88181ea5b7157c57d32d7ef94edacee36fbf975546396b85ba5b
+"@types/semver@npm:^7.7.1":
+  version: 7.7.1
+  resolution: "@types/semver@npm:7.7.1"
+  checksum: 10/8f09e7e6ca3ded67d78ba7a8f7535c8d9cf8ced83c52e7f3ac3c281fe8c689c3fe475d199d94390dc04fc681d51f2358b430bb7b2e21c62de24f2bee2c719068
   languageName: node
   linkType: hard
 
-"@types/validator@npm:^13.12.2":
-  version: 13.15.0
-  resolution: "@types/validator@npm:13.15.0"
-  checksum: 10/8aa22984979782a1565972dfa4ab98d49f414cf501423e650f96d0afe5e9d4c5bf029c6bde1c3dabc5c82da2a70cf946d6ee55d58cdba3bd23f838d3f5c0d00f
+"@types/validator@npm:^13.15.10":
+  version: 13.15.10
+  resolution: "@types/validator@npm:13.15.10"
+  checksum: 10/63117a776ced4d066d7fb63130d90ba487d38209dd45c25641ca1a6f5040e8394cc9a855750b919b72a923c5ffb51f8474f213b10b5aaa27d9db108bef07ad10
   languageName: node
   linkType: hard
 
@@ -920,6 +920,15 @@ __metadata:
   languageName: node
   linkType: hard
 
+"chokidar@npm:^5.0.0":
+  version: 5.0.0
+  resolution: "chokidar@npm:5.0.0"
+  dependencies:
+    readdirp: "npm:^5.0.0"
+  checksum: 10/a1c2a4ee6ee81ba6409712c295a47be055fb9de1186dfbab33c1e82f28619de962ba02fc5f9d433daaedc96c35747460d8b2079ac2907de2c95e3f7cce913113
+  languageName: node
+  linkType: hard
+
 "chownr@npm:^3.0.0":
   version: 3.0.0
   resolution: "chownr@npm:3.0.0"
@@ -1011,10 +1020,10 @@ __metadata:
   languageName: node
   linkType: hard
 
-"dotenv@npm:^16.4.7":
-  version: 16.5.0
-  resolution: "dotenv@npm:16.5.0"
-  checksum: 10/e68a16834f1a41cc2dfb01563bc150668ad675e6cd09191211467b5c0806b6ecd6ec438e021aa8e01cd0e72d2b70ef4302bec7cc0fe15b6955f85230b62dc8a9
+"dotenv@npm:^16.6.1":
+  version: 16.6.1
+  resolution: "dotenv@npm:16.6.1"
+  checksum: 10/1d1897144344447ffe62aa1a6d664f4cd2e0784e0aff787eeeec1940ded32f8e4b5b506d665134fc87157baa086fce07ec6383970a2b6d2e7985beaed6a4cc14
   languageName: node
   linkType: hard
 
@@ -1331,7 +1340,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"immutable@npm:^5.0.2":
+"immutable@npm:^5.0.2, immutable@npm:^5.1.5":
   version: 5.1.9
   resolution: "immutable@npm:5.1.9"
   checksum: 10/dc61ea6f79897320a048f193dec703dff25ad7bb633c3a0294677d2f258764c88da06e7c2b53d1aa51b6657c98d9f1c7341f49735b9b802fe6e834122cf78dcd
@@ -1879,6 +1888,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"readdirp@npm:^5.0.0":
+  version: 5.0.0
+  resolution: "readdirp@npm:5.0.0"
+  checksum: 10/a17a591b51d8b912083660df159e8bd17305dc1a9ef27c869c818bd95ff59e3a6496f97e91e724ef433e789d559d24e39496ea1698822eb5719606dc9c1a923d
+  languageName: node
+  linkType: hard
+
 "readdirp@npm:~3.6.0":
   version: 3.6.0
   resolution: "readdirp@npm:3.6.0"
@@ -2047,7 +2063,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"sass@npm:*, sass@npm:^1.83.0":
+"sass@npm:*":
   version: 1.87.0
   resolution: "sass@npm:1.87.0"
   dependencies:
@@ -2064,6 +2080,23 @@ __metadata:
   languageName: node
   linkType: hard
 
+"sass@npm:^1.102.0":
+  version: 1.102.0
+  resolution: "sass@npm:1.102.0"
+  dependencies:
+    "@parcel/watcher": "npm:^2.4.1"
+    chokidar: "npm:^5.0.0"
+    immutable: "npm:^5.1.5"
+    source-map-js: "npm:>=0.6.2 <2.0.0"
+  dependenciesMeta:
+    "@parcel/watcher":
+      optional: true
+  bin:
+    sass: sass.js
+  checksum: 10/c69c254db64274778cc2a7f00a0fd92c0c53b9c3d25e0e8e7cf8c18788ff998c1e51e1e16198a62f58513c8c406ecc2bb61c4f29f05a0f7109c2f26700161137
+  languageName: node
+  linkType: hard
+
 "semver@npm:^7.3.5":
   version: 7.7.3
   resolution: "semver@npm:7.7.3"
@@ -2073,12 +2106,12 @@ __metadata:
   languageName: node
   linkType: hard
 
-"semver@npm:^7.7.1":
-  version: 7.7.1
-  resolution: "semver@npm:7.7.1"
+"semver@npm:^7.8.5":
+  version: 7.8.5
+  resolution: "semver@npm:7.8.5"
   bin:
     semver: bin/semver.js
-  checksum: 10/4cfa1eb91ef3751e20fc52e47a935a0118d56d6f15a837ab814da0c150778ba2ca4f1a4d9068b33070ea4273629e615066664c2cfcd7c272caf7a8a0f6518b2c
+  checksum: 10/9b01d2ff11e6e4a4539b7ca3c5f280c8704cb397a28504469f2ed4f00ad2194748d756647362a9712fff30984d15772ab7f083108c2fb508e2096ae9e708f22c
   languageName: node
   linkType: hard
 
@@ -2163,7 +2196,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"svelte-check@npm:^2.9.2":
+"svelte-check@npm:^2.10.3":
   version: 2.10.3
   resolution: "svelte-check@npm:2.10.3"
   dependencies:
@@ -2280,7 +2313,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"svelte-routing@npm:^1.6.0":
+"svelte-routing@npm:^1.11.0":
   version: 1.11.0
   resolution: "svelte-routing@npm:1.11.0"
   checksum: 10/5a4202b7ecb553ff20c438199a421074e5abec3d01a5d3886dc0e325ba700106b1b27517e4a3ba02588be9e7cf364bb455f6bf0d02b05664a863ff9b7f893515
@@ -2300,7 +2333,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"svelte@npm:^4.2.19":
+"svelte@npm:^4.2.20":
   version: 4.2.20
   resolution: "svelte@npm:4.2.20"
   dependencies:
@@ -2381,7 +2414,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"typescript@npm:^4.6.4":
+"typescript@npm:^4.9.5":
   version: 4.9.5
   resolution: "typescript@npm:4.9.5"
   bin:
@@ -2401,7 +2434,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"typescript@patch:typescript@npm%3A^4.6.4#optional!builtin<compat/typescript>":
+"typescript@patch:typescript@npm%3A^4.9.5#optional!builtin<compat/typescript>":
   version: 4.9.5
   resolution: "typescript@patch:typescript@npm%3A4.9.5#optional!builtin<compat/typescript>::version=4.9.5&hash=289587"
   bin:
@@ -2436,10 +2469,10 @@ __metadata:
   languageName: node
   linkType: hard
 
-"validator@npm:^13.15.22":
-  version: 13.15.22
-  resolution: "validator@npm:13.15.22"
-  checksum: 10/f826278482e4e52c95d4a876867537684482efbe4d1e510109e997d71235202c78cc3650cba5980141b3e14324fce001c96ac4d8b350cd8f99d5e71958ea4638
+"validator@npm:^13.15.35":
+  version: 13.15.35
+  resolution: "validator@npm:13.15.35"
+  checksum: 10/62f25728064d5dedaabb10a53647cbb4f9aa762a2a53e16642469d4839ad235e467e9f18d0992c492ec1d35e1d5034956fdc680953fc7d8f764cc6d4c83cf2ae
   languageName: node
   linkType: hard
 
@@ -2514,31 +2547,31 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "waffle@workspace:."
   dependencies:
-    "@sveltejs/vite-plugin-svelte": "npm:^3.0.1"
+    "@sveltejs/vite-plugin-svelte": "npm:^3.1.2"
     "@tsconfig/svelte": "npm:^3.0.0"
     "@types/highlight.js": "npm:^10.1.0"
     "@types/js-yaml": "npm:^4.0.9"
-    "@types/semver": "npm:^7.5.8"
-    "@types/validator": "npm:^13.12.2"
+    "@types/semver": "npm:^7.7.1"
+    "@types/validator": "npm:^13.15.10"
     "@types/xml2json": "npm:^0.11.6"
-    dotenv: "npm:^16.4.7"
+    dotenv: "npm:^16.6.1"
     js-yaml: "npm:^4.3.0"
-    sass: "npm:^1.83.0"
-    semver: "npm:^7.7.1"
+    sass: "npm:^1.102.0"
+    semver: "npm:^7.8.5"
     steady-xml: "npm:^0.1.0"
-    svelte: "npm:^4.2.19"
-    svelte-check: "npm:^2.9.2"
+    svelte: "npm:^4.2.20"
+    svelte-check: "npm:^2.10.3"
     svelte-environment-variables: "npm:^1.0.4"
     svelte-highlight: "npm:^6.2.1"
     svelte-markdown: "npm:^0.2.3"
     svelte-navigator: "npm:^3.2.2"
     svelte-preprocess: "npm:^4.10.7"
-    svelte-routing: "npm:^1.6.0"
+    svelte-routing: "npm:^1.11.0"
     tslib: "npm:^2.8.1"
-    typescript: "npm:^4.6.4"
-    validator: "npm:^13.15.22"
+    typescript: "npm:^4.9.5"
+    validator: "npm:^13.15.35"
     vite: "npm:^6.4.3"
-    xml-formatter: "npm:^3.6.4"
+    xml-formatter: "npm:^3.7.0"
   languageName: unknown
   linkType: soft
 
@@ -2560,19 +2593,19 @@ __metadata:
   languageName: node
   linkType: hard
 
-"xml-formatter@npm:^3.6.4":
-  version: 3.6.5
-  resolution: "xml-formatter@npm:3.6.5"
+"xml-formatter@npm:^3.7.0":
+  version: 3.7.0
+  resolution: "xml-formatter@npm:3.7.0"
   dependencies:
-    xml-parser-xo: "npm:^4.1.2"
-  checksum: 10/6cf6abc8cfbb6b2fed15e7a5f9f91e159c655b9fdec7f8a7c70c206eca913db57d5c6d055c3dbe01d4294cdc3cfb03ca7556803f9c4fff415fd171cd08e43e27
+    xml-parser-xo: "npm:^4.1.5"
+  checksum: 10/8ddbd08e483d2a93a59c4a6f8b4845230bdea184f0e2d356d1dd11833738d2107cf43fae213f7ab8bb650da388916224887a1e846778bf3afbee9d3bbf05383a
   languageName: node
   linkType: hard
 
-"xml-parser-xo@npm:^4.1.2":
-  version: 4.1.3
-  resolution: "xml-parser-xo@npm:4.1.3"
-  checksum: 10/d597082c9f07223c4786e307db9e6cf8095d861260ce815e01baa4bffc5d55c6ba2aa6493bd8c02fa34b503706b4289ba5090911067039f6280d0a6f1ba877ca
+"xml-parser-xo@npm:^4.1.5":
+  version: 4.1.6
+  resolution: "xml-parser-xo@npm:4.1.6"
+  checksum: 10/ff035a42d87c636051fcbdb47c0ed07056be92cd5e079f9e52dc79cc749ffc2ba63ccc08eeec3f5814c3e67bb299680a02430c15d0e315f559c7eb5b1ef239da
   languageName: node
   linkType: hard
 
